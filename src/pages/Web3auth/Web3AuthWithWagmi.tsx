@@ -26,7 +26,7 @@ import { WriteContract } from './writeContract';
 
 // Configure chains & providers with the Public provider.
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [arbitrum, arbitrumGoerli, base, baseGoerli],
+  [arbitrumGoerli, baseGoerli],
   [publicProvider()]
 );
 
