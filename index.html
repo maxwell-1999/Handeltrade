@@ -7,6 +7,8 @@
     import process from "process";
     window.Buffer = Buffer;
     window.process = process;
+window.global = window
+
   </script>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/vite.svg" />
@@ -16,7 +18,9 @@
 
 <body>
   <div id="root"></div>
+  <script type="module" src="./polyfill.ts"></script>
   <script type="module" src="/src/main.tsx"></script>
+
 </body>
 
 </html>
