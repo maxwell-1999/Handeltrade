@@ -16,6 +16,7 @@ import {
   arbitrumGoerli,
   base,
   baseGoerli,
+  polygon,
 } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
 import { SendTransaction } from './sendTransaction';
@@ -26,7 +27,7 @@ import { WriteContract } from './writeContract';
 
 // Configure chains & providers with the Public provider.
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [arbitrumGoerli, baseGoerli],
+  [polygon],
   [publicProvider()]
 );
 

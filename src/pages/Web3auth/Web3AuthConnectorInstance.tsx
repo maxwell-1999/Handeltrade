@@ -9,7 +9,7 @@ import { Chain } from 'wagmi';
 
 export default function Web3AuthConnectorInstance(chains: Chain[]) {
   // Create Web3Auth Instance
-  const name = 'letitrun';
+  const name = 'ForPolygon';
   const iconUrl = 'https://web3auth.io/docs/contents/logo-ethereum.png';
   const chainConfig = {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -23,7 +23,7 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
 
   const web3AuthInstance = new Web3Auth({
     clientId:
-      'BDzwwNd7ooIGHYn-mzOzIJjI0m2n_ePgte0nTTscUbrzkuq9iuKGIv0SMPrDU7vHPr8TSrIkezA1B7LmeNC1iDM',
+      'BL61SxVgp_BBvj6tXnRnQQvdvFk4DbnZMywG6OVGnKKq3JmPxkD_C7uJkMwdnBKA-T8FOeydQiszaLGpfcFOYUs',
     chainConfig,
     uiConfig: {
       appName: name,
@@ -33,7 +33,7 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
       appLogo: 'https://web3auth.io/images/w3a-L-Favicon-1.svg', // Your App Logo Here
       modalZIndex: '2147483647',
     },
-    web3AuthNetwork: 'testnet',
+    web3AuthNetwork: 'mainnet',
     enableLogging: true,
   });
 
