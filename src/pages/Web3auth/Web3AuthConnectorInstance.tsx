@@ -9,7 +9,7 @@ import { Chain } from 'wagmi';
 
 export default function Web3AuthConnectorInstance(chains: Chain[]) {
   // Create Web3Auth Instance
-  const name = 'FFrei';
+  const name = 'letitrun';
   const iconUrl = 'https://web3auth.io/docs/contents/logo-ethereum.png';
   const chainConfig = {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -23,7 +23,7 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
 
   const web3AuthInstance = new Web3Auth({
     clientId:
-      'BHDmv9K3eFyIbdyGHNH5toUifSto7fble4H5qpgMFNf3mN2UMTCMiu8CXL2suQLsmt6Ft5KWoeUbSl3NCxxdaXU',
+      'BDzwwNd7ooIGHYn-mzOzIJjI0m2n_ePgte0nTTscUbrzkuq9iuKGIv0SMPrDU7vHPr8TSrIkezA1B7LmeNC1iDM',
     chainConfig,
     uiConfig: {
       appName: name,
@@ -33,7 +33,7 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
       appLogo: 'https://web3auth.io/images/w3a-L-Favicon-1.svg', // Your App Logo Here
       modalZIndex: '2147483647',
     },
-    web3AuthNetwork: 'testnet',
+    // web3AuthNetwork: '',
     enableLogging: true,
   });
 
