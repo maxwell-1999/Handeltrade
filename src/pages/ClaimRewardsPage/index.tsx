@@ -1,9 +1,9 @@
 import React from 'react';
 
-export default function LoginPage() {
+export default function ClaimRewardsPage() {
   return (
     <div>
-      Login Page
+
     </div>
   );
 }
