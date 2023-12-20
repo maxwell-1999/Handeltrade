@@ -28,12 +28,12 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
     uiConfig: {
       appName: name,
       theme: 'light',
-      loginMethodsOrder: ['github', 'google'],
+      loginMethodsOrder: ['google'],
       defaultLanguage: 'en',
-      appLogo: 'https://web3auth.io/images/w3a-L-Favicon-1.svg', // Your App Logo Here
+      // appLogo: 'https://web3auth.o/images/w3a-L-Favicon-1.svg', // Your App Logo Here
       modalZIndex: '2147483647',
     },
-    web3AuthNetwork: 'sapphire_mainnet',
+    web3AuthNetwork: 'testnet',
     enableLogging: true,
   });
 

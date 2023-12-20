@@ -27,7 +27,7 @@ import { WriteContract } from './writeContract';
 
 // Configure chains & providers with the Public provider.
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [polygon],
+  [polygonMumbai],
   [publicProvider()]
 );
 
