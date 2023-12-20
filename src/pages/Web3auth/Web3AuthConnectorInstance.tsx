@@ -33,7 +33,7 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
       appLogo: 'https://web3auth.io/images/w3a-L-Favicon-1.svg', // Your App Logo Here
       modalZIndex: '2147483647',
     },
-    web3AuthNetwork: 'mainnet',
+    web3AuthNetwork: 'sapphire_mainnet',
     enableLogging: true,
   });
 
