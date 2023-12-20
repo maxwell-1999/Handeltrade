@@ -9,7 +9,7 @@ import { Chain } from 'wagmi';
 
 export default function Web3AuthConnectorInstance(chains: Chain[]) {
   // Create Web3Auth Instance
-  const name = 'ForPolygon';
+  const name = 'FFrei';
   const iconUrl = 'https://web3auth.io/docs/contents/logo-ethereum.png';
   const chainConfig = {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -23,7 +23,7 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
 
   const web3AuthInstance = new Web3Auth({
     clientId:
-      'BL61SxVgp_BBvj6tXnRnQQvdvFk4DbnZMywG6OVGnKKq3JmPxkD_C7uJkMwdnBKA-T8FOeydQiszaLGpfcFOYUs',
+      'BHDmv9K3eFyIbdyGHNH5toUifSto7fble4H5qpgMFNf3mN2UMTCMiu8CXL2suQLsmt6Ft5KWoeUbSl3NCxxdaXU',
     chainConfig,
     uiConfig: {
       appName: name,
