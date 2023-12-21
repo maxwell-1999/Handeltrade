@@ -1,10 +1,17 @@
-import LoginPage from './pages/LoginPage';
 import './App.css';
-import { Web3AuthWithWagmi } from './pages/Web3auth/Web3AuthWithWagmi';
+import { RecoilRoot } from 'recoil';
+import { WagmiConfig } from 'wagmi';
+import { wagmiConfig } from './Hooks/WagmiConfig';
+import { LoginPage } from './pages/Web3auth/LoginPage';
 
 function App() {
-  return <Web3AuthWithWagmi />
-  
+  return (
+    <RecoilRoot>
+      <WagmiConfig config={wagmiConfig}>
+        <LoginPage />
+      </WagmiConfig>
+    </RecoilRoot>
+  );
 }
 
 export default App;

@@ -4,7 +4,6 @@ import { Web3Auth } from '@web3auth/modal';
 import { EthereumPrivateKeyProvider } from '@web3auth/ethereum-provider';
 import { OpenloginAdapter } from '@web3auth/openlogin-adapter';
 import { CHAIN_NAMESPACES } from '@web3auth/base';
-import { TorusWalletConnectorPlugin } from '@web3auth/torus-wallet-connector-plugin';
 import { Chain } from 'wagmi';
 
 export default function Web3AuthConnectorInstance(chains: Chain[]) {
