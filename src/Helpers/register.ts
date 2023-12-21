@@ -32,13 +32,12 @@ const registerUser = async (connector: any, address: `0x${string}`) => {
     `https://api-production-4b67.up.railway.app/user/create`,
     registerPayload
   );
-  console.log(`res: `, res);
-  if (!res.status) {
+  if (res.error) {
     throw new Error('User info not found');
   }
   //   console.log(`res: `, res);
 
-  return userInfo;
+  return res;
 };
 
 export { registerUser, getUserData };

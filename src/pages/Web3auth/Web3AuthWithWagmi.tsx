@@ -45,39 +45,54 @@ function LoginPage() {
   const [userInfo, setUserInfo] = useState(null);
   const navigate = useNavigate();
   console.log(`Web3AuthWithWagmi-address: `, address, userInfo);
-  // useEffect(() => {
-  //   if (isConnected && connector && address) {
-  //     const getUserInfo = async () => {
-  //       try {
-  //         const userInfo = await registerUser(connector, address);
-  //         console.log(`Web3AuthWithWagmi-userInfo: `, userInfo);
-  //       } catch (e) {
-  //         console.log(`Web3AuthWithWagmi-e: `, e);
-  //       }
-  //     };
-  //     getUserInfo();
-  //   }
-  // }, [isConnected, connector]);
+  useEffect(() => {
+    if (loginLoading == 'registering' && isConnected && connector && address) {
+      const getUserInfo = async () => {
+        try {
+          console.log('flow-deb-settinguser');
+          const userInfo = await registerUser(connector, address);
+          console.log(`res: `, userInfo);
+          // send get user-address api response.
+          setUserInfo(userInfo?.data.data);
+          // setLoginLoading()
+          console.log('flow-deb-settinguser', userInfo?.data.data);
+        } catch (e) {
+          console.log(`Web3AuthWithWagmi-e: `, e);
+        }
+      };
+      getUserInfo();
+    }
+  }, [loginLoading, connector, address]);
 
   useEffect(() => {
     if (address) {
       const getUserInfo = async () => {
         setLoginLoading('fetching');
+        console.log(`flow-deb-getting-user-data: `);
+
         const userInfo = await getUserData(address);
         console.log(`Web3AuthWithWagmi-userInfo: `, userInfo);
-        if (userInfo?.error) {
+        if (userInfo?.error || !userInfo) {
+          console.log(`flow-deb-getting-no-user-found: `, userInfo);
+
           setLoginLoading('registering');
         } else {
+          console.log(`flow-deb-user-found: `, userInfo);
+
           setUserInfo(userInfo);
-          localStorage.setItem('user', JSON.stringify(userInfo));
-          console.log(`Web3AuthWithWagmi-userInfo: `, userInfo);
-          navigate('onboarding');
           setLoginLoading(null);
         }
       };
       getUserInfo();
     }
   }, [address]);
+  useEffect(() => {
+    if (userInfo) {
+      console.log(`flow-deb-user-changed: `, userInfo);
+      localStorage.setItem('user-v1', JSON.stringify(userInfo));
+      navigate('onboarding');
+    }
+  }, [userInfo]);
   if (!connectors?.length) {
     return <ErrorPage>No Connectors found</ErrorPage>;
   }

@@ -8,7 +8,7 @@ const Onboarding: React.FC<any> = ({}) => {
   const [item, setItem] = useState();
   const navigate = useNavigate();
   useEffect(() => {
-    const item = localStorage.getItem('user');
+    const item = localStorage.getItem('user-v1');
     console.log(`Onboarding-item: `, item);
     setItem(item);
   }, []);
