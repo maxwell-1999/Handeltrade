@@ -23,6 +23,7 @@ import { PrimaryBtn } from '../../components/Buttons';
 import { useEffect, useState } from 'react';
 import { registerUser, getUserData } from '../../Helpers/register';
 import { Onboarding } from '../Onboarding/Onboarding';
+import useUserState from '../../atoms/userState';
 
 // Configure chains & providers with the Public provider.
 const { chains, publicClient, webSocketPublicClient } = configureChains(
@@ -42,9 +43,9 @@ function LoginPage() {
   const { address, connector, isConnected } = useAccount();
   const { connect, connectors, error } = useConnect();
   const [loginLoading, setLoginLoading] = useState<null | string>('');
-  const [userInfo, setUserInfo] = useState(null);
   const navigate = useNavigate();
-  console.log(`Web3AuthWithWagmi-address: `, address, userInfo);
+  const [userState, setUserState] = useUserState();
+  console.log(`Web3AuthWithWagmi-userState: `, userState);
   useEffect(() => {
     if (loginLoading == 'registering' && isConnected && connector && address) {
       const getUserInfo = async () => {
@@ -52,8 +53,9 @@ function LoginPage() {
           console.log('flow-deb-settinguser');
           const userInfo = await registerUser(connector, address);
           console.log(`res: `, userInfo);
+          setUserState(userInfo?.data.data);
+
           // send get user-address api response.
-          setUserInfo(userInfo?.data.data);
           // setLoginLoading()
           console.log('flow-deb-settinguser', userInfo?.data.data);
         } catch (e) {
@@ -79,7 +81,7 @@ function LoginPage() {
         } else {
           console.log(`flow-deb-user-found: `, userInfo);
 
-          setUserInfo(userInfo);
+          setUserState(userInfo.data.data);
           setLoginLoading(null);
         }
       };
@@ -87,12 +89,12 @@ function LoginPage() {
     }
   }, [address]);
   useEffect(() => {
-    if (userInfo) {
-      console.log(`flow-deb-user-changed: `, userInfo);
-      localStorage.setItem('user-v1', JSON.stringify(userInfo));
-      navigate('onboarding');
+    if (userState) {
+      console.log(`flow-deb-user-changed: `, userState);
+      localStorage.setItem('user-v1', JSON.stringify(userState));
+      navigate('/app');
     }
-  }, [userInfo]);
+  }, [userState]);
   if (!connectors?.length) {
     return <ErrorPage>No Connectors found</ErrorPage>;
   }
@@ -125,8 +127,8 @@ function Web3AuthWithWagmi() {
         <HashRouter>
           <SWRConfig>
             <Routes>
+              <Route path="/app" element={<Onboarding />} />
               <Route path="/" element={<LoginPage />} />
-              <Route path="/onboarding" element={<Onboarding />} />
             </Routes>
           </SWRConfig>
         </HashRouter>

@@ -26,5 +26,22 @@ const PrimaryBtn: React.FC<ButtonProps> = ({
     </button>
   );
 };
+const SecondaryBtn: React.FC<ButtonProps> = ({
+  children,
+  className,
+  ...props
+}) => {
+  return (
+    <button
+      className={twMerge(
+        ' bg-lightBrand text-md font-bold text-brand  py-[10px] rounded-[10px] shrink-0',
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+};
 
-export { PrimaryBtn };
+export { PrimaryBtn, SecondaryBtn };

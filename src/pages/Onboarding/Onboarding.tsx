@@ -1,33 +1,31 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAccount, useDisconnect } from 'wagmi';
+import { useAccount, useDisconnect, usePublicClient } from 'wagmi';
+import { MarketListing } from '../MarketListing';
+import { ShareManagementDrawer } from '../../components/ShareManagementDrawer';
+import useUserState from '../../atoms/userState';
+import useDrawerState from '../../atoms/drawerState';
 
 const Onboarding: React.FC<any> = ({}) => {
   const { disconnect } = useDisconnect();
   const { address } = useAccount();
+  const { waitForTransactionReceipt } = usePublicClient();
+  const [userState] = useUserState();
   const [item, setItem] = useState();
   const navigate = useNavigate();
+  const drawerManager = useDrawerState();
   useEffect(() => {
-    const item = localStorage.getItem('user-v1');
-    console.log(`Onboarding-item: `, item);
-    setItem(item);
-  }, []);
+    console.log(`Onboarding-userState: `, userState);
+  }, [userState]);
   useEffect(() => {
     if (!address) {
-      navigate('/');
+      navigate('/login');
     }
   }, [address]);
   return (
-    <div>
-      Welcome to app
-      <div>{JSON.stringify(item)}</div>
-      <button
-        onClick={() => {
-          disconnect();
-        }}
-      >
-        Disconnect
-      </button>
+    <div className="w-full h-full bg-2b">
+      <MarketListing />
+      {drawerManager.drawerState?.screen ? <ShareManagementDrawer /> : null}
     </div>
   );
 };

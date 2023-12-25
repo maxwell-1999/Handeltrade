@@ -11,9 +11,13 @@ export default {
       },
       colors: {
         brand: '#a474f3',
+        lightBrand: '#eae5fb',
         white: '#fff',
         '1': 'black',
-        '2': '#8f95a4'
+        '2': '#8f95a4',
+        '1b': '#fff',
+        '2b': '#F6F7FC',
+        '3b': '#0D0D0D0D',
       },
       fontSize: {
         f9: '9px',
@@ -21,6 +25,7 @@ export default {
         f12: '12px',
         f14: '14px',
         md: '16px',
+        lg: '22px',
       }
     },
   },
