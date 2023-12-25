@@ -31,7 +31,7 @@ const registerUser = async (connector: any, address: `0x${string}`) => {
   const res = await axios.put(
     `https://api-production-4b67.up.railway.app/user/create`,
     registerPayload,
-    { headers: { Authorization: `Bearer ${userInfo.tokenId}` } }
+    { headers: { Authorization: `Bearer ${userInfo.idToken}` } }
   );
   if (res.error) {
     throw new Error('User info not found');
