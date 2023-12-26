@@ -37,7 +37,10 @@ const MarketCard: React.FC<{ market: Market; preview?: boolean }> = ({
               <MemoTImerIcon />
               <TimeAgo date={toJSEpoch(market.updated_at)} />
               <div>
-                Price {(BigInt(market.buyPrice) / E8).toString()}{' '}
+                Price{' '}
+                {market.buyPrice
+                  ? (BigInt(market.buyPrice) / E8).toString()
+                  : 'No Price'}{' '}
                 {network.chain?.nativeCurrency.symbol}
               </div>
             </div>

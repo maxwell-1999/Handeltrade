@@ -24,6 +24,8 @@ import { useEffect, useState } from 'react';
 import { registerUser, getUserData } from '../../Helpers/register';
 import { Onboarding } from '../Onboarding/Onboarding';
 import useUserState from '../../atoms/userState';
+import { Layout } from '../../components/Layout';
+import { MarketCreation } from '../MarketCreation';
 
 // Configure chains & providers with the Public provider.
 const { chains, publicClient, webSocketPublicClient } = configureChains(
@@ -127,8 +129,30 @@ function Web3AuthWithWagmi() {
         <HashRouter>
           <SWRConfig>
             <Routes>
-              <Route path="/app" element={<Onboarding />} />
-              <Route path="/" element={<LoginPage />} />
+              <Route
+                path="/app"
+                element={
+                  <Layout>
+                    <Onboarding />{' '}
+                  </Layout>
+                }
+              />
+              <Route
+                path="/"
+                element={
+                  <Layout>
+                    <LoginPage />
+                  </Layout>
+                }
+              />
+              <Route
+                path="/add"
+                element={
+                  <Layout>
+                    <MarketCreation />
+                  </Layout>
+                }
+              />
             </Routes>
           </SWRConfig>
         </HashRouter>

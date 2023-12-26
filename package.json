@@ -23,6 +23,7 @@
     "@web3auth/torus-wallet-connector-plugin": "^6.0.1",
     "@web3auth/web3auth-wagmi-connector": "^5.0.1",
     "axios": "^1.6.2",
+    "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-bottom-drawer": "^0.1.1",
     "react-dom": "^18.2.0",

@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { MarketSearchBar } from '../components/MarketSearchBar';
-import { Tablist } from '../components/Tablist';
+import { SearchTab, Tablist } from '../components/Tablist';
 import { MarketList } from '../components/MarketList';
+import useSearchMarket from '../atoms/marketSearch';
+import axios from 'axios';
+import useSWR from 'swr';
+import { ListLoader } from '../components/ListLoader';
 const tabs = ['New', 'Top', 'Mine'];
 const mockData = [
   {
@@ -165,14 +169,89 @@ const mockData = [
   },
 ];
 const MarketListing: React.FC<any> = ({}) => {
-  const [activeTab, setActiveTab] = useState('Mine');
+  const [activeTab, setActiveTab] = useState('Top');
+  const searchManager = useSearchMarket();
   return (
     <div className="px-[20px] flex flex-col gap-[10px]">
       <MarketSearchBar />
-      <Tablist tablist={tabs} activeTab={activeTab} onTabSelect={console.log} />
-      <MarketList markets={mockData} />
+      <div className="flex">
+        <Tablist
+          tablist={tabs}
+          activeTab={searchManager.keyword ? '-1' : activeTab}
+          onTabSelect={setActiveTab}
+        />
+        {searchManager.keyword ? (
+          <SearchTab
+            keyword={searchManager.keyword}
+            onClose={searchManager.cancelSearch}
+          />
+        ) : null}
+      </div>
+      {searchManager.keyword ? (
+        <SearchList />
+      ) : activeTab == 'New' ? (
+        <New />
+      ) : activeTab == 'Top' ? (
+        <Top />
+      ) : (
+        <Mine />
+      )}
     </div>
   );
 };
 
 export { MarketListing };
+const marketsRefreshInterval = 3000;
+const New = () => {
+  const { data, isLoading } = useSWR<Market[]>('dd', {
+    fetcher: async () => {
+      const results = await axios.get(
+        'https://api-production-4b67.up.railway.app/market/list/new/400/0'
+      );
+      return results.data.data as Market[];
+    },
+    refreshInterval: marketsRefreshInterval,
+  });
+  if (isLoading) return <ListLoader />;
+  console.log(`MarketListing-data: `, data);
+
+  return <MarketList markets={data} />;
+};
+const Top = () => {
+  const { data, isLoading } = useSWR<Market[]>('ddd', {
+    fetcher: async () => {
+      const results = await axios.get(
+        'https://api-production-4b67.up.railway.app/market/list/top/400/0'
+      );
+      return results.data.data as Market[];
+    },
+    refreshInterval: marketsRefreshInterval,
+  });
+  if (isLoading) return <ListLoader />;
+
+  console.log(`MarketListing-data:dd `, data);
+
+  return <MarketList markets={data} />;
+};
+const Mine = () => {
+  const { data, isLoading } = useSWR<Market[]>('dddd', {
+    fetcher: async () => {
+      const results = await axios.get(
+        'https://api-production-4b67.up.railway.app/market/list/my/0x8c6b7Cc652343e6a4B6CaF7F474A27D6cF8F19Ef/400/0'
+      );
+      return results.data.data as Market[];
+    },
+    refreshInterval: marketsRefreshInterval,
+  });
+  if (isLoading) return <ListLoader />;
+  console.log(`MarketListing-data: `, data);
+
+  return <MarketList markets={data} />;
+};
+const SearchList = () => {
+  const searchManager = useSearchMarket();
+  if (searchManager.loading) return <ListLoader />;
+  console.log(`MarketListing-searchManager.markets: `, searchManager.markets);
+
+  return <MarketList markets={searchManager.markets} />;
+};

@@ -19,10 +19,6 @@ const MarketSearchBar: React.FC<any> = ({}) => {
           className=" text-f14 z-[100]"
           onClick={() => {
             searchManager.cancelSearch();
-            console.log(
-              `MarketSearchBar-searchManager.cancelSearch: `,
-              searchManager.cancelSearch
-            );
           }}
         >
           X

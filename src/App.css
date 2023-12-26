@@ -22,7 +22,10 @@ body {
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
-
+.container-height-fr{
+  margin-bottom: 50px;
+  overflow: auto;
+}
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
