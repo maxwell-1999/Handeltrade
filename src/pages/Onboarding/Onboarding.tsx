@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import { useAccount, useDisconnect, usePublicClient } from 'wagmi';
 import { MarketListing } from '../MarketListing';
 import { ShareManagementDrawer } from '../../components/ShareManagementDrawer';
 import useUserState from '../../atoms/userState';
 import useDrawerState from '../../atoms/drawerState';
+import { Layout } from '../../components/Layout';
 
 const Onboarding: React.FC<any> = ({}) => {
   const { disconnect } = useDisconnect();
@@ -22,11 +23,17 @@ const Onboarding: React.FC<any> = ({}) => {
       navigate('/login');
     }
   }, [address]);
+  const params = useParams();
+  console.log(`Onboarding-params: `, params);
+  if (params?.marketid) {
+    return <Outlet />;
+  }
   return (
-    <div className="w-full h-full bg-2b">
-      <MarketListing />
-      {drawerManager.drawerState?.screen ? <ShareManagementDrawer /> : null}
-    </div>
+    <Layout>
+      <div className="w-full h-full bg-2b">
+        <MarketListing />
+      </div>
+    </Layout>
   );
 };
 

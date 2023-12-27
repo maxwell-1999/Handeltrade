@@ -9,7 +9,13 @@ import {
 } from 'wagmi';
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
 import { arbitrumGoerli } from 'wagmi/chains';
-import { HashRouter, Route, Routes, useNavigate } from 'react-router-dom';
+import {
+  HashRouter,
+  Outlet,
+  Route,
+  Routes,
+  useNavigate,
+} from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import { publicProvider } from 'wagmi/providers/public';
 import { SendTransaction } from './sendTransaction';
@@ -26,6 +32,7 @@ import { Onboarding } from '../Onboarding/Onboarding';
 import useUserState from '../../atoms/userState';
 import { Layout } from '../../components/Layout';
 import { MarketCreation } from '../MarketCreation';
+import { MarketInfo } from '../MarketInfo';
 
 // Configure chains & providers with the Public provider.
 const { chains, publicClient, webSocketPublicClient } = configureChains(
@@ -126,19 +133,22 @@ function Web3AuthWithWagmi() {
   return (
     <WagmiConfig config={config}>
       <RecoilRoot>
-        <HashRouter>
-          <SWRConfig>
+        <SWRConfig>
+          <HashRouter>
             <Routes>
+              <Route path="app" element={<Onboarding />}>
+                <Route
+                  path=":marketid"
+                  element={
+                    <Layout>
+                      {' '}
+                      <MarketInfo />
+                    </Layout>
+                  }
+                ></Route>
+              </Route>
               <Route
-                path="/app"
-                element={
-                  <Layout>
-                    <Onboarding />{' '}
-                  </Layout>
-                }
-              />
-              <Route
-                path="/"
+                path="/login"
                 element={
                   <Layout>
                     <LoginPage />
@@ -154,8 +164,8 @@ function Web3AuthWithWagmi() {
                 }
               />
             </Routes>
-          </SWRConfig>
-        </HashRouter>
+          </HashRouter>
+        </SWRConfig>
       </RecoilRoot>
     </WagmiConfig>
   );
