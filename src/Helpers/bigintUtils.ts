@@ -13,10 +13,10 @@ const bigIntMinAndMax = (...args: bigint[]) => {
 };
 
 const toe18 = (a: number | string) => BigInt(a) * BigInt(10 ** 18);
-const view = (a: bigint, decimals = 3) => {
+const view = (a: bigint | strings, decimals = 3) => {
   if (a == undefined) return 0;
   if (a == null) return 0;
-  Number((a * BigInt(10 ** decimals)) / E18) / 10 ** decimals;
+  return Number((BigInt(a) * BigInt(10 ** decimals)) / E18) / 10 ** decimals;
 };
 
 export { bigIntMin, bigIntMax, bigIntMinAndMax, toe18, view };

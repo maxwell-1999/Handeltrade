@@ -66,7 +66,8 @@ const InitMarketDrawer: React.FC<{
         }}
         className="flex items-center justify-center gap-5 h-[40px] text-white"
       >
-        <MemoButtonLoader className="scale-110 " loading={loading} /> Buy
+        <MemoButtonLoader className="scale-110 " loading={loading} /> Create
+        Market
       </PrimaryBtn>
     </>
   );

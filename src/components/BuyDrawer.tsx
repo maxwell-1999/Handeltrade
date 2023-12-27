@@ -39,15 +39,16 @@ const BuyDrawer: React.FC<{
     console.log(`handel-deb:completionStatus: `, completionStatus);
     toast('Shares transfered to Account');
   };
+
   return (
     <>
       <MarketCard market={selectedMarket} preview />
       <div className="flex flex-col p-3 rounded-[5px] bg-1b gap-2">
-        <span className="text-2 text-f14 font-[500]">Available Amount</span>
+        <span className="text-2 text-f14 font-[500]">Market Supply</span>
         <span className="text-lg font-bold text-1">{view(data.supply)}</span>
       </div>
       <div className="flex flex-col rounded-[5px] bg-1b gap-2 py-3">
-        <span className="text-2 text-f14 font-[500]">Enter Amount</span>
+        <span className="text-2 text-f14 font-[500]">Buy Shares</span>
         <input
           value={value}
           type="number"

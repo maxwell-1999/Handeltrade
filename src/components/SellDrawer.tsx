@@ -47,7 +47,11 @@ const SellDrawer: React.FC<{
     }
   }, []);
   const [errors, setErrors] = useState({});
-  console.log(`SellDrawer-view(data.userBalance): `, view(data.userBalance));
+  console.log(
+    `SellDrawer-view(data.userBalance): `,
+    view(data.maxSell),
+    view(data.userBalance)
+  );
 
   return (
     <>
@@ -90,6 +94,7 @@ const SellDrawer: React.FC<{
             .finally(() => setLoading(false));
         }}
         className="flex items-center justify-center gap-5 h-[40px] text-white"
+        disable={data.maxSell ? false : `Insufficient funds for selling`}
       >
         <MemoButtonLoader className="scale-110 " loading={loading} /> Sell
       </PrimaryBtn>

@@ -129,46 +129,5 @@ function LoginPage() {
 }
 
 // Pass client to React Context Provider
-function Web3AuthWithWagmi() {
-  return (
-    <WagmiConfig config={config}>
-      <RecoilRoot>
-        <SWRConfig>
-          <HashRouter>
-            <Routes>
-              <Route path="app" element={<Onboarding />}>
-                <Route
-                  path=":marketid"
-                  element={
-                    <Layout>
-                      {' '}
-                      <MarketInfo />
-                    </Layout>
-                  }
-                ></Route>
-              </Route>
-              <Route
-                path="/login"
-                element={
-                  <Layout>
-                    <LoginPage />
-                  </Layout>
-                }
-              />
-              <Route
-                path="/add"
-                element={
-                  <Layout>
-                    <MarketCreation />
-                  </Layout>
-                }
-              />
-            </Routes>
-          </HashRouter>
-        </SWRConfig>
-      </RecoilRoot>
-    </WagmiConfig>
-  );
-}
 
-export { Web3AuthWithWagmi };
+export { LoginPage };

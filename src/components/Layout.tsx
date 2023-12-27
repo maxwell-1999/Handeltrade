@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import MemoAddMarkets from '../SVG/AddMarkets';
 import MemoMarketListIcon from '../SVG/MarketListIcon';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { ShareManagementDrawer } from './ShareManagementDrawer';
 import useDrawerState from '../atoms/drawerState';
 const Icons = [
   {
-    page: 'app',
+    page: 'markets',
     name: 'MarketList',
     icon: <MemoMarketListIcon />,
   },
@@ -17,6 +17,10 @@ const Icons = [
     icon: <MemoAddMarkets />,
   },
 ];
+const isNestedRouteActive = (page: string) => {
+  if (window.location.href.includes(page)) return true;
+  return false;
+};
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [activeTab, setActiveTab] = useState(Icons[0].name);
   const navigate = useNavigate();
@@ -29,15 +33,23 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <div className="h-[50px] w-full flex justify-center gap-6 items-center  fixed bottom-0 left-0 text-2">
         {Icons.map((icon) => {
           return (
-            <button
-              key={icon.name}
-              onClick={(e) => {
-                navigate('/' + icon.page);
-              }}
-              className={activeTab == icon.name ? 'text-brand' : ''}
-            >
-              {icon.icon}
-            </button>
+            <NavLink to={'/' + icon.page} end>
+              {({ isActive }) => (
+                <button
+                  key={icon.name}
+                  onClick={(e) => {
+                    navigate('/' + icon.page);
+                  }}
+                  className={
+                    isActive || isNestedRouteActive(icon.page)
+                      ? 'text-brand'
+                      : ''
+                  }
+                >
+                  {icon.icon}
+                </button>
+              )}
+            </NavLink>
           );
         })}
       </div>

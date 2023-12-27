@@ -6,6 +6,7 @@ import useDrawerState from '../atoms/drawerState';
 import MemoMoreIcon from '../SVG/MoreIcon';
 import { useNavigate } from 'react-router-dom';
 import { SecondaryBtn } from './Buttons';
+import { view } from '../Helpers/bigintUtils';
 
 const toJSEpoch = (e: string | number) => +e * 1000;
 
@@ -13,6 +14,7 @@ const MarketCard: React.FC<{ market: Market; preview?: boolean }> = ({
   market,
   preview,
 }) => {
+  console.log(`MarketCard-market: `, market);
   const nonPrice = !market?.buyPrice;
   const network = useNetwork();
   const navigate = useNavigate();
@@ -20,7 +22,7 @@ const MarketCard: React.FC<{ market: Market; preview?: boolean }> = ({
     <div
       role={preview ? 'cell' : 'button'}
       className="p-[10px] bg-white rounded-[10px] justify-between flex gap-[15px] w-full"
-      onClick={() => !preview && navigate('/app/' + market.market_id)}
+      onClick={() => !preview && navigate('/markets/' + market.market_id)}
     >
       <div className="flex flex-col gap-[3px] items-center ">
         <img src={market.img_url} className="w-[40px] h-[40px] rounded-[5px]" />
@@ -34,7 +36,9 @@ const MarketCard: React.FC<{ market: Market; preview?: boolean }> = ({
         >
           <span className="font-semibold text-f14">{market.social_handle}</span>
           {nonPrice ? null : (
-            <span className="font-[500] text-f10 text-2">45 Shares</span>
+            <span className="font-[500] text-f10 text-2">
+              {view(market.shares)} Shares
+            </span>
           )}{' '}
         </div>
         <div

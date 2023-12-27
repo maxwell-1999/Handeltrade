@@ -18,6 +18,8 @@ import { bigIntMax, bigIntMin } from '../Helpers/bigintUtils';
 import { BuyDrawer } from './BuyDrawer';
 import { SellDrawer } from './SellDrawer';
 import { InitMarketDrawer } from './InitMarketDrawer';
+import { ListLoader } from './ListLoader';
+import { DrawerLoader } from './DrawerLoader';
 let oldData = undefined;
 const ShareManagementDrawer: React.FC<any> = ({}) => {
   const [loading, setLoading] = useState(false);
@@ -72,7 +74,6 @@ const ShareManagementDrawer: React.FC<any> = ({}) => {
       },
     ],
     select: (data) => {
-      console.log(`ShareManagementDrawer-data: `, data);
       return {
         supply: data[0].result,
         userBalance: data[1].result,
@@ -81,7 +82,7 @@ const ShareManagementDrawer: React.FC<any> = ({}) => {
         nextSellPrice: data[3].result,
         maxSell:
           typeof data[0].result == 'bigint' && typeof data[1].result == 'bigint'
-            ? bigIntMax(bigIntMin(data[1].result, data[0].result - 1n), 0n)
+            ? bigIntMax(bigIntMin(data[1].result, data[0].result - E18), 0n)
             : undefined,
       };
     },
@@ -90,7 +91,6 @@ const ShareManagementDrawer: React.FC<any> = ({}) => {
   if (!drawerManager.drawerState) return null;
   const data = useMemo(() => {
     if (mergedData) oldData = mergedData;
-    console.log(`ShareManagementDrawer-oldData: `, oldData);
     return oldData;
   }, [mergedData]);
   return (
@@ -102,7 +102,9 @@ const ShareManagementDrawer: React.FC<any> = ({}) => {
       className={'drawer'}
     >
       <div className="flex flex-col w-full gap-4 pb-4">
-        {drawerManager.drawerState.screen == 'handel-buy' ? (
+        {data?.supply == undefined ? (
+          <DrawerLoader />
+        ) : drawerManager.drawerState.screen == 'handel-buy' ? (
           data.supply > 0 ? (
             <BuyDrawer data={data} {...{ selectedMarket, value, setValue }} />
           ) : (
