@@ -22,8 +22,8 @@ const MarketCreation: React.FC<any> = ({}) => {
       }
     );
     setLoading(false);
-    console.log(`MarketCreation-result.data.data: `, [result.data]);
-    setMarkets([result.data]);
+    console.log(`MarketCreation-result.data.data: `, result.data.data);
+    setMarkets(result.data.data);
   };
   console.log(`MarketCreation-markets: `, markets);
   return (

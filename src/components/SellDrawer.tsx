@@ -6,7 +6,7 @@ import { appConfig } from '../config';
 import HandleTradeAbi from '../ABI/HandelTrade.json';
 import toast from 'react-hot-toast';
 import MemoButtonLoader from './ButtonLoader';
-import { toe18, view } from '../Helpers/bigintUtils';
+import { renderShares, toe18, view } from '../Helpers/bigintUtils';
 import { E18 } from '../Helpers/constants';
 
 const SellDrawer: React.FC<{
@@ -59,7 +59,7 @@ const SellDrawer: React.FC<{
       <div className="flex flex-col p-3 rounded-[5px] bg-1b gap-2">
         <span className="text-2 text-f14 font-[500]">Balance</span>
         <span className="text-lg font-bold text-1">
-          {view(data.userBalance)} Shares
+          {renderShares(data.userBalance)}
         </span>
       </div>
       <div className="flex flex-col rounded-[5px] bg-1b gap-2 py-3">

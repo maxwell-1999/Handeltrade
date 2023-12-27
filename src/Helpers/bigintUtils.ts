@@ -13,10 +13,17 @@ const bigIntMinAndMax = (...args: bigint[]) => {
 };
 
 const toe18 = (a: number | string) => BigInt(a) * BigInt(10 ** 18);
-const view = (a: bigint | strings, decimals = 3) => {
+const view = (a: bigint | string, decimals = 3) => {
   if (a == undefined) return 0;
   if (a == null) return 0;
   return Number((BigInt(a) * BigInt(10 ** decimals)) / E18) / 10 ** decimals;
 };
 
-export { bigIntMin, bigIntMax, bigIntMinAndMax, toe18, view };
+const renderShares = (a: bigint | string) => {
+  if (a == undefined) return 'Fetching...';
+  const shares = view(a, 0);
+  if (shares == 0) return 'No Shares';
+  return shares > 1 ? shares + ' Shares' : shares + ' Share';
+};
+
+export { bigIntMin, bigIntMax, bigIntMinAndMax, toe18, view, renderShares };

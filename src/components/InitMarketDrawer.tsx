@@ -43,18 +43,12 @@ const InitMarketDrawer: React.FC<{
     <>
       <MarketCard market={selectedMarket} preview />
       <div className="flex flex-col p-3 rounded-[5px] bg-1b gap-2">
-        <span className="text-2 text-f14 font-[500]">Available Amount</span>
-        <span className="text-lg font-bold text-1">{view(data.supply)}</span>
+        <span className="text-2 text-f14 font-[500]">
+          This market isn't created yet
+        </span>
+        <span className="text-lg font-bold text-1">Buy 1st Share</span>
       </div>
-      <div className="flex flex-col rounded-[5px] bg-1b gap-2 py-3">
-        <span className="text-2 text-f14 font-[500]">Enter Amount</span>
-        <input
-          value={value}
-          type="number"
-          onChange={(e) => setValue(e.target.value)}
-          className="px-3 text-lg font-bold text-1"
-        />
-      </div>
+
       <PrimaryBtn
         onClick={() => {
           setLoading(true);
