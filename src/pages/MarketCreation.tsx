@@ -5,6 +5,7 @@ import { ListLoader } from '../components/ListLoader';
 import { MarketList } from '../components/MarketList';
 import MemoSearchIcon from '../SVG/SearchIcon';
 import { useProtection } from '../Helpers/useProtection';
+import MemoYoutubeLogo from '../SVG/YoutubeLogo';
 export const Platform = {
   Youtube: 'youtube',
 };
@@ -44,8 +45,8 @@ const MarketCreation: React.FC<any> = ({}) => {
           handle.
         </div>
         <div className="flex items-center w-full bg-3b  h-[50px] rounded-[10px] px-6">
-          <div className="w-[24px] h-[24px]">
-            <MemoTwitterLogo />
+          <div className="w-[29px] h-[24px]">
+            <MemoYoutubeLogo />
           </div>
           <div className="ml-3 mr-2 text-lg font-bold">@</div>
           <form
