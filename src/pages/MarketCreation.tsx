@@ -12,7 +12,7 @@ export const Platform = {
 const MarketCreation: React.FC<any> = ({}) => {
   const [value, setValue] = useState('');
   const [protect] = useProtection();
-  const [markets, setMarkets] = useState<Market[]>([]);
+  const [markets, setMarkets] = useState<Market[] | 'err'>([]);
   const [loading, setLoading] = useState(false);
   console.log(`MarketCreation-loading: `, loading);
   const fetchMarketStatus = async () => {
@@ -29,7 +29,7 @@ const MarketCreation: React.FC<any> = ({}) => {
         console.log(`MarketCreation-result.data.data: `, result.data.data);
         setMarkets(result.data.data);
       } catch (e) {
-        setMarkets([]);
+        setMarkets('err');
       }
       setLoading(false);
     });
@@ -44,7 +44,7 @@ const MarketCreation: React.FC<any> = ({}) => {
           without the complexity. Let anyone send you tokens via your social
           handle.
         </div>
-        <div className="flex items-center w-full bg-3b  h-[50px] rounded-[10px] px-6">
+        <div className="flex items-center w-full bg-3b  h-[50px] rounded-[10px] px-6 pr-4">
           <div className="w-[29px] h-[24px]">
             <MemoYoutubeLogo />
           </div>
@@ -66,7 +66,7 @@ const MarketCreation: React.FC<any> = ({}) => {
           </form>
           {value ? (
             <div
-              className=" text-f14 z-[100]"
+              className=" text-f14 z-[100] bg-brand w-fit h-fit px-3 py-3 rounded-[12px]"
               onClick={() => {
                 fetchMarketStatus();
               }}
@@ -76,7 +76,13 @@ const MarketCreation: React.FC<any> = ({}) => {
           ) : null}
         </div>
         <div className="flex flex-col w-full">
-          {loading ? <ListLoader /> : <MarketList markets={markets} />}
+          {loading ? (
+            <ListLoader />
+          ) : markets == 'err' ? (
+            'No markets Found'
+          ) : markets.length ? (
+            <MarketList markets={markets} />
+          ) : null}
         </div>
       </div>
     </div>
