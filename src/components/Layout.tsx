@@ -5,6 +5,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { ShareManagementDrawer } from './ShareManagementDrawer';
 import useDrawerState from '../atoms/drawerState';
 import { MobileDrawer } from './MobileDrawer';
+import MemoProfileIcon from '../SVG/ProfileIcon';
 const Icons = [
   {
     page: 'markets',
@@ -13,9 +14,13 @@ const Icons = [
   },
   {
     page: 'add',
-
     name: 'AddMarkets',
     icon: <MemoAddMarkets />,
+  },
+  {
+    page: 'profile',
+    name: 'Pfofile',
+    icon: <MemoProfileIcon />,
   },
 ];
 const isNestedRouteActive = (page: string) => {
