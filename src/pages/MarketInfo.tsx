@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { Tablist } from '../components/Tablist';
 import { PrimaryBtn, SecondaryBtn } from '../components/Buttons';
 import { ListLoader } from '../components/ListLoader';
+import { UserCard } from './UserProfilePage/UserCard';
 const tabs = ['Holders', 'Watchlisted By'];
 const MarketInfo: React.FC<any> = ({}) => {
   const params = useParams();
@@ -59,7 +60,27 @@ const MarketInfo: React.FC<any> = ({}) => {
 export { MarketInfo };
 
 const HoldersTab = () => {
-  return <div>No Holders yet!</div>;
+  const user = {
+    id: 6,
+    first_name: 'Gaurav',
+    last_name: 'Vishwakarma',
+    email: 'gv211432@gmail.com',
+    img_url:
+      'https://lh3.googleusercontent.com/a/ACg8ocKm_yTahe4QWyulXfktA6Nfp-RBctF4Ws_ehQeYB0B1Beg=s96-c',
+    gender: 4,
+    country: 'India',
+    timezone: 'Kolkata',
+    public_address: '0x8c6b7cc652343e6a4b6caf7f474a27d6cf8f19ef',
+    third_party_verifier: 'torus',
+    is_active: true,
+    created_at: '1703160856',
+    updated_at: '1703160856',
+  };
+  return (
+    <div>
+      <UserCard user={user} />
+    </div>
+  );
 };
 const WatchListedByTab = () => {
   return <div>No one watchlisted this market yet!</div>;
