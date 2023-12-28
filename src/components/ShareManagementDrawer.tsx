@@ -1,15 +1,5 @@
-import Drawer from 'react-bottom-drawer';
-import { MarketCard } from './MarketCard';
-import { PrimaryBtn } from './Buttons';
 import { useMemo, useState } from 'react';
-import {
-  useAccount,
-  useContractRead,
-  useContractReads,
-  useContractWrite,
-  useNetwork,
-  usePublicClient,
-} from 'wagmi';
+import { useAccount, useContractReads, useNetwork } from 'wagmi';
 import HandleTradeAbi from '../ABI/HandelTrade.json';
 import { E18 } from '../Helpers/constants';
 import useDrawerState from '../atoms/drawerState';
@@ -18,11 +8,9 @@ import { bigIntMax, bigIntMin } from '../Helpers/bigintUtils';
 import { BuyDrawer } from './BuyDrawer';
 import { SellDrawer } from './SellDrawer';
 import { InitMarketDrawer } from './InitMarketDrawer';
-import { ListLoader } from './ListLoader';
 import { DrawerLoader } from './DrawerLoader';
 let oldData = undefined;
 const ShareManagementDrawer: React.FC<any> = ({}) => {
-  const [loading, setLoading] = useState(false);
   const { address } = useAccount();
   const network = useNetwork();
   const [value, setValue] = useState(2);
@@ -94,30 +82,22 @@ const ShareManagementDrawer: React.FC<any> = ({}) => {
     return oldData;
   }, [mergedData]);
   return (
-    <Drawer
-      duration={250}
-      hideScrollbars={drawerManager.drawerState?.screen ? true : false}
-      onClose={drawerManager.closeDrawer}
-      isVisible={drawerManager.drawerState?.screen ? true : false}
-      className={'drawer'}
-    >
-      <div className="flex flex-col w-full gap-4 pb-4">
-        {data?.supply == undefined ? (
-          <DrawerLoader />
-        ) : drawerManager.drawerState.screen == 'handel-buy' ? (
-          data.supply > 0 ? (
-            <BuyDrawer data={data} {...{ selectedMarket, value, setValue }} />
-          ) : (
-            <InitMarketDrawer
-              data={data}
-              {...{ selectedMarket, value, setValue }}
-            />
-          )
+    <div className="flex flex-col w-full gap-4 pb-4">
+      {data?.supply == undefined ? (
+        <DrawerLoader />
+      ) : drawerManager.drawerState.screen == 'handel-buy' ? (
+        data.supply > 0 ? (
+          <BuyDrawer data={data} {...{ selectedMarket, value, setValue }} />
         ) : (
-          <SellDrawer data={data} {...{ selectedMarket, value, setValue }} />
-        )}
-      </div>
-    </Drawer>
+          <InitMarketDrawer
+            data={data}
+            {...{ selectedMarket, value, setValue }}
+          />
+        )
+      ) : (
+        <SellDrawer data={data} {...{ selectedMarket, value, setValue }} />
+      )}
+    </div>
   );
 };
 

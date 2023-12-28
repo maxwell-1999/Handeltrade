@@ -3,6 +3,7 @@ import { atom, useRecoilValue, useSetRecoilState } from 'recoil';
 type DrawerStates =
   | null
   | { screen: 'handel-buy'; market: Market }
+  | { screen: 'login'; cb: () => void }
   | { screen: 'handel-sell'; market: Market };
 
 const DrawerStateAtom = atom<DrawerStates>({
@@ -24,11 +25,15 @@ const useDrawerState = () => {
   const closeDrawer = () => {
     setDrawerState(null);
   };
+  const openLoginDrawer = (cb: () => void) => {
+    setDrawerState({ screen: 'login', cb });
+  };
   return {
     drawerState,
     closeDrawer,
     openBuyDrwer,
     openSellDrawer,
+    openLoginDrawer,
   };
 };
 

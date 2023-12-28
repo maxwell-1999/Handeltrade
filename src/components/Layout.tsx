@@ -4,6 +4,7 @@ import MemoMarketListIcon from '../SVG/MarketListIcon';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { ShareManagementDrawer } from './ShareManagementDrawer';
 import useDrawerState from '../atoms/drawerState';
+import { MobileDrawer } from './MobileDrawer';
 const Icons = [
   {
     page: 'markets',
@@ -28,7 +29,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <div className="flex flex-col  w-[100vw] h-[100vh]">
       <div className="flex-1 w-full container-height-fr">{children}</div>
-      {drawerManager.drawerState?.screen ? <ShareManagementDrawer /> : null}
+      {drawerManager.drawerState?.screen ? <MobileDrawer /> : null}
 
       <div className="h-[50px] w-full flex justify-center gap-6 items-center  fixed bottom-0 left-0 text-2">
         {Icons.map((icon) => {

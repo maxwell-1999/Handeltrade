@@ -27,6 +27,7 @@ import { Onboarding } from './pages/Onboarding/Onboarding';
 import Web3AuthConnectorInstance from './pages/Web3auth/Web3AuthConnectorInstance';
 import { LoginPage } from './pages/Web3auth/Web3AuthWithWagmi';
 import UserProfilePage from './pages/UserProfilePage';
+import { TestComponent } from './pages/TestComponent';
 // Configure chains & providers with the Public provider.
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [arbitrumGoerli],
@@ -74,6 +75,14 @@ function Web3AuthWithWagmi() {
                 element={
                   <Layout>
                     <MarketCreation />
+                  </Layout>
+                }
+              />
+              <Route
+                path="/test"
+                element={
+                  <Layout>
+                    <TestComponent />
                   </Layout>
                 }
               />
