@@ -33,6 +33,7 @@ import useUserState from '../../atoms/userState';
 import { Layout } from '../../components/Layout';
 import { MarketCreation } from '../MarketCreation';
 import { MarketInfo } from '../MarketInfo';
+import useDrawerState from '../../atoms/drawerState';
 
 // Configure chains & providers with the Public provider.
 const { chains, publicClient, webSocketPublicClient } = configureChains(
@@ -54,6 +55,7 @@ function LoginPage() {
   const [loginLoading, setLoginLoading] = useState<null | string>('');
   const navigate = useNavigate();
   const [userState, setUserState] = useUserState();
+  const drawerManagement = useDrawerState();
   console.log(`Web3AuthWithWagmi-userState: `, userState);
   useEffect(() => {
     if (loginLoading == 'registering' && isConnected && connector && address) {
@@ -99,9 +101,7 @@ function LoginPage() {
   }, [address]);
   useEffect(() => {
     if (userState) {
-      console.log(`flow-deb-user-changed: `, userState);
-      localStorage.setItem('user-v1', JSON.stringify(userState));
-      navigate('/app');
+      drawerManagement.closeLoginDrawer();
     }
   }, [userState]);
   if (!connectors?.length) {

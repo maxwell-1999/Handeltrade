@@ -18,11 +18,6 @@ const Onboarding: React.FC<any> = ({}) => {
   useEffect(() => {
     console.log(`Onboarding-userState: `, userState);
   }, [userState]);
-  useEffect(() => {
-    if (!address) {
-      navigate('/login');
-    }
-  }, [address]);
   const params = useParams();
   console.log(`Onboarding-params: `, params);
   if (params?.marketid) {

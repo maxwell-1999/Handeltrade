@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { atom, useRecoilValue, useSetRecoilState } from 'recoil';
 
 type DrawerStates =
@@ -28,12 +29,19 @@ const useDrawerState = () => {
   const openLoginDrawer = (cb: () => void) => {
     setDrawerState({ screen: 'login', cb });
   };
+  const closeLoginDrawer = () => {
+    if (drawerState?.screen == 'login') {
+      setDrawerState(null);
+      drawerState.cb();
+    }
+  };
   return {
     drawerState,
     closeDrawer,
     openBuyDrwer,
     openSellDrawer,
     openLoginDrawer,
+    closeLoginDrawer,
   };
 };
 

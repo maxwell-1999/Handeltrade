@@ -9,9 +9,11 @@ import { PrimaryBtn, SecondaryBtn } from '../components/Buttons';
 import { ListLoader } from '../components/ListLoader';
 import { UserCard, UserCardSm } from './UserProfilePage/UserCardSm';
 import { marketsRefreshInterval } from './MarketListing';
+import { useProtection } from '../Helpers/useProtection';
 const tabs = ['Holders', 'Watchlisted By'];
 const MarketInfo: React.FC<any> = ({}) => {
   const params = useParams();
+  const [protect] = useProtection();
   const [activeTab, seActiveTab] = useState(tabs[0]);
   const { data, error, isLoading } = useSWR(params.marketid, {
     fetcher: async (marketid) => {
@@ -31,13 +33,13 @@ const MarketInfo: React.FC<any> = ({}) => {
         {data.on_chain ? (
           <div className="flex gap-3 mb-4">
             <PrimaryBtn
-              onClick={() => drawerManager.openBuyDrwer(data)}
+              onClick={() => protect(() => drawerManager.openBuyDrwer(data))}
               className="p-1 text-[white] text-[12px]  w-[70px] h-fit min-w-fit font-semibold rounded-[4px] px-2"
             >
               Buy
             </PrimaryBtn>
             <SecondaryBtn
-              onClick={() => drawerManager.openSellDrawer(data)}
+              onClick={() => protect(() => drawerManager.openSellDrawer(data))}
               className="p-1 text-[12px] w-[70px] font-semibold rounded-[4px] px-2 "
             >
               Sell
@@ -45,7 +47,7 @@ const MarketInfo: React.FC<any> = ({}) => {
           </div>
         ) : (
           <PrimaryBtn
-            onClick={() => drawerManager.openBuyDrwer(data)}
+            onClick={() => protect(() => drawerManager.openBuyDrwer(data))}
             className="p-1 text-[white] text-[12px]  w-[70px] h-fit min-w-fit font-semibold rounded-[4px] px-2"
           >
             Buy 1st Share

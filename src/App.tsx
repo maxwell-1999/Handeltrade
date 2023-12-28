@@ -63,14 +63,6 @@ function Web3AuthWithWagmi() {
               <Route path="/" element={<Onboarding />} />
 
               <Route
-                path="/login"
-                element={
-                  <Layout>
-                    <LoginPage />
-                  </Layout>
-                }
-              />
-              <Route
                 path="/add"
                 element={
                   <Layout>
