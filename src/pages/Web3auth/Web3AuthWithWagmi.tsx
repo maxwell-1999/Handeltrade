@@ -63,11 +63,7 @@ function LoginPage() {
           console.log('create-deb flow-deb-settinguser');
           const userInfo = await registerUser(connector, address);
           console.log(`create-deb  res: `, userInfo);
-          setUserState(userInfo?.data.data);
-
-          // send get user-address api response.
-          // setLoginLoading()
-          console.log('create-deb  flow-deb-settinguser', userInfo?.data.data);
+          setUserState(userInfo?.data);
         } catch (e) {
           console.log(`Web3AuthWithWagmi-e: `, e);
         }
