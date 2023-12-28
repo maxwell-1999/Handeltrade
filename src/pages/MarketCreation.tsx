@@ -6,6 +6,7 @@ import { MarketList } from '../components/MarketList';
 import MemoSearchIcon from '../SVG/SearchIcon';
 import { useProtection } from '../Helpers/useProtection';
 import MemoYoutubeLogo from '../SVG/YoutubeLogo';
+import MemoSearchIconCompressed from '../SVG/SearchIconCompressed';
 export const Platform = {
   Youtube: 'youtube',
 };
@@ -71,7 +72,7 @@ const MarketCreation: React.FC<any> = ({}) => {
                 fetchMarketStatus();
               }}
             >
-              <MemoSearchIcon />
+              <MemoSearchIconCompressed />
             </div>
           ) : null}
         </div>
