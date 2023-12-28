@@ -7,7 +7,7 @@ const getUserData = async (address: `0x${string}`) => {
     const userInfo = await axios.get(
       `https://api-production-4b67.up.railway.app/user/address/${address}`
     );
-    return userInfo;
+    return userInfo.data;
   } catch (e) {
     return null;
   }
@@ -26,6 +26,9 @@ const registerUser = async (connector: any, address: `0x${string}`) => {
     third_party_verifier: userInfo.verifier,
     third_party_id: userInfo.verifierId,
     public_address: address,
+    country: '',
+    timezone: '',
+    gender: 0,
   };
 
   const res = await axios.put(
@@ -33,7 +36,7 @@ const registerUser = async (connector: any, address: `0x${string}`) => {
     registerPayload,
     { headers: { Authorization: `Bearer ${userInfo.idToken}` } }
   );
-  if (res.error) {
+  if (res.data.error) {
     throw new Error('User info not found');
   }
   //   console.log(`res: `, res);

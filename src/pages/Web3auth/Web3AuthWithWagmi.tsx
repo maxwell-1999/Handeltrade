@@ -86,7 +86,8 @@ function LoginPage() {
 
         const userInfo = await getUserData(address);
         console.log(`create-deb Web3AuthWithWagmi-userInfo: `, userInfo);
-        if (userInfo?.error || !userInfo) {
+
+        if (typeof userInfo?.message || !userInfo) {
           console.log(`create-deb  flow-deb-getting-no-user-found: `, userInfo);
           setLoginLoading('registering');
         } else {
