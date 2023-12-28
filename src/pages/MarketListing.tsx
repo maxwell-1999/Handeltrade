@@ -201,7 +201,7 @@ const MarketListing: React.FC<any> = ({}) => {
 };
 
 export { MarketListing };
-const marketsRefreshInterval = 3000;
+export const marketsRefreshInterval = 3000;
 const New = () => {
   const { data, isLoading } = useSWR<Market[]>('dd', {
     fetcher: async () => {

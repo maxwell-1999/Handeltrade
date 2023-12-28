@@ -8,6 +8,7 @@ import { Tablist } from '../components/Tablist';
 import { PrimaryBtn, SecondaryBtn } from '../components/Buttons';
 import { ListLoader } from '../components/ListLoader';
 import { UserCard, UserCardSm } from './UserProfilePage/UserCardSm';
+import { marketsRefreshInterval } from './MarketListing';
 const tabs = ['Holders', 'Watchlisted By'];
 const MarketInfo: React.FC<any> = ({}) => {
   const params = useParams();
@@ -52,14 +53,18 @@ const MarketInfo: React.FC<any> = ({}) => {
         )}
       </div>
       <Tablist tablist={tabs} onTabSelect={seActiveTab} activeTab={activeTab} />
-      {activeTab == 'Holders' ? <HoldersTab /> : <WatchListedByTab />}
+      {activeTab == 'Holders' ? (
+        <HoldersTab market={data} />
+      ) : (
+        <WatchListedByTab />
+      )}
     </div>
   );
 };
 
 export { MarketInfo };
 
-const HoldersTab = () => {
+const HoldersTab: React.FC<{ market: Market }> = ({ market }) => {
   const user = {
     id: 6,
     first_name: 'Gaurav',
@@ -76,9 +81,24 @@ const HoldersTab = () => {
     created_at: '1703160856',
     updated_at: '1703160856',
   };
+  const { data, isLoading } = useSWR<Market[]>('ddd', {
+    fetcher: async () => {
+      const results = await axios.get(
+        `https://api-production-4b67.up.railway.app/market/market_holders_by_market_id/${market.market_id}/0/400`
+      );
+      return results.data.data as Market[];
+    },
+    refreshInterval: marketsRefreshInterval,
+  });
+  if (isLoading) return <ListLoader />;
+  console.log(`MarketInfo-data: `, data);
+
+  console.log(`MarketListing-data:dd `, data);
+
   return (
     <div>
-      <UserCardSm user={user} />
+      {/* <UserCardSm user={user} /> */}
+      No Holders Yet!
     </div>
   );
 };
