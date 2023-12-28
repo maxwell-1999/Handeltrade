@@ -45,6 +45,7 @@ const MarketCreation: React.FC<any> = ({}) => {
           </div>
           <div className="ml-3 mr-2 text-lg font-bold">@</div>
           <form
+            className="w-full"
             onSubmit={(e) => {
               e.preventDefault();
               fetchMarketStatus();
