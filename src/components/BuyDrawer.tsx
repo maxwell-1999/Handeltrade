@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { PrimaryBtn } from './Buttons';
 import { MarketCard } from './MarketCard';
 import { useContractWrite, usePublicClient } from 'wagmi';
@@ -7,6 +7,8 @@ import HandleTradeAbi from '../ABI/HandelTrade.json';
 import toast from 'react-hot-toast';
 import MemoButtonLoader from './ButtonLoader';
 import { renderShares, toe18, view } from '../Helpers/bigintUtils';
+import { ContractFunctionExecutionError } from 'viem';
+import { formatError } from '../Helpers/web3utils';
 
 const BuyDrawer: React.FC<{
   data: UserMarketHoldings;
@@ -37,21 +39,28 @@ const BuyDrawer: React.FC<{
     });
 
     console.log(`handel-deb:completionStatus: `, completionStatus);
-    toast('Shares transfered to Account');
+    toast('Shares transferred to your Account');
   };
-
+  const ref = useRef();
+  useEffect(() => {
+    ref.current.focus();
+    console.log(`BuyDrawer-ref.current: `, ref.current);
+  }, []);
   return (
     <>
-      <MarketCard market={selectedMarket} preview />
+      <MarketCard market={selectedMarket} preview className="bg-transparent " />
       <div className="flex flex-col p-3 rounded-[5px] bg-1b gap-2">
         <span className="text-2 text-f14 font-[500]">Market Supply</span>
         <span className="text-lg font-bold text-1">
           {renderShares(data.supply)}
         </span>
       </div>
-      <div className="flex flex-col rounded-[5px] bg-1b gap-2 py-3">
-        <span className="text-2 text-f14 font-[500]">Buy Shares</span>
+      <div className="flex flex-col rounded-[5px] bg-1b gap-2 p-3">
+        <span className="text-2 text-f14 font-[500]">
+          Enter quantity of shares to buy
+        </span>
         <input
+          ref={ref}
           value={value}
           type="number"
           onChange={(e) => setValue(e.target.value)}
@@ -63,7 +72,8 @@ const BuyDrawer: React.FC<{
           setLoading(true);
           handelTrade()
             .catch((e) => {
-              toast(e.message, { icon: '❌' });
+              const msg = formatError(e);
+              toast(msg, { icon: '❌' });
             })
             .finally(() => setLoading(false));
         }}

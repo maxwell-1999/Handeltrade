@@ -5,6 +5,9 @@ body {
   margin: 0;
   background-color: var(--bg-17);
 }
+*{
+  font-family: 'Poppins', sans-serif !important;
+}
 #root{
   width: 100%;
   height: 100vh;
@@ -46,6 +49,23 @@ body {
 
 
 .drawer__handle-wrapper {
+  background-color: #f6f7fc;
+
+}
+.drawer {
+
+}
+
+.drawer__backdrop {
+
+}
+
+
+.drawer__handle {
+
+}
+
+.drawer__content {
   background-color: #f6f7fc;
 
 }

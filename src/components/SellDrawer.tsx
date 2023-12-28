@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 import MemoButtonLoader from './ButtonLoader';
 import { renderShares, toe18, view } from '../Helpers/bigintUtils';
 import { E18 } from '../Helpers/constants';
+import { formatError } from '../Helpers/web3utils';
 
 const SellDrawer: React.FC<{
   data: UserMarketHoldings;
@@ -20,7 +21,7 @@ const SellDrawer: React.FC<{
   const { writeAsync } = useContractWrite({
     address: appConfig.handelTradeAddress,
     abi: HandleTradeAbi,
-    functionName: 'buyShares',
+    functionName: 'sellShares',
   });
   const handelTrade = async () => {
     if (!data.nextBuyPrice) {
@@ -28,7 +29,7 @@ const SellDrawer: React.FC<{
     }
     const argPack = {
       args: [selectedMarket.market_id, toe18(value)],
-      value: data.nextBuyPrice,
+      // value: data.nextSellPrice,
     };
     console.log(`handel-deb:argPack: `, argPack);
 
@@ -38,7 +39,7 @@ const SellDrawer: React.FC<{
     });
 
     console.log(`handel-deb:completionStatus: `, completionStatus);
-    toast('Shares transfered to Account');
+    toast('Funds transfered to Account');
   };
   useEffect(() => {
     console.log('cdm callded', data.maxSell);
@@ -47,23 +48,22 @@ const SellDrawer: React.FC<{
     }
   }, []);
   const [errors, setErrors] = useState({});
-  console.log(
-    `SellDrawer-view(data.userBalance): `,
-    view(data.maxSell),
-    view(data.userBalance)
-  );
 
   return (
     <>
-      <MarketCard market={selectedMarket} preview />
+      <MarketCard market={selectedMarket} preview className="bg-transperent" />
       <div className="flex flex-col p-3 rounded-[5px] bg-1b gap-2">
         <span className="text-2 text-f14 font-[500]">Balance</span>
         <span className="text-lg font-bold text-1">
           {renderShares(data.userBalance)}
         </span>
       </div>
-      <div className="flex flex-col rounded-[5px] bg-1b gap-2 py-3">
-        <span className="text-2 text-f14 font-[500]">Sell </span>
+      <div className="flex flex-col rounded-[5px] bg-1b gap-2 p-3">
+        <span className="text-2 text-f14 font-[500]">
+          {data.maxSell
+            ? 'Enter quantity of shares to Sell'
+            : 'No shares to sell'}{' '}
+        </span>
         <input
           value={value}
           max={(data.maxSell / E18).toString()}
@@ -80,7 +80,7 @@ const SellDrawer: React.FC<{
           }}
           className="px-3 text-lg font-bold text-1"
         />
-        <div>
+        <div className="text-red-500 ">
           {Object.entries(errors).filter(([k]) => k == 'sell-input')?.[0]?.[1]}
         </div>
       </div>
@@ -89,7 +89,8 @@ const SellDrawer: React.FC<{
           setLoading(true);
           handelTrade()
             .catch((e) => {
-              toast(e.message, { icon: '❌' });
+              const msg = formatError(e);
+              toast(msg, { icon: '❌' });
             })
             .finally(() => setLoading(false));
         }}

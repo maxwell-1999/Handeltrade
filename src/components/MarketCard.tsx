@@ -6,14 +6,17 @@ import useDrawerState from '../atoms/drawerState';
 import MemoMoreIcon from '../SVG/MoreIcon';
 import { useNavigate } from 'react-router-dom';
 import { SecondaryBtn } from './Buttons';
-import { view } from '../Helpers/bigintUtils';
+import { view, viewDec } from '../Helpers/bigintUtils';
+import { twMerge } from 'tailwind-merge';
 
 const toJSEpoch = (e: string | number) => +e * 1000;
 
-const MarketCard: React.FC<{ market: Market; preview?: boolean }> = ({
-  market,
-  preview,
-}) => {
+const MarketCard: React.FC<{
+  market: Market;
+  preview?: boolean;
+  className?: string;
+  idx?: number;
+}> = ({ market, preview, idx, className }) => {
   console.log(`MarketCard-market: `, market);
   const nonPrice = !market?.buyPrice;
   const network = useNetwork();
@@ -21,12 +24,17 @@ const MarketCard: React.FC<{ market: Market; preview?: boolean }> = ({
   return (
     <div
       role={preview ? 'cell' : 'button'}
-      className="p-[10px] bg-white rounded-[10px] justify-between flex gap-[15px] w-full"
+      className={twMerge(
+        'p-[10px] bg-white rounded-[10px] justify-between flex gap-[15px] w-full',
+        className
+      )}
       onClick={() => !preview && navigate('/markets/' + market.market_id)}
     >
       <div className="flex flex-col gap-[3px] items-center ">
         <img src={market.img_url} className="w-[40px] h-[40px] rounded-[5px]" />
-        {nonPrice ? null : <span className="font-semibold text-f14">#2</span>}
+        {nonPrice ? null : (
+          <span className="font-semibold text-f14">#{idx || market.id}</span>
+        )}
       </div>
       <div className="flex flex-col items-center w-full ">
         <div
@@ -55,9 +63,7 @@ const MarketCard: React.FC<{ market: Market; preview?: boolean }> = ({
                 <TimeAgo date={toJSEpoch(market.updated_at)} />
                 <div>
                   Price{' '}
-                  {market.buyPrice
-                    ? (BigInt(market.buyPrice) / E8).toString()
-                    : 'No Price'}{' '}
+                  {market.buyPrice ? viewDec(market.buyPrice) : 'No Price'}{' '}
                   {network.chain?.nativeCurrency.symbol}
                 </div>
               </div>

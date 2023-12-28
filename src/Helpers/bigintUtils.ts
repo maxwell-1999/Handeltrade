@@ -18,7 +18,11 @@ const view = (a: bigint | string, decimals = 3) => {
   if (a == null) return 0;
   return Number((BigInt(a) * BigInt(10 ** decimals)) / E18) / 10 ** decimals;
 };
-
+const viewDec = (a: bigint, decimals = 10) => {
+  const number =
+    Number((BigInt(a) * BigInt(10 ** decimals)) / E18) / 10 ** decimals;
+  return number.toFixed(10).replace(/\.?0+$/, '');
+};
 const renderShares = (a: bigint | string) => {
   if (a == undefined) return 'Fetching...';
   const shares = view(a, 0);
@@ -26,4 +30,12 @@ const renderShares = (a: bigint | string) => {
   return shares > 1 ? shares + ' Shares' : shares + ' Share';
 };
 
-export { bigIntMin, bigIntMax, bigIntMinAndMax, toe18, view, renderShares };
+export {
+  bigIntMin,
+  bigIntMax,
+  bigIntMinAndMax,
+  toe18,
+  view,
+  renderShares,
+  viewDec,
+};

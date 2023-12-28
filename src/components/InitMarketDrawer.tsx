@@ -7,6 +7,7 @@ import HandleTradeAbi from '../ABI/HandelTrade.json';
 import toast from 'react-hot-toast';
 import MemoButtonLoader from './ButtonLoader';
 import { toe18, view } from '../Helpers/bigintUtils';
+import { formatError } from '../Helpers/web3utils';
 
 const InitMarketDrawer: React.FC<{
   data: UserMarketHoldings;
@@ -41,7 +42,7 @@ const InitMarketDrawer: React.FC<{
   }, []);
   return (
     <>
-      <MarketCard market={selectedMarket} preview />
+      <MarketCard market={selectedMarket} preview className="bg-transperent" />
       <div className="flex flex-col p-3 rounded-[5px] bg-1b gap-2">
         <span className="text-2 text-f14 font-[500]">
           This market isn't created yet
@@ -54,7 +55,8 @@ const InitMarketDrawer: React.FC<{
           setLoading(true);
           handelTrade()
             .catch((e) => {
-              toast(e.message, { icon: '❌' });
+              const msg = formatError(e);
+              toast(msg, { icon: '❌' });
             })
             .finally(() => setLoading(false));
         }}

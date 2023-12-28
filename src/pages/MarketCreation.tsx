@@ -17,16 +17,20 @@ const MarketCreation: React.FC<any> = ({}) => {
   const fetchMarketStatus = async () => {
     protect(async () => {
       setLoading(true);
-      const result = await axios.post(
-        'https://api-production-4b67.up.railway.app/market/create',
-        {
-          social_platform: Platform.Youtube,
-          social_handle: value,
-        }
-      );
+      try {
+        const result = await axios.post(
+          'https://api-production-4b67.up.railway.app/market/create',
+          {
+            social_platform: Platform.Youtube,
+            social_handle: value,
+          }
+        );
+        console.log(`MarketCreation-result.data.data: `, result.data.data);
+        setMarkets(result.data.data);
+      } catch (e) {
+        setMarkets([]);
+      }
       setLoading(false);
-      console.log(`MarketCreation-result.data.data: `, result.data.data);
-      setMarkets(result.data.data);
     });
   };
   console.log(`MarketCreation-markets: `, markets);
