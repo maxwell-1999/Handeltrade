@@ -60,14 +60,14 @@ function LoginPage() {
     if (loginLoading == 'registering' && isConnected && connector && address) {
       const getUserInfo = async () => {
         try {
-          console.log('flow-deb-settinguser');
+          console.log('create-deb flow-deb-settinguser');
           const userInfo = await registerUser(connector, address);
-          console.log(`res: `, userInfo);
+          console.log(`create-deb  res: `, userInfo);
           setUserState(userInfo?.data.data);
 
           // send get user-address api response.
           // setLoginLoading()
-          console.log('flow-deb-settinguser', userInfo?.data.data);
+          console.log('create-deb  flow-deb-settinguser', userInfo?.data.data);
         } catch (e) {
           console.log(`Web3AuthWithWagmi-e: `, e);
         }
@@ -77,16 +77,17 @@ function LoginPage() {
   }, [loginLoading, connector, address]);
 
   useEffect(() => {
+    console.log(`create-deb fcreate-deb  low-deb-getting-user-data: `);
+
     if (address) {
       const getUserInfo = async () => {
         setLoginLoading('fetching');
-        console.log(`flow-deb-getting-user-data: `);
+        console.log(`create-deb fcreate-deb  low-deb-getting-user-data: `);
 
         const userInfo = await getUserData(address);
-        console.log(`Web3AuthWithWagmi-userInfo: `, userInfo);
+        console.log(`create-deb Web3AuthWithWagmi-userInfo: `, userInfo);
         if (userInfo?.error || !userInfo) {
-          console.log(`flow-deb-getting-no-user-found: `, userInfo);
-
+          console.log(`create-deb  flow-deb-getting-no-user-found: `, userInfo);
           setLoginLoading('registering');
         } else {
           console.log(`flow-deb-user-found: `, userInfo);
