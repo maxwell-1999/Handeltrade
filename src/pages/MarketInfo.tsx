@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { Tablist } from '../components/Tablist';
 import { PrimaryBtn, SecondaryBtn } from '../components/Buttons';
 import { ListLoader } from '../components/ListLoader';
-import { UserCard } from './UserProfilePage/UserCard';
+import { UserCard, UserCardSm } from './UserProfilePage/UserCardSm';
 const tabs = ['Holders', 'Watchlisted By'];
 const MarketInfo: React.FC<any> = ({}) => {
   const params = useParams();
@@ -78,7 +78,7 @@ const HoldersTab = () => {
   };
   return (
     <div>
-      <UserCard user={user} />
+      <UserCardSm user={user} />
     </div>
   );
 };

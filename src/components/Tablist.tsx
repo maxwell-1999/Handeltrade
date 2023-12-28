@@ -8,7 +8,7 @@ const Tablist: React.FC<{
       {tablist.map((tab) => (
         <button
           className={
-            'text-2  text-f12 font-[500] px-2 py-1 rounded-[5px]' +
+            ' text-2  text-f12 font-[500] px-2 py-1 rounded-[5px]' +
             (activeTab == tab ? ' text-brand bg-lightBrand' : '')
           }
           onClick={() => onTabSelect(tab)}
