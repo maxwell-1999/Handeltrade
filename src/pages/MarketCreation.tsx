@@ -4,26 +4,30 @@ import axios from 'axios';
 import { ListLoader } from '../components/ListLoader';
 import { MarketList } from '../components/MarketList';
 import MemoSearchIcon from '../SVG/SearchIcon';
+import { useProtection } from '../Helpers/useProtection';
 export const Platform = {
   Youtube: 'youtube',
 };
 const MarketCreation: React.FC<any> = ({}) => {
   const [value, setValue] = useState('');
+  const [protect] = useProtection();
   const [markets, setMarkets] = useState<Market[]>([]);
   const [loading, setLoading] = useState(false);
   console.log(`MarketCreation-loading: `, loading);
   const fetchMarketStatus = async () => {
-    setLoading(true);
-    const result = await axios.post(
-      'https://api-production-4b67.up.railway.app/market/create',
-      {
-        social_platform: Platform.Youtube,
-        social_handle: value,
-      }
-    );
-    setLoading(false);
-    console.log(`MarketCreation-result.data.data: `, result.data.data);
-    setMarkets(result.data.data);
+    protect(async () => {
+      setLoading(true);
+      const result = await axios.post(
+        'https://api-production-4b67.up.railway.app/market/create',
+        {
+          social_platform: Platform.Youtube,
+          social_handle: value,
+        }
+      );
+      setLoading(false);
+      console.log(`MarketCreation-result.data.data: `, result.data.data);
+      setMarkets(result.data.data);
+    });
   };
   console.log(`MarketCreation-markets: `, markets);
   return (

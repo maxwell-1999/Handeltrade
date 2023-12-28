@@ -51,9 +51,8 @@ const config = createConfig({
 
 function LoginPage() {
   const { address, connector, isConnected } = useAccount();
-  const { connect, connectors, error } = useConnect();
+  const { connect, connectors } = useConnect();
   const [loginLoading, setLoginLoading] = useState<null | string>('');
-  const navigate = useNavigate();
   const [userState, setUserState] = useUserState();
   const drawerManagement = useDrawerState();
   console.log(`Web3AuthWithWagmi-userState: `, userState);
@@ -113,7 +112,7 @@ function LoginPage() {
     connect({ connector: connectors[0] });
   };
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full px-horizontalSm">
+    <div className="flex flex-col items-center justify-center w-full h-full py-3">
       <div className="font-bold text-1 text-[20px]">HANDEL.NETWORK</div>
       <div className="font-semibold text-2 text-f14">
         Buy and sell social profiles on chain

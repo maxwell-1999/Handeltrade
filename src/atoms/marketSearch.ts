@@ -36,6 +36,7 @@ const useSearchMarket = () => {
   const searchState = useRecoilValue(SearchMarketAtom);
   const onSearch = async (keyword: string) => {
     setSearchMarket({ keyword, loading: true, markets: [] });
+    if (!keyword) return setSearchMarket(defaultState);
     debouncedSearchMarkets(keyword, (markets, keywor) => {
       console.log('search-deb', markets);
       setSearchMarket((d) => {

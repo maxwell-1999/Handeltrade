@@ -17,7 +17,7 @@ export default {
         '2': '#8f95a4',
         '1b': '#fff',
         '2b': '#F6F7FC',
-        '3b': '#0D0D0D0D',
+        '3b': '#f3f3f3',
       },
       fontSize: {
         f9: '9px',

@@ -34,7 +34,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <div className="h-[50px] w-full flex justify-center gap-6 items-center  fixed bottom-0 left-0 text-2">
         {Icons.map((icon) => {
           return (
-            <NavLink to={'/' + icon.page} end>
+            <NavLink to={'/' + icon.page} key={icon.name}>
               {({ isActive }) => (
                 <button
                   key={icon.name}

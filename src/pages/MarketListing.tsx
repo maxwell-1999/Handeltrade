@@ -173,19 +173,21 @@ const MarketListing: React.FC<any> = ({}) => {
   const searchManager = useSearchMarket();
   return (
     <div className="px-[20px] flex flex-col gap-[10px]">
-      <MarketSearchBar />
-      <div className="flex">
-        <Tablist
-          tablist={tabs}
-          activeTab={searchManager.keyword ? '-1' : activeTab}
-          onTabSelect={setActiveTab}
-        />
-        {searchManager.keyword ? (
-          <SearchTab
-            keyword={searchManager.keyword}
-            onClose={searchManager.cancelSearch}
+      <div className="sticky top-0 flex flex-col w-full pt-4 pb-2 bg-[#f6f7fc] gap-y-2">
+        <MarketSearchBar />
+        <div className="flex">
+          <Tablist
+            tablist={tabs}
+            activeTab={searchManager.keyword ? '-1' : activeTab}
+            onTabSelect={setActiveTab}
           />
-        ) : null}
+          {searchManager.keyword ? (
+            <SearchTab
+              keyword={searchManager.keyword}
+              onClose={searchManager.cancelSearch}
+            />
+          ) : null}
+        </div>
       </div>
       {searchManager.keyword ? (
         <SearchList />
