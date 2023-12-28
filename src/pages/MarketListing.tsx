@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MarketSearchBar } from '../components/MarketSearchBar';
 import { SearchTab, Tablist } from '../components/Tablist';
 import { MarketList } from '../components/MarketList';
@@ -6,6 +6,7 @@ import useSearchMarket from '../atoms/marketSearch';
 import axios from 'axios';
 import useSWR from 'swr';
 import { ListLoader } from '../components/ListLoader';
+import { useAccount, useConnect, useNetwork } from 'wagmi';
 const tabs = ['New', 'Top', 'Mine'];
 const mockData = [
   {
@@ -168,9 +169,26 @@ const mockData = [
     shares: '1000000000000000000',
   },
 ];
+const useActiveChain = () => {
+  const { connectors } = useConnect();
+  const account = useAccount();
+  console.log(`MarketListing-account: `, account);
+  useEffect(() => {
+    console.log(`MarketListing-getu: `, account);
+    const getu = async () => {
+      const params = await connectors[0].web3AuthInstance.getUserInfo();
+      console.log(`MarketListing-params: `, params, account);
+    };
+    if (account.address) getu();
+  }, [connectors, account.address]);
+};
+
 const MarketListing: React.FC<any> = ({}) => {
   const [activeTab, setActiveTab] = useState('Top');
   const searchManager = useSearchMarket();
+  const network = useActiveChain();
+  const net = useNetwork();
+  console.log(`MarketListing-network: `, net);
   return (
     <div className="px-[20px] flex flex-col gap-[10px]">
       <div className="sticky top-0 flex flex-col w-full pt-4 pb-2 bg-[#f6f7fc] gap-y-2">

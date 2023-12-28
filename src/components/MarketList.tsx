@@ -5,7 +5,7 @@ const MarketList: React.FC<{ markets: Market[] }> = ({ markets }) => {
   return (
     <div className="flex flex-col gap-[10px]">
       {markets.map((market) => (
-        <MarketCard market={market} />
+        <MarketCard key={market.market_id} market={market} />
       ))}
     </div>
   );

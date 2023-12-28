@@ -34,6 +34,7 @@ import { Layout } from '../../components/Layout';
 import { MarketCreation } from '../MarketCreation';
 import { MarketInfo } from '../MarketInfo';
 import useDrawerState from '../../atoms/drawerState';
+import { formatAddress } from '../../Helpers/web3utils';
 
 // Configure chains & providers with the Public provider.
 const { chains, publicClient, webSocketPublicClient } = configureChains(
@@ -96,11 +97,7 @@ function LoginPage() {
       getUserInfo();
     }
   }, [address]);
-  useEffect(() => {
-    if (userState) {
-      drawerManagement.closeLoginDrawer();
-    }
-  }, [userState]);
+
   if (!connectors?.length) {
     return <ErrorPage>No Connectors found</ErrorPage>;
   }
@@ -109,18 +106,41 @@ function LoginPage() {
     setLoginLoading('oauth');
     connect({ connector: connectors[0] });
   };
+
   return (
     <div className="flex flex-col items-center justify-center w-full h-full py-3">
       <div className="font-bold text-1 text-[20px]">HANDEL.NETWORK</div>
       <div className="font-semibold text-2 text-f14">
-        Buy and sell social profiles on chain
+        {userState ? (
+          <>
+            We recomment atleast 0.01 ETH in your Account :{' '}
+            <a
+              href={`https://goerli.arbiscan.io/address/${userState.public_address}`}
+              className="underline text-brand"
+              target="_blank"
+            >
+              {formatAddress(userState.public_address)}
+            </a>
+          </>
+        ) : (
+          'Buy and sell social profiles on chain'
+        )}
       </div>
-      <PrimaryBtn
-        className="mt-[20px] active:translate-y-2 transition-transform"
-        onClick={login}
-      >
-        Login
-      </PrimaryBtn>
+      {userState ? (
+        <PrimaryBtn
+          className="mt-[20px] active:translate-y-2 transition-transform"
+          onClick={() => drawerManagement.closeLoginDrawer()}
+        >
+          Understood
+        </PrimaryBtn>
+      ) : (
+        <PrimaryBtn
+          className="mt-[20px] active:translate-y-2 transition-transform"
+          onClick={login}
+        >
+          Login
+        </PrimaryBtn>
+      )}
     </div>
   );
 }
