@@ -57,12 +57,12 @@ export default function UserProfilePage() {
             activeTab={searchManager.keyword ? '-1' : activeTab}
             onTabSelect={setActiveTab}
           />
-          {searchManager.keyword ? (
+          {/* {searchManager.keyword ? (
             <SearchTab
               keyword={searchManager.keyword}
               onClose={searchManager.cancelSearch}
             />
-          ) : null}
+          ) : null} */}
         </div>
 
         <div className="mt-4 min-h-10 w-[95%] gradient-container z-10"></div>
