@@ -10,6 +10,7 @@ import { ListLoader } from '../components/ListLoader';
 import { UserCard, UserCardSm } from './UserProfilePage/UserCardSm';
 import { marketsRefreshInterval } from './MarketListing';
 import { useProtection } from '../Helpers/useProtection';
+import { UserCardList } from '../components/UserCardList';
 const tabs = ['Holders', 'Watchlisted By'];
 const MarketInfo: React.FC<any> = ({}) => {
   const params = useParams();
@@ -83,10 +84,11 @@ const HoldersTab: React.FC<{ market: Market }> = ({ market }) => {
     created_at: '1703160856',
     updated_at: '1703160856',
   };
-  const { data, isLoading } = useSWR<Market[]>('ddd', {
+  const { data, isLoading } = useSWR<Market[]>('duserslistd', {
     fetcher: async () => {
       const results = await axios.get(
-        `https://api-production-4b67.up.railway.app/market/market_holders_by_market_id/${market.market_id}/0/400`
+        // `https://api-production-4b67.up.railway.app/market/market_holders_by_market_id/32332527693209771455157481647383810793610908799066291214333259842602494667764/400/0`
+        `https://api-production-4b67.up.railway.app/market/market_holders_by_market_id/${market.market_id}/400/0`
       );
       return results.data.data as Market[];
     },
@@ -95,10 +97,9 @@ const HoldersTab: React.FC<{ market: Market }> = ({ market }) => {
   if (isLoading) return <ListLoader />;
   console.log(`MarketInfo-data: `, data);
 
-  console.log(`MarketListing-data:dd `, data);
-
   return (
     <div>
+      <UserCardList users={data} />
       {/* <UserCardSm user={user} /> */}
       No Holders Yet!
     </div>

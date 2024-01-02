@@ -6,6 +6,7 @@ import { ShareManagementDrawer } from './ShareManagementDrawer';
 import useDrawerState from '../atoms/drawerState';
 import { MobileDrawer } from './MobileDrawer';
 import MemoProfileIcon from '../SVG/ProfileIcon';
+import { AccountDropdown } from './AccountDropdown';
 const Icons = [
   {
     page: 'markets',
@@ -33,6 +34,10 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const drawerManager = useDrawerState();
   return (
     <div className="flex flex-col  w-[100vw] h-[100vh]">
+      <div className="w-full bg-[#eaebf0] h-[40px] items-center justify-between flex px-[10px]">
+        <img className="w-[35px] h-[25px] " src="Logo.svg" />
+        <AccountDropdown />
+      </div>
       <div className="flex-1 w-full container-height-fr">{children}</div>
       {drawerManager.drawerState?.screen ? <MobileDrawer /> : null}
 

@@ -87,12 +87,7 @@ const SellDrawer: React.FC<{
       <PrimaryBtn
         onClick={() => {
           setLoading(true);
-          handelTrade()
-            .catch((e) => {
-              const msg = formatError(e);
-              toast(msg, { icon: '❌' });
-            })
-            .finally(() => setLoading(false));
+          handelTrade().finally(() => setLoading(false));
         }}
         className="flex items-center justify-center gap-5 h-[40px] text-white"
         disable={data.maxSell ? false : `Insufficient funds for selling`}

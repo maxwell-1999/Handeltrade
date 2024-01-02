@@ -26,7 +26,10 @@ const useDrawerState = () => {
   const closeDrawer = () => {
     setDrawerState(null);
   };
-  const openLoginDrawer = (cb: () => void) => {
+  const openLoginDrawer = (cb?: () => void) => {
+    if (!cb) {
+      cb = () => {};
+    }
     setDrawerState({ screen: 'login', cb });
   };
   const closeLoginDrawer = () => {

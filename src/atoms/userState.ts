@@ -20,7 +20,7 @@ const useUserState = () => {
   const setUserState = useSetRecoilState(UserStateAtom);
 
   const userState = useRecoilValue(UserStateAtom);
-  return [userState, setUserState];
+  return [userState, setUserState] as [UserState, typeof setUserState];
 };
 
 export default useUserState;

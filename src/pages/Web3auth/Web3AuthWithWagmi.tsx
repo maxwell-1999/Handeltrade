@@ -108,7 +108,8 @@ function LoginPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full py-3">
+    <div className="flex flex-col items-center justify-center w-full h-full p-3">
+      <img className="w-[200px] h-[150px] mb-5" src="Logo.svg" />
       <div className="font-bold text-1 text-[20px]">HANDEL.NETWORK</div>
       <div className="font-semibold text-2 text-f14">
         {userState ? (
