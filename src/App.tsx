@@ -10,7 +10,7 @@ import {
   useConnect,
   useDisconnect,
 } from 'wagmi';
-import { arbitrumGoerli } from 'wagmi/chains';
+import { arbitrumGoerli, baseGoerli } from 'wagmi/chains';
 import {
   HashRouter,
   Outlet,
@@ -30,7 +30,7 @@ import UserProfilePage from './pages/UserProfilePage';
 import { TestComponent } from './pages/TestComponent';
 // Configure chains & providers with the Public provider.
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [arbitrumGoerli],
+  [baseGoerli],
   [publicProvider()]
 );
 

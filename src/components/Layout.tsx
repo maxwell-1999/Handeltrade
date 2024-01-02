@@ -25,7 +25,6 @@ const Icons = [
   },
 ];
 const isNestedRouteActive = (page: string) => {
-  console.log(`Layout-window.location.href: `, window.location.href, page);
   if (window.location.href.toLowerCase().includes(page.toLowerCase()))
     return true;
   return false;

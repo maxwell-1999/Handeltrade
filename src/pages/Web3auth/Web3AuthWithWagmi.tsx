@@ -80,7 +80,7 @@ const LoginPage: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
           <>
             We recomment atleast 0.01 ETH in your Account :{' '}
             <a
-              href={`https://goerli.arbiscan.io/address/${userState.public_address}`}
+              href={`https://goerli.basescan.org/address/${userState.public_address}`}
               className="underline text-brand"
               target="_blank"
             >
