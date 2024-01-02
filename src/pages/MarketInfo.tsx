@@ -68,23 +68,7 @@ const MarketInfo: React.FC<any> = ({}) => {
 export { MarketInfo };
 
 const HoldersTab: React.FC<{ market: Market }> = ({ market }) => {
-  const user = {
-    id: 6,
-    first_name: 'Gaurav',
-    last_name: 'Vishwakarma',
-    email: 'gv211432@gmail.com',
-    img_url:
-      'https://lh3.googleusercontent.com/a/ACg8ocKm_yTahe4QWyulXfktA6Nfp-RBctF4Ws_ehQeYB0B1Beg=s96-c',
-    gender: 4,
-    country: 'India',
-    timezone: 'Kolkata',
-    public_address: '0x8c6b7cc652343e6a4b6caf7f474a27d6cf8f19ef',
-    third_party_verifier: 'torus',
-    is_active: true,
-    created_at: '1703160856',
-    updated_at: '1703160856',
-  };
-  const { data, isLoading } = useSWR<Market[]>('duserslistd', {
+  const { data, isLoading } = useSWR<Market[]>('holders' + market.id, {
     fetcher: async () => {
       const results = await axios.get(
         // `https://api-production-4b67.up.railway.app/market/market_holders_by_market_id/32332527693209771455157481647383810793610908799066291214333259842602494667764/400/0`
@@ -101,10 +85,9 @@ const HoldersTab: React.FC<{ market: Market }> = ({ market }) => {
     <div>
       <UserCardList users={data} />
       {/* <UserCardSm user={user} /> */}
-      No Holders Yet!
     </div>
   );
 };
 const WatchListedByTab = () => {
-  return <div>No one watchlisted this market yet!</div>;
+  return <div className="text-2">No one watchlisted this market yet!</div>;
 };

@@ -30,7 +30,7 @@ const MarketCard: React.FC<{
       )}
       onClick={() => !preview && navigate('/markets/' + market.market_id)}
     >
-      <div className="flex flex-col gap-[3px] items-center ">
+      <div className="flex flex-col gap-[3px] items-center justify-center ">
         <img src={market.img_url} className="w-[40px] h-[40px] rounded-[5px]" />
         {nonPrice ? null : (
           <span className="font-semibold text-f14">#{idx || market.id}</span>
@@ -42,7 +42,7 @@ const MarketCard: React.FC<{
             nonPrice ? '1' : '2'
           } `}
         >
-          <span className="font-semibold text-f14">{market.social_handle}</span>
+          <span className="font-semibold text-f14">{market.name}</span>
           {nonPrice ? null : (
             <span className="font-[500] text-f10 text-2">
               {view(market.shares)} Shares
@@ -55,7 +55,9 @@ const MarketCard: React.FC<{
             (nonPrice ? 'flex justify-between items-center' : '')
           }
         >
-          <div className="mb-1">{market.name}</div>
+          <div className={'mb-1 ' + (!preview ? 'text-overflow-2-lines' : '')}>
+            {market.description}
+          </div>
           {nonPrice ? null : (
             <div className="flex font-[500] items-center justify-between">
               <div className="flex items-center gap-2 text-f10">

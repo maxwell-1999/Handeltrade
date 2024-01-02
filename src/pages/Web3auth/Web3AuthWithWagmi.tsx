@@ -61,6 +61,8 @@ const LoginPage: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
     }
   }, [address]);
 
+  useEffect(() => {}, []);
+
   if (!connectors?.length) {
     return <ErrorPage>No Connectors found</ErrorPage>;
   }

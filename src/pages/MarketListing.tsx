@@ -7,6 +7,7 @@ import axios from 'axios';
 import useSWR from 'swr';
 import { ListLoader } from '../components/ListLoader';
 import { useAccount, useConnect, useNetwork } from 'wagmi';
+import { MarketCreateCard } from '../components/MarketCreateCard';
 
 const useActiveChain = () => {
   const { connectors } = useConnect();
@@ -74,7 +75,7 @@ const MarketListing: React.FC<any> = ({}) => {
 export { MarketListing };
 export const marketsRefreshInterval = 3000;
 const New = () => {
-  const { data, isLoading } = useSWR<Market[]>('dd', {
+  const { data, isLoading } = useSWR<Market[]>('new-list', {
     fetcher: async () => {
       const results = await axios.get(
         'https://api-production-4b67.up.railway.app/market/list/new/400/0'
@@ -89,7 +90,7 @@ const New = () => {
   return <MarketList markets={data} />;
 };
 const Top = () => {
-  const { data, isLoading, isValidating } = useSWR<Market[]>('ddd', {
+  const { data, isLoading, isValidating } = useSWR<Market[]>('top-list', {
     fetcher: async () => {
       const results = await axios.get(
         'https://api-production-4b67.up.railway.app/market/list/top/400/0'
@@ -106,7 +107,7 @@ const Top = () => {
 };
 const Mine: React.FC<{ address?: string }> = ({ address }) => {
   const ads = address || '0x8c6b7Cc652343e6a4B6CaF7F474A27D6cF8F19Ef';
-  const { data, isLoading } = useSWR<Market[]>('dddd', {
+  const { data, isLoading } = useSWR<Market[]>('mine-', {
     fetcher: async () => {
       const results = await axios.get(
         `https://api-production-4b67.up.railway.app/market/list/my/${ads}/400/0`
@@ -123,6 +124,8 @@ const SearchList = () => {
   const searchManager = useSearchMarket();
   if (searchManager.loading) return <ListLoader />;
   console.log(`MarketListing-searchManager.markets: `, searchManager.markets);
-
+  if (searchManager.markets.length == 0) {
+    return <MarketCreateCard keyword={searchManager.keyword} />;
+  }
   return <MarketList markets={searchManager.markets} />;
 };

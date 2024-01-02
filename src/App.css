@@ -19,6 +19,14 @@ body {
   will-change: filter;
   transition: filter 300ms;
 }
+
+.text-overflow-2-lines {
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Clamp to two lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
