@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       spacing: {
-        horizontalSm: '32px'
+        horizontalSm: '10px'
       },
       colors: {
         brand: '#a474f3',

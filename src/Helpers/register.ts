@@ -19,7 +19,7 @@ const registerUser = async (connector: any, address: `0x${string}`) => {
   console.log(`create-deb userInfo: `, userInfo);
   const registerPayload = {
     first_name: userInfo.name,
-    last_name: userInfo.name,
+    last_name: '',
     email: userInfo.email,
     img_url: userInfo.profileImage,
     password: 'not-needed',

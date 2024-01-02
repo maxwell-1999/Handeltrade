@@ -1,7 +1,15 @@
+import { useAccount, useBalance } from 'wagmi';
 import PrimeFadeText from '../../components/PrimeFadeText';
 import PrimeText from '../../components/PrimeText';
+import { view } from '../../Helpers/bigintUtils';
+import useUserState from '../../atoms/userState';
 
 const UserCard: React.FC<any> = ({ user }) => {
+  const { address } = useAccount();
+  const { data, isError, isLoading } = useBalance({
+    address: address,
+  });
+  const [userState] = useUserState();
   return (
     <div className="flex flex-col items-center justify-center w-full h-1/3 px-horizontalSm">
       <div className="flex flex-col items-center justify-center w-full h-full">
@@ -9,37 +17,31 @@ const UserCard: React.FC<any> = ({ user }) => {
           {/* profile img section */}
           <span className="flex flex-grow">
             <img
-              className=" rounded-[10px] mr-4 "
-              height={30}
-              // width={30}
-              src={user.img_url}
+              className=" rounded-[10px] mr-4  w-[60px] h-[60px]"
+              // height={20}
+              src={userState?.img_url}
               alt="user profile"
             />
             {/* demographics */}
             <span className="flex flex-col">
-              <PrimeText>{user.first_name}</PrimeText>
-              <PrimeText>{user.last_name}</PrimeText>
-              <PrimeFadeText>{user.email}</PrimeFadeText>
-
-              <span className="flex gap-4 mt-2 ">
-                <span className=" text-f14 font-[500] px-2 py-1 rounded-[5px] text-slate-900 bg-lightBrand">
-                  #{user.id}
-                </span>
-              </span>
+              <PrimeText>{userState?.first_name}</PrimeText>
+              <PrimeText>{userState?.last_name}</PrimeText>
+              <PrimeFadeText>{userState?.email}</PrimeFadeText>
             </span>
           </span>
           {/* finance */}
           <span className="flex flex-col min-w-4">
             <PrimeText style={{ 'align-self': 'flex-end' }}>
-              {'0.02 ETH'}
+              {isLoading ? 'Fetching..' : view(data?.value)}
+              &nbsp;ETH
             </PrimeText>
             <PrimeFadeText
-              classname=" text-[15px]"
+              classname=" text-[12px]"
               style={{ alignSelf: 'flex-end', fontWeight: 100 }}
             >
               Wallet Balance
             </PrimeFadeText>
-            {user.country && (
+            {userState?.country && (
               <PrimeFadeText classname="" style={{ 'align-self': 'flex-end' }}>
                 {user.country}
               </PrimeFadeText>

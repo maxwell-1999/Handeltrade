@@ -20,12 +20,14 @@ const Icons = [
   },
   {
     page: 'profile',
-    name: 'Pfofile',
+    name: 'profile',
     icon: <MemoProfileIcon />,
   },
 ];
 const isNestedRouteActive = (page: string) => {
-  if (window.location.href.includes(page)) return true;
+  console.log(`Layout-window.location.href: `, window.location.href, page);
+  if (window.location.href.toLowerCase().includes(page.toLowerCase()))
+    return true;
   return false;
 };
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -41,7 +43,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <div className="flex-1 w-full container-height-fr">{children}</div>
       {drawerManager.drawerState?.screen ? <MobileDrawer /> : null}
 
-      <div className="h-[50px] w-full flex justify-center gap-6 items-center  fixed bottom-0 left-0 text-2">
+      <div className="h-[50px] w-full flex justify-center gap-[40px] items-center  fixed bottom-0 left-0 text-2 ">
         {Icons.map((icon) => {
           return (
             <NavLink to={'/' + icon.page} key={icon.name}>

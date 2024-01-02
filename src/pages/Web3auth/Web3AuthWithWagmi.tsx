@@ -1,56 +1,19 @@
 // WAGMI Libraries
-import {
-  WagmiConfig,
-  createConfig,
-  configureChains,
-  useAccount,
-  useConnect,
-  useDisconnect,
-} from 'wagmi';
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
+import { createConfig, configureChains, useAccount, useConnect } from 'wagmi';
 import { arbitrumGoerli } from 'wagmi/chains';
-import {
-  HashRouter,
-  Outlet,
-  Route,
-  Routes,
-  useNavigate,
-} from 'react-router-dom';
-import { RecoilRoot } from 'recoil';
 import { publicProvider } from 'wagmi/providers/public';
-import { SendTransaction } from './sendTransaction';
-import { NetworkSwitcher } from './switchNetwork';
 import Web3AuthConnectorInstance from './Web3AuthConnectorInstance';
-import { Balance } from './balance';
-import { WriteContract } from './writeContract';
 import { ErrorPage } from '../../components/ErrorPage';
-import { SWRConfig } from 'swr';
 import { PrimaryBtn } from '../../components/Buttons';
 import { useEffect, useState } from 'react';
 import { registerUser, getUserData } from '../../Helpers/register';
-import { Onboarding } from '../Onboarding/Onboarding';
 import useUserState from '../../atoms/userState';
-import { Layout } from '../../components/Layout';
-import { MarketCreation } from '../MarketCreation';
-import { MarketInfo } from '../MarketInfo';
 import useDrawerState from '../../atoms/drawerState';
 import { formatAddress } from '../../Helpers/web3utils';
 
 // Configure chains & providers with the Public provider.
-const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [arbitrumGoerli],
-  [publicProvider()]
-);
 
-// Set up client
-const config = createConfig({
-  autoConnect: true,
-  connectors: [Web3AuthConnectorInstance(chains) as any],
-  publicClient,
-  webSocketPublicClient,
-});
-
-function LoginPage() {
+const LoginPage: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
   const { address, connector, isConnected } = useAccount();
   const { connect, connectors } = useConnect();
   const [loginLoading, setLoginLoading] = useState<null | string>('');
@@ -106,6 +69,7 @@ function LoginPage() {
     setLoginLoading('oauth');
     connect({ connector: connectors[0] });
   };
+  if (viewOnly) return null;
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-full p-3">
@@ -144,7 +108,7 @@ function LoginPage() {
       )}
     </div>
   );
-}
+};
 
 // Pass client to React Context Provider
 

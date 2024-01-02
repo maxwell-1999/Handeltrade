@@ -42,24 +42,12 @@ export default function UserProfilePage() {
 
   const user = user_data.data;
   const account = useAccount();
-  const [userState, setUserState] = useUserState();
-  const { disconnect } = useDisconnect();
   if (!account.address) return <LoginPage />;
   return (
     <div className="flex flex-col items-center justify-center w-full h-full ">
+      <LoginPage viewOnly />
       {/* creating a 1/3 height section for user details and 2/3 page section for user specific details  */}
-      <div className="text-[13px]  mt-3">
-        Account Address : {account.address}
-        <button
-          className="ml-3"
-          onClick={() => {
-            disconnect();
-            setUserState(null);
-          }}
-        >
-          Disconnect
-        </button>
-      </div>
+
       <UserCard user={user} />
 
       <div className="flex flex-col w-full h-2/3 px-horizontalSm ">
