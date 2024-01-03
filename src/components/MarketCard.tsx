@@ -62,7 +62,7 @@ const MarketCard: React.FC<{
             <div className="flex font-[500] items-center justify-between">
               <div className="flex items-center gap-2 text-f10">
                 <MemoTImerIcon />
-                <TimeAgo date={toJSEpoch(market.updated_at)} />
+                <TimeAgo date={toJSEpoch(market.lastUpdated)} />
                 <div>
                   Price{' '}
                   {market.buyPrice ? viewDec(market.buyPrice) : 'No Price'}{' '}
