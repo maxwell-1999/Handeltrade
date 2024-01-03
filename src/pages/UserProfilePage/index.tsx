@@ -47,9 +47,7 @@ export default function UserProfilePage() {
         <div className="mt-4 min-h-10 w-[95%] gradient-container z-10"></div>
         <div className=" w-full overflow-x-hidden over mt-[-25px] ">
           <div className=" mt-10 pv-10 flex flex-col gap-[10px]">
-            {searchManager.keyword ? (
-              <SearchList />
-            ) : activeTab == 'Holdings' ? (
+            {activeTab == 'Holdings' ? (
               <Holdings user_addr={account.address} />
             ) : activeTab == 'Markets' ? (
               <Markets user_addr={account.address} />
