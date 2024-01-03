@@ -4,7 +4,7 @@ import PrimeText from '../../components/PrimeText';
 import { view } from '../../Helpers/bigintUtils';
 import useUserState from '../../atoms/userState';
 
-const UserCard: React.FC<any> = ({ user }) => {
+const UserCard: React.FC<any> = () => {
   const { address } = useAccount();
   const { data, isError, isLoading } = useBalance({
     address: address,
@@ -43,7 +43,7 @@ const UserCard: React.FC<any> = ({ user }) => {
             </PrimeFadeText>
             {userState?.country && (
               <PrimeFadeText classname="" style={{ 'align-self': 'flex-end' }}>
-                {user.country}
+                {userState?.country}
               </PrimeFadeText>
             )}
           </span>

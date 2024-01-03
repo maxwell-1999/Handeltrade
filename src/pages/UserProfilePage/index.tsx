@@ -17,30 +17,9 @@ import useUserState from '../../atoms/userState';
 import { LoginPage } from '../Web3auth/Web3AuthWithWagmi';
 
 export default function UserProfilePage() {
-  const user_data = {
-    message: 'User found',
-    data: {
-      id: 6,
-      first_name: 'Gaurav',
-      last_name: 'Vishwakarma',
-      email: 'gv211432@gmail.com',
-      img_url:
-        'https://lh3.googleusercontent.com/a/ACg8ocKm_yTahe4QWyulXfktA6Nfp-RBctF4Ws_ehQeYB0B1Beg=s96-c',
-      gender: 4,
-      country: 'India',
-      timezone: 'Kolkata',
-      public_address: '0x8c6b7cc652343e6a4b6caf7f474a27d6cf8f19ef',
-      third_party_verifier: 'torus',
-      is_active: true,
-      created_at: '1703160856',
-      updated_at: '1703160856',
-    },
-  };
-
   const [activeTab, setActiveTab] = useState('Holdings');
   const searchManager = useSearchMarket();
 
-  const user = user_data.data;
   const account = useAccount();
   if (!account.address) return <LoginPage />;
   return (
@@ -48,7 +27,7 @@ export default function UserProfilePage() {
       <LoginPage viewOnly />
       {/* creating a 1/3 height section for user details and 2/3 page section for user specific details  */}
 
-      <UserCard user={user} />
+      <UserCard />
 
       <div className="flex flex-col w-full h-2/3 px-horizontalSm ">
         <div className="flex">
@@ -71,11 +50,11 @@ export default function UserProfilePage() {
             {searchManager.keyword ? (
               <SearchList />
             ) : activeTab == 'Holdings' ? (
-              <Holdings user_addr={user.public_address} />
+              <Holdings user_addr={account.address} />
             ) : activeTab == 'Markets' ? (
-              <Markets user_addr={user.public_address} />
+              <Markets user_addr={account.address} />
             ) : activeTab == 'Watchlist' ? (
-              <Watchlist user_addr={user.public_address} />
+              <Watchlist user_addr={account.address} />
             ) : (
               <div className="flex flex-col items-center justify-center w-full min-h-[100px]">
                 <PrimeFadeText classname=" text-[20px] ">
