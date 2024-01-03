@@ -66,7 +66,7 @@ const MarketListing: React.FC<any> = ({}) => {
       ) : activeTab == 'Top' ? (
         <Top />
       ) : (
-        <Mine account={account.address} />
+        <Mine address={account.address} />
       )}
     </div>
   );
