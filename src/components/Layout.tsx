@@ -29,42 +29,46 @@ const isNestedRouteActive = (page: string) => {
     return true;
   return false;
 };
-const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const Layout: React.FC<{ children: React.ReactNode; }> = ({ children }) => {
   const [activeTab, setActiveTab] = useState(Icons[0].name);
   const navigate = useNavigate();
   const drawerManager = useDrawerState();
   return (
-    <div className="flex flex-col  w-[100vw] h-[100vh]">
-      <div className="w-full bg-[#eaebf0] h-[40px] items-center justify-between flex px-[10px]">
-        <img className="w-[35px] h-[25px] " src="Logo.svg" />
-        <AccountDropdown />
-      </div>
-      <div className="flex-1 w-full container-height-fr">{children}</div>
-      {drawerManager.drawerState?.screen ? <MobileDrawer /> : null}
+    <div className="flex flex-shrink-0 h-[100vh] align-middle items-center justify-center ">
 
-      <div className="h-[50px] w-full flex justify-center gap-[40px] items-center  fixed bottom-0 left-0 text-2 ">
-        {Icons.map((icon) => {
-          return (
-            <NavLink to={'/' + icon.page} key={icon.name}>
-              {({ isActive }) => (
-                <button
-                  key={icon.name}
-                  onClick={(e) => {
-                    navigate('/' + icon.page);
-                  }}
-                  className={
-                    isActive || isNestedRouteActive(icon.page)
-                      ? 'text-brand'
-                      : ''
-                  }
-                >
-                  {icon.icon}
-                </button>
-              )}
-            </NavLink>
-          );
-        })}
+      <div className="flex flex-col xl:w-[40%] lg:w-[40%] md:w-[80%]  h-[100vh] items-center justify-center ">
+        <div className="w-full bg-[#eaebf0] h-[40px] items-center justify-between flex px-[10px]">
+          <img className="w-[35px] h-[25px] " src="Logo.svg" />
+          <AccountDropdown />
+        </div>
+        <div className="flex-1 w-full container-height-fr">{children}</div>
+        {drawerManager.drawerState?.screen ? <MobileDrawer /> : null}
+
+        <div className="h-[50px] w-full flex justify-center gap-[40px] items-center  fixed bottom-0 left-0 text-2 ">
+          {Icons.map((icon) => {
+            return (
+              <NavLink to={'/' + icon.page} key={icon.name}>
+                {({ isActive }) => (
+                  <button
+                    key={icon.name}
+                    onClick={(e) => {
+                      navigate('/' + icon.page);
+                    }}
+                    className={
+                      isActive || isNestedRouteActive(icon.page)
+                        ? 'text-brand'
+                        : ''
+                    }
+                  >
+                    {icon.icon}
+                  </button>
+                )}
+              </NavLink>
+            );
+          })}
+        </div>
       </div>
+
     </div>
   );
 };
