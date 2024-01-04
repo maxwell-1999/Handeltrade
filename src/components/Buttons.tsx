@@ -23,14 +23,13 @@ const PrimaryBtn: React.FC<ButtonProps> = ({
   return (
     <button
       className={twMerge(
-        `${
-          !disable ? 'bg-brand' : 'bg-[grey]  cursor-not-allowed'
+        `${!disable ? 'bg-[#3C32A3]' : 'bg-[grey]  cursor-not-allowed'
         } text-md font-bold text-white min-w-full py-[10px] rounded-[10px] shrink-0`,
         className
       )}
       {...props}
       onClick={disable ? () => toast(disable) : props.onClick}
-      // disabled={disable ? true : false}
+    // disabled={disable ? true : false}
     >
       {children}
     </button>
@@ -44,7 +43,7 @@ const SecondaryBtn: React.FC<ButtonProps> = ({
   return (
     <button
       className={twMerge(
-        ' bg-lightBrand text-md font-bold text-brand  py-[10px] rounded-[10px] shrink-0',
+        ' bg-lightBrand text-md font-bold text-[#3C32A3]  py-[10px] rounded-[10px] shrink-0',
         className
       )}
       {...props}

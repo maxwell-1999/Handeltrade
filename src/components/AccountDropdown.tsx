@@ -1,13 +1,20 @@
-import { useAccount, useDisconnect } from 'wagmi';
+import { useAccount, useDisconnect, useBalance } from 'wagmi';
 import useUserState from '../atoms/userState';
 import { formatAddress } from '../Helpers/web3utils';
 import useDrawerState from '../atoms/drawerState';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
+import { faEthereum } from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { view } from '../Helpers/bigintUtils';
 
-const AccountDropdown: React.FC<any> = ({}) => {
+const AccountDropdown: React.FC<any> = ({ }) => {
   const account = useAccount();
   const [userState, setUserState] = useUserState();
+  const { data, isError, isLoading } = useBalance({
+    address: account.address,
+  });
+
   const drawerManager = useDrawerState();
   const { disconnect } = useDisconnect();
   const [show, setShow] = useState(false);
@@ -30,7 +37,17 @@ const AccountDropdown: React.FC<any> = ({}) => {
     >
       <div className="flex items-center gap-2">
         <WalletIcon />
-        {formatAddress(account.address)}{' '}
+        {isLoading ? '...' : view(data?.value)}
+        <FontAwesomeIcon
+          height={15}
+          width={15}
+          className="h-6 p-1 rounded rounded-full bg-2 text-[white] cursor-pointer"
+          icon={faEthereum}
+          onClick={() => { }}
+        />
+        <span className=' bg-gray-200 rounded-lg p-2'>
+          {formatAddress(account.address)}{' '}
+        </span>
         <svg
           width="7"
           height="5"
@@ -47,7 +64,7 @@ const AccountDropdown: React.FC<any> = ({}) => {
       {show ? (
         <div className="absolute z-50 flex flex-col bg-[white] py-3 top-[110%] w-full gap-2 left-0 rounded-[4px]">
           <div
-            className="p-1 px-3"
+            className="p-1 px-3 "
             onClick={(e) => {
               navigator.clipboard.writeText(account.address);
               toast('Account copied to clipboard Successfully!');
@@ -74,8 +91,8 @@ export { AccountDropdown };
 const WalletIcon = () => {
   return (
     <svg
-      width="14"
-      height="13"
+      width="20"
+      height="17"
       viewBox="0 0 14 13"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
