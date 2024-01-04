@@ -11,7 +11,7 @@ export const Holdings = ({ user_addr }: { user_addr: string }) => {
   const { data, isLoading } = useSWR<Market[]>(user_addr + 'holdings', {
     fetcher: async () => {
       const results = await axios.get(
-        `https://api-production-4b67.up.railway.app/user/user_holdings_by_address/${user_addr}/400/0`
+        `${import.meta.env.VITE_API_ENDPOINT}/user/user_holdings_by_address/${user_addr}/400/0`
       );
       return results.data.data as Market[];
     },
@@ -27,7 +27,7 @@ export const Markets = ({ user_addr }: { user_addr: string }) => {
   const { data, isLoading } = useSWR<Market[]>(user_addr + 'markets', {
     fetcher: async () => {
       const results = await axios.get(
-        `https://api-production-4b67.up.railway.app/user/user_created_markets_by_address/${user_addr}/400/0`
+        `${import.meta.env.VITE_API_ENDPOINT}/user/user_created_markets_by_address/${user_addr}/400/0`
       );
       return results.data.data as Market[];
     },
@@ -44,7 +44,7 @@ export const Watchlist = ({ user_addr }: { user_addr: string }) => {
   const { data, isLoading } = useSWR<Market[]>(user_addr + 'watchlist', {
     fetcher: async () => {
       const results = await axios.get(
-        `https://api-production-4b67.up.railway.app/user/user_watchlist_markets_by_address/${user_addr}/400/0`
+        `${import.meta.env.VITE_API_ENDPOINT}/user/user_watchlist_markets_by_address/${user_addr}/400/0`
       );
       return results.data.data as Market[];
     },

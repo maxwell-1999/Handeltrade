@@ -11,15 +11,25 @@ import { UserCard, UserCardSm } from './UserProfilePage/UserCardSm';
 import { marketsRefreshInterval } from './MarketListing';
 import { useProtection } from '../Helpers/useProtection';
 import { UserCardList } from '../components/UserCardList';
+import { useAccount } from 'wagmi';
+import useUserState from '../atoms/userState';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBookmark as solidBookmark } from "@fortawesome/free-solid-svg-icons";
+import { faBookmark as emptyBookmark } from "@fortawesome/free-regular-svg-icons";
+
+
 const tabs = ['Holders', 'Watchlisted By'];
-const MarketInfo: React.FC<any> = ({}) => {
+const MarketInfo: React.FC<any> = ({ }) => {
+  const account = useAccount();
+  const [userState,] = useUserState();
   const params = useParams();
   const [protect] = useProtection();
   const [activeTab, seActiveTab] = useState(tabs[0]);
   const { data, error, isLoading } = useSWR(params.marketid, {
     fetcher: async (marketid) => {
       const res = await axios.get(
-        `https://api-production-4b67.up.railway.app/market/market_id/${marketid}`
+        `${import.meta.env.VITE_API_ENDPOINT}/market/market_id/${marketid}`,
+        { headers: { "session-id": userState?.session_id ?? "" } }
       );
       return res.data.data;
     },
@@ -27,24 +37,73 @@ const MarketInfo: React.FC<any> = ({}) => {
   });
   const drawerManager = useDrawerState();
   if (isLoading) return <ListLoader />;
+  console.log({ marketdtat: data, account: account.address, user: userState });
+
+  const handleAddToWatchlist = async () => {
+    console.log("Add to watchlist");
+    const res = await axios.post(
+      `${import.meta.env.VITE_API_ENDPOINT}/user/watchlist/add`,
+      { ids: [data.id] },
+      {
+        headers: { "session-id": userState?.session_id ?? "" },
+      }
+    );
+    if (res.data.status == "success") {
+      data.watchlisted = true;
+      console.log("Added to watchlist");
+    }
+  };
+  const handleRemoveFromWatchlist = async () => {
+    console.log("Remove from watchlist");
+    const res = await axios.post(
+      `${import.meta.env.VITE_API_ENDPOINT}/user/watchlist/remove`,
+      { ids: [data.id] },
+      {
+        headers: { "session-id": userState?.session_id ?? "" },
+      }
+    );
+    if (res.data.status == "success") {
+      data.watchlisted = false;
+      console.log("Removed from watchlist");
+    }
+  };
+
   return (
     <div className="flex flex-col gap-4 px-4">
       <div>
         {data && <MarketCard market={data} preview />}
-        {data.on_chain ? (
-          <div className="flex gap-3 mb-4">
-            <PrimaryBtn
-              onClick={() => protect(() => drawerManager.openBuyDrwer(data))}
-              className="p-1 text-[white] text-[12px]  w-[70px] h-fit min-w-fit font-semibold rounded-[4px] px-2"
-            >
-              Buy
-            </PrimaryBtn>
-            <SecondaryBtn
-              onClick={() => protect(() => drawerManager.openSellDrawer(data))}
-              className="p-1 text-[12px] w-[70px] font-semibold rounded-[4px] px-2 "
-            >
-              Sell
-            </SecondaryBtn>
+        {data?.on_chain ? (
+          <div className="flex justify-between">
+            <div className="flex gap-3 mb-4">
+              <PrimaryBtn
+                onClick={() => protect(() => drawerManager.openBuyDrwer(data))}
+                className="p-1 text-[white] text-[12px]  w-[70px] h-fit min-w-fit font-semibold rounded-[4px] px-2"
+              >
+                Buy
+              </PrimaryBtn>
+              <SecondaryBtn
+                onClick={() => protect(() => drawerManager.openSellDrawer(data))}
+                className="p-1 text-[12px] w-[70px] font-semibold rounded-[4px] px-2 "
+              >
+                Sell
+              </SecondaryBtn>
+            </div>
+            <div className="flex mb-4">
+              {data && ("watchlisted" in data) ? (data?.watchlisted ?
+                <FontAwesomeIcon
+                  height={30}
+                  className="h-8 mr-4 text-[#3C32A3] cursor-pointer"
+                  icon={solidBookmark}
+                  onClick={() => handleRemoveFromWatchlist()}
+                />
+                : <FontAwesomeIcon
+                  height={30}
+                  className="h-8 mr-4 text-[#3C32A3] cursor-pointer"
+                  icon={emptyBookmark}
+                  onClick={() => handleAddToWatchlist()}
+                />) : null
+              }
+            </div>
           </div>
         ) : (
           <PrimaryBtn
@@ -67,12 +126,12 @@ const MarketInfo: React.FC<any> = ({}) => {
 
 export { MarketInfo };
 
-const HoldersTab: React.FC<{ market: Market }> = ({ market }) => {
+const HoldersTab: React.FC<{ market: Market; }> = ({ market }) => {
   const { data, isLoading } = useSWR<Market[]>('holders' + market.id, {
     fetcher: async () => {
       const results = await axios.get(
-        // `https://api-production-4b67.up.railway.app/market/market_holders_by_market_id/32332527693209771455157481647383810793610908799066291214333259842602494667764/400/0`
-        `https://api-production-4b67.up.railway.app/market/market_holders_by_market_id/${market.market_id}/400/0`
+        // `${import.meta.env.VITE_API_ENDPOINT}/market/market_holders_by_market_id/32332527693209771455157481647383810793610908799066291214333259842602494667764/400/0`
+        `${import.meta.env.VITE_API_ENDPOINT}/market/market_holders_by_market_id/${market.market_id}/400/0`
       );
       return results.data.data as Market[];
     },

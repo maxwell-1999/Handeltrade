@@ -24,7 +24,7 @@ const MarketCreation: React.FC<any> = ({}) => {
       setLoading(true);
       try {
         const result = await axios.post(
-          'https://api-production-4b67.up.railway.app/market/create',
+          `${import.meta.env.VITE_API_ENDPOINT}/market/create`,
           {
             social_platform: Platform.Youtube,
             social_handle: value,

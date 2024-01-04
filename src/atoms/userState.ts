@@ -10,6 +10,7 @@ type UserState =
       is_active: boolean;
       public_address: string;
       updated_at: string;
+      session_id?: string;
     }
   | undefined
   | null;

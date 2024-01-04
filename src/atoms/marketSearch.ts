@@ -23,7 +23,7 @@ const debouncedSearchMarkets = debounce(async function (
 ) {
   try {
     const { data } = await axios.get(
-      `https://api-production-4b67.up.railway.app/search/market/${queryString}`
+      `${import.meta.env.VITE_API_ENDPOINT}/search/market/${queryString}`
     );
     cb(data.data, queryString);
   } catch (e) {

@@ -5,7 +5,7 @@ type User = {};
 const getUserData = async (address: `0x${string}`) => {
   try {
     const userInfo = await axios.get(
-      `https://api-production-4b67.up.railway.app/user/address/${address}`
+      `${import.meta.env.VITE_API_ENDPOINT}/user/address/${address}`
     );
     return userInfo.data;
   } catch (e) {
@@ -32,7 +32,7 @@ const registerUser = async (connector: any, address: `0x${string}`) => {
   };
 
   const res = await axios.put(
-    `https://api-production-4b67.up.railway.app/user/create`,
+    `${import.meta.env.VITE_API_ENDPOINT}/user/create`,
     registerPayload,
     { headers: { Authorization: `Bearer ${userInfo.idToken}` } }
   );

@@ -78,7 +78,7 @@ const New = () => {
   const { data, isLoading } = useSWR<Market[]>('new-list', {
     fetcher: async () => {
       const results = await axios.get(
-        'https://api-production-4b67.up.railway.app/market/list/new/400/0'
+        `${import.meta.env.VITE_API_ENDPOINT}/market/list/new/400/0`
       );
       return results.data.data as Market[];
     },
@@ -93,7 +93,7 @@ const Top = () => {
   const { data, isLoading, isValidating } = useSWR<Market[]>('top-list', {
     fetcher: async () => {
       const results = await axios.get(
-        'https://api-production-4b67.up.railway.app/market/list/top/400/0'
+        `${import.meta.env.VITE_API_ENDPOINT}/market/list/top/400/0`
       );
       return results.data.data as Market[];
     },
@@ -110,7 +110,7 @@ const Mine: React.FC<{ address?: string }> = ({ address }) => {
   const { data, isLoading } = useSWR<Market[]>('mine-', {
     fetcher: async () => {
       const results = await axios.get(
-        `https://api-production-4b67.up.railway.app/market/list/my/${ads}/400/0`
+        `${import.meta.env.VITE_API_ENDPOINT}/market/list/my/${ads}/400/0`
       );
       return results.data.data as Market[];
     },
