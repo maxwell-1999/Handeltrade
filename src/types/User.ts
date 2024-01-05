@@ -13,3 +13,7 @@ type User = {
   created_at: string;
   updated_at: string;
 };
+
+type UserAddrMap = {
+  [key: string]: User;
+};

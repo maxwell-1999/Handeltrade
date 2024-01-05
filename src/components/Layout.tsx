@@ -7,6 +7,8 @@ import useDrawerState from '../atoms/drawerState';
 import { MobileDrawer } from './MobileDrawer';
 import MemoProfileIcon from '../SVG/ProfileIcon';
 import { AccountDropdown } from './AccountDropdown';
+import { Tooltip } from 'react-tooltip';
+
 const Icons = [
   {
     page: 'markets',
@@ -33,10 +35,9 @@ const Layout: React.FC<{ children: React.ReactNode; }> = ({ children }) => {
   const [activeTab, setActiveTab] = useState(Icons[0].name);
   const navigate = useNavigate();
   const drawerManager = useDrawerState();
-  return (
+  return (<>
     <div className="flex flex-shrink-0 h-[100vh] align-middle items-center justify-center ">
-
-      <div className="flex flex-col xl:w-[40%] lg:w-[60%] md:w-[80%] sm:w-full min-w-[416px]  h-[100vh] ">
+      <div className="flex flex-col responsive-layout  h-[100vh] ">
         <div className="w-full bg-[#eaebf0] h-[40px] items-center justify-between flex px-[10px]">
           <img className="w-[35px] h-[25px] " src="Logo.svg" />
           <AccountDropdown />
@@ -68,8 +69,14 @@ const Layout: React.FC<{ children: React.ReactNode; }> = ({ children }) => {
           })}
         </div>
       </div>
-
     </div>
+    <Tooltip
+      delayShow={1500}
+      style={{
+        backgroundColor: '#E5E7EB',
+        color: "#8F95A4",
+      }} id="tooltip" />
+  </>
   );
 };
 

@@ -7,7 +7,6 @@ import { useState } from 'react';
 import { Tablist } from '../components/Tablist';
 import { PrimaryBtn, SecondaryBtn } from '../components/Buttons';
 import { ListLoader } from '../components/ListLoader';
-import { UserCard, UserCardSm } from './UserProfilePage/UserCardSm';
 import { marketsRefreshInterval } from './MarketListing';
 import { useProtection } from '../Helpers/useProtection';
 import { UserCardList } from '../components/UserCardList';
@@ -16,14 +15,16 @@ import useUserState from '../atoms/userState';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark as solidBookmark } from "@fortawesome/free-solid-svg-icons";
 import { faBookmark as emptyBookmark } from "@fortawesome/free-regular-svg-icons";
+import toast from 'react-hot-toast';
+import MarketActivityList from './MarketActivityList';
 
-
-const tabs = ['Holders', 'Watchlisted By'];
+const tabs = ['Holders', 'Watchlisted By', "Activity"];
 const MarketInfo: React.FC<any> = ({ }) => {
   const account = useAccount();
   const [userState,] = useUserState();
   const params = useParams();
   const [protect] = useProtection();
+
   const [activeTab, seActiveTab] = useState(tabs[0]);
   const { data, error, isLoading } = useSWR(params.marketid, {
     fetcher: async (marketid) => {
@@ -37,7 +38,8 @@ const MarketInfo: React.FC<any> = ({ }) => {
   });
   const drawerManager = useDrawerState();
   if (isLoading) return <ListLoader />;
-  console.log({ marketdtat: data, account: account.address, user: userState });
+
+  console.log(`MarketInfo-data: `, data);
 
   const handleAddToWatchlist = async () => {
     console.log("Add to watchlist");
@@ -50,6 +52,7 @@ const MarketInfo: React.FC<any> = ({ }) => {
     );
     if (res.data.status == "success") {
       data.watchlisted = true;
+      toast("Market added to watchlist");
       console.log("Added to watchlist");
     }
   };
@@ -64,6 +67,7 @@ const MarketInfo: React.FC<any> = ({ }) => {
     );
     if (res.data.status == "success") {
       data.watchlisted = false;
+      toast("Removed from watchlist");
       console.log("Removed from watchlist");
     }
   };
@@ -72,7 +76,7 @@ const MarketInfo: React.FC<any> = ({ }) => {
     <div className="flex flex-col gap-4 px-4 ">
       <div>
         {data && <MarketCard market={data} preview />}
-        {data?.on_chain ? (
+        {data?.on_chain || BigInt(data?.shares) ? (
           <div className="flex justify-between">
             <div className="flex gap-3 mb-4">
               <PrimaryBtn
@@ -95,12 +99,17 @@ const MarketInfo: React.FC<any> = ({ }) => {
                   className="h-8 mr-4 text-brand cursor-pointer"
                   icon={solidBookmark}
                   onClick={() => handleRemoveFromWatchlist()}
+                  data-tooltip-id="tooltip"
+                  data-tooltip-content={"Remove from watchlist"}
                 />
                 : <FontAwesomeIcon
                   height={30}
                   className="h-8 mr-4 text-brand cursor-pointer"
                   icon={emptyBookmark}
                   onClick={() => handleAddToWatchlist()}
+                  data-tooltip-id="tooltip"
+                  data-tooltip-content={"Add to watchlist"}
+
                 />) : null
               }
             </div>
@@ -117,9 +126,9 @@ const MarketInfo: React.FC<any> = ({ }) => {
       <Tablist tablist={tabs} onTabSelect={seActiveTab} activeTab={activeTab} />
       {activeTab == 'Holders' ? (
         <HoldersTab market={data} />
-      ) : (
+      ) : activeTab == 'Watchlisted By' ? (
         <WatchListedByTab market={data} />
-      )}
+      ) : <MarketActivityTab market={data} />}
     </div>
   );
 };
@@ -127,12 +136,12 @@ const MarketInfo: React.FC<any> = ({ }) => {
 export { MarketInfo };
 
 const HoldersTab: React.FC<{ market: Market; }> = ({ market }) => {
-  const { data, isLoading } = useSWR<Market[]>('holders' + market.id, {
+  const { data, isLoading } = useSWR<User[]>('holders' + market.id, {
     fetcher: async () => {
       const results = await axios.get(
         `${import.meta.env.VITE_API_ENDPOINT}/market/market_holders_by_market_id/${market.market_id}/400/0`
       );
-      return results.data.data as Market[];
+      return results.data.data as User[];
     },
     refreshInterval: marketsRefreshInterval,
   });
@@ -141,19 +150,18 @@ const HoldersTab: React.FC<{ market: Market; }> = ({ market }) => {
 
   return (
     <div>
-      <UserCardList users={data} />
-      {/* <UserCardSm user={user} /> */}
+      <UserCardList users={data ?? []} />
     </div>
   );
 };
 
 const WatchListedByTab: React.FC<{ market: Market; }> = ({ market }) => {
-  const { data, isLoading } = useSWR<Market[]>('watchlistedBy' + market.id, {
+  const { data, isLoading } = useSWR<User[]>('watchlistedBy' + market.id, {
     fetcher: async () => {
       const results = await axios.get(
         `${import.meta.env.VITE_API_ENDPOINT}/market/market_watchlisted_by_market_id/${market.market_id}/400/0`
       );
-      return results.data.data as Market[];
+      return results.data.data as User[];
     },
     refreshInterval: marketsRefreshInterval,
   });
@@ -162,7 +170,31 @@ const WatchListedByTab: React.FC<{ market: Market; }> = ({ market }) => {
 
   return (
     <div>
-      <UserCardList users={data} />
+      <UserCardList users={data ?? []} />
     </div>
   );
 };
+
+
+const MarketActivityTab: React.FC<{ market: Market; }> = ({ market }) => {
+  const { data, isLoading } = useSWR<any>('MarketActivity' + market.id, {
+    fetcher: async () => {
+      const results = await axios.get(
+        `${import.meta.env.VITE_API_ENDPOINT}/market/market_activities_by_market_id/${market.market_id}/400/0`
+      );
+      return results.data;
+    },
+    refreshInterval: marketsRefreshInterval,
+  });
+  if (isLoading) return <ListLoader />;
+  console.log(`MarketActivity-data: `, data);
+  const userAddrMap = data.refData;
+
+  return (
+    <div>
+      <MarketActivityList userAddrMap={userAddrMap} data={data.data} />
+    </div>
+  );
+};
+
+

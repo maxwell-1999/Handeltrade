@@ -1,5 +1,6 @@
 type Market = {
   id: number;
+  rank?: number;
   market_id: string;
   social_platform: string;
   social_handle: string;
@@ -14,4 +15,8 @@ type Market = {
   lastUpdated: string;
   sellPrice: string;
   shares: string;
+};
+
+type MarketIdMap = {
+  [key: string]: Market;
 };

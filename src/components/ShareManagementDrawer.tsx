@@ -10,7 +10,7 @@ import { SellDrawer } from './SellDrawer';
 import { InitMarketDrawer } from './InitMarketDrawer';
 import { DrawerLoader } from './DrawerLoader';
 let oldData = undefined;
-const ShareManagementDrawer: React.FC<any> = ({}) => {
+const ShareManagementDrawer: React.FC<any> = ({ }) => {
   const { address } = useAccount();
   const network = useNetwork();
   const [value, setValue] = useState(2);
@@ -82,21 +82,23 @@ const ShareManagementDrawer: React.FC<any> = ({}) => {
     return oldData;
   }, [mergedData]);
   return (
-    <div className="flex flex-col w-full gap-4 pb-4">
-      {data?.supply == undefined ? (
-        <DrawerLoader />
-      ) : drawerManager.drawerState.screen == 'handel-buy' ? (
-        data.supply > 0 ? (
-          <BuyDrawer data={data} {...{ selectedMarket, value, setValue }} />
+    <div className='flex align-middle items-center justify-center'>
+      <div className="flex flex-col responsive-layout gap-4 pb-4">
+        {data?.supply == undefined ? (
+          <DrawerLoader />
+        ) : drawerManager.drawerState.screen == 'handel-buy' ? (
+          data.supply > 0 ? (
+            <BuyDrawer data={data} {...{ selectedMarket, value, setValue }} />
+          ) : (
+            <InitMarketDrawer
+              data={data}
+              {...{ selectedMarket, value, setValue }}
+            />
+          )
         ) : (
-          <InitMarketDrawer
-            data={data}
-            {...{ selectedMarket, value, setValue }}
-          />
-        )
-      ) : (
-        <SellDrawer data={data} {...{ selectedMarket, value, setValue }} />
-      )}
+          <SellDrawer data={data} {...{ selectedMarket, value, setValue }} />
+        )}
+      </div>
     </div>
   );
 };

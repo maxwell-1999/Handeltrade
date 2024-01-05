@@ -10,6 +10,7 @@ import {
   Holdings,
   Watchlist,
   tabs,
+  UserActivityTab,
 } from './userProfileTabs';
 import { UserCard } from './UserCard';
 import { useAccount, useDisconnect } from 'wagmi';
@@ -57,11 +58,7 @@ export default function UserProfilePage() {
             ) : activeTab == 'Watchlist' ? (
               <Watchlist user_addr={account.address} />
             ) : (
-              <div className="flex flex-col items-center justify-center w-full min-h-[100px]">
-                <PrimeFadeText classname=" text-[20px] ">
-                  Coming Soon..
-                </PrimeFadeText>
-              </div>
+              <UserActivityTab user_addr={account.address} />
             )}
           </div>
         </div>

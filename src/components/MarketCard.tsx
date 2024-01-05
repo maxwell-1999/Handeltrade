@@ -9,7 +9,7 @@ import { SecondaryBtn } from './Buttons';
 import { view, viewDec } from '../Helpers/bigintUtils';
 import { twMerge } from 'tailwind-merge';
 
-const toJSEpoch = (e: string | number) => +e * 1000;
+export const toJSEpoch = (e: string | number) => +e * 1000;
 
 const MarketCard: React.FC<{
   market: Market;
@@ -31,21 +31,23 @@ const MarketCard: React.FC<{
       onClick={() => !preview && navigate('/markets/' + market.market_id)}
     >
       <div className="flex flex-col gap-[3px] items-center justify-center ">
-        <img src={market.img_url} className="w-[40px] h-[40px] rounded-[5px]" />
+        <img src={market?.img_url} className="w-[40px] h-[40px] rounded-[5px]" />
         {nonPrice ? null : (
-          <span className="font-semibold text-f14">#{idx || market.id}</span>
+          <span className="font-semibold text-f14">#{market?.rank || "New"}</span>
         )}
       </div>
       <div className="flex flex-col items-center w-full ">
         <div
-          className={`flex justify-between w-full mb-[2px] mt-${
-            nonPrice ? '1' : '2'
-          } `}
+          className={`flex justify-between w-full mb-[2px] mt-${nonPrice ? '1' : '2'
+            } `}
         >
           <span className="font-semibold text-f14">{market.name}</span>
           {nonPrice ? null : (
-            <span className="font-[500] text-f10 text-2">
-              {view(market.shares)} Shares
+            <span
+              data-tooltip-id="tooltip"
+              data-tooltip-content={"Total shares supply of the market"}
+              className="font-[500] text-f10 text-2 cursor-pointer">
+              {view(market?.shares)} Shares
             </span>
           )}{' '}
         </div>
@@ -65,7 +67,7 @@ const MarketCard: React.FC<{
                 <TimeAgo date={toJSEpoch(market.lastUpdated)} />
                 <div>
                   Price{' '}
-                  {market.buyPrice ? viewDec(market.buyPrice) : 'No Price'}{' '}
+                  {market.buyPrice ? viewDec(BigInt(market.buyPrice)) : 'No Price'}{' '}
                   {network.chain?.nativeCurrency.symbol}
                 </div>
               </div>

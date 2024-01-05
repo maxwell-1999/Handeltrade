@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { view } from "../../Helpers/bigintUtils";
+import { formatAddress } from "../../Helpers/web3utils";
+import toast from "react-hot-toast";
 
 
 const UserCardSm: React.FC<any> = ({ user }) => {
@@ -17,8 +19,6 @@ const UserCardSm: React.FC<any> = ({ user }) => {
           <span className="flex flex-grow">
             {user.img_url ? <img
               className="w-[45px] h-[45px] rounded-[5px] mr-[10px]"
-              // height={30}
-              // width={30}
               src={user.img_url}
               alt="user profile"
             /> :
@@ -36,9 +36,12 @@ const UserCardSm: React.FC<any> = ({ user }) => {
                 <span className=" text-f14 font-[500] px-2 py-1 rounded-[5px] text-slate bg-lightBrand">
                   #{user.id ? user.id : "-"}
                 </span>{' '}
-                {user.first_name ? user.first_name : <span className="text-[grey]">{user.public_address}</span>}
+                {user?.first_name ? user.first_name : <span
+                  className="text-[grey]"
+                  data-tooltip-id='tooltip'
+                  data-tooltip-content='User not registered!'
+                >{user?.public_address ? formatAddress(user.public_address) : "No Name"}</span>}
               </span>
-              {/* <PrimeText>{user.last_name}</PrimeText> */}
               <span className="flex justify-between w-full text-2 ">
                 <span className="mt-1 font-semibold text-f12">
                   {user?.email ? user.email : "No details"}
