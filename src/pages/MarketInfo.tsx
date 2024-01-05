@@ -69,7 +69,7 @@ const MarketInfo: React.FC<any> = ({ }) => {
   };
 
   return (
-    <div className="flex flex-col gap-4 px-4">
+    <div className="flex flex-col gap-4 px-4 ">
       <div>
         {data && <MarketCard market={data} preview />}
         {data?.on_chain ? (
@@ -92,13 +92,13 @@ const MarketInfo: React.FC<any> = ({ }) => {
               {data && ("watchlisted" in data) ? (data?.watchlisted ?
                 <FontAwesomeIcon
                   height={30}
-                  className="h-8 mr-4 text-[#3C32A3] cursor-pointer"
+                  className="h-8 mr-4 text-brand cursor-pointer"
                   icon={solidBookmark}
                   onClick={() => handleRemoveFromWatchlist()}
                 />
                 : <FontAwesomeIcon
                   height={30}
-                  className="h-8 mr-4 text-[#3C32A3] cursor-pointer"
+                  className="h-8 mr-4 text-brand cursor-pointer"
                   icon={emptyBookmark}
                   onClick={() => handleAddToWatchlist()}
                 />) : null
@@ -118,7 +118,7 @@ const MarketInfo: React.FC<any> = ({ }) => {
       {activeTab == 'Holders' ? (
         <HoldersTab market={data} />
       ) : (
-        <WatchListedByTab />
+        <WatchListedByTab market={data} />
       )}
     </div>
   );
@@ -130,7 +130,6 @@ const HoldersTab: React.FC<{ market: Market; }> = ({ market }) => {
   const { data, isLoading } = useSWR<Market[]>('holders' + market.id, {
     fetcher: async () => {
       const results = await axios.get(
-        // `${import.meta.env.VITE_API_ENDPOINT}/market/market_holders_by_market_id/32332527693209771455157481647383810793610908799066291214333259842602494667764/400/0`
         `${import.meta.env.VITE_API_ENDPOINT}/market/market_holders_by_market_id/${market.market_id}/400/0`
       );
       return results.data.data as Market[];
@@ -147,6 +146,23 @@ const HoldersTab: React.FC<{ market: Market; }> = ({ market }) => {
     </div>
   );
 };
-const WatchListedByTab = () => {
-  return <div className="text-2">No one watchlisted this market yet!</div>;
+
+const WatchListedByTab: React.FC<{ market: Market; }> = ({ market }) => {
+  const { data, isLoading } = useSWR<Market[]>('watchlistedBy' + market.id, {
+    fetcher: async () => {
+      const results = await axios.get(
+        `${import.meta.env.VITE_API_ENDPOINT}/market/market_watchlisted_by_market_id/${market.market_id}/400/0`
+      );
+      return results.data.data as Market[];
+    },
+    refreshInterval: marketsRefreshInterval,
+  });
+  if (isLoading) return <ListLoader />;
+  console.log(`MarketWatchlistedBy-data: `, data);
+
+  return (
+    <div>
+      <UserCardList users={data} />
+    </div>
+  );
 };

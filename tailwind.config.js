@@ -10,8 +10,8 @@ export default {
         horizontalSm: '10px'
       },
       colors: {
-        brand: '#a474f3',
-        lightBrand: '#eae5fb',
+        brand: '#3C32A3',
+        lightBrand: '#ecf2fe',
         white: '#fff',
         '1': 'black',
         '2': '#8f95a4',

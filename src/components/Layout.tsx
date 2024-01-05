@@ -36,7 +36,7 @@ const Layout: React.FC<{ children: React.ReactNode; }> = ({ children }) => {
   return (
     <div className="flex flex-shrink-0 h-[100vh] align-middle items-center justify-center ">
 
-      <div className="flex flex-col xl:w-[40%] lg:w-[40%] md:w-[80%]  h-[100vh] items-center justify-center ">
+      <div className="flex flex-col xl:w-[40%] lg:w-[60%] md:w-[80%] sm:w-full min-w-[416px]  h-[100vh] ">
         <div className="w-full bg-[#eaebf0] h-[40px] items-center justify-between flex px-[10px]">
           <img className="w-[35px] h-[25px] " src="Logo.svg" />
           <AccountDropdown />

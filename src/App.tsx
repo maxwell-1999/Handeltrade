@@ -78,7 +78,17 @@ function Web3AuthWithWagmi() {
                     <UserProfilePage />
                   </Layout>
                 }
-              />
+              >
+                <Route
+                  path=":user_addr"
+                  element={
+                    <Layout>
+                      <UserProfilePage />
+                    </Layout>
+                  }
+                ></Route>
+              </Route>
+
             </Routes>
           </HashRouter>
         </SWRConfig>

@@ -29,7 +29,7 @@ const AccountDropdown: React.FC<any> = ({ }) => {
     );
   return (
     <div
-      className="relative text-[#8F95A4] bg-[white] rounded-[6px] px-[7px] py-[5px]"
+      className="relative  text-[#8F95A4] bg-[white] rounded-[6px] px-[7px] py-[5px]"
       role="button"
       onClick={() => {
         setShow((s) => !s);
@@ -62,7 +62,7 @@ const AccountDropdown: React.FC<any> = ({ }) => {
         </svg>
       </div>
       {show ? (
-        <div className="absolute z-50 flex flex-col bg-[white] py-3 top-[110%] w-full gap-2 left-0 rounded-[4px]">
+        <div className="absolute z-50  flex flex-col bg-gray-200  py-3 top-[110%] w-full gap-2 left-0 rounded-[4px]">
           <div
             className="p-1 px-3 "
             onClick={(e) => {

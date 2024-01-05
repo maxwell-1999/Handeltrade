@@ -2,14 +2,29 @@ import { useAccount, useBalance } from 'wagmi';
 import PrimeFadeText from '../../components/PrimeFadeText';
 import PrimeText from '../../components/PrimeText';
 import { view } from '../../Helpers/bigintUtils';
-import useUserState from '../../atoms/userState';
+import useUserState, { useOtherUserState } from '../../atoms/userState';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import { formatAddress } from '../../Helpers/web3utils';
 
 const UserCard: React.FC<any> = () => {
-  const { address } = useAccount();
+  const params = useParams();
+  const account = useAccount();
+  const { address } = params?.user_addr ? { address: params.user_addr } : account;
+  const [userState, setUserState] = params?.user_addr ? useOtherUserState() : useUserState();
+
   const { data, isError, isLoading } = useBalance({
     address: address,
   });
-  const [userState] = useUserState();
+
+  if (params?.user_addr) {
+    axios.get(
+      `${import.meta.env.VITE_API_ENDPOINT}/user/address/${params.user_addr}`,
+    ).then(res => {
+      setUserState(res.data.data);
+    });
+  }
+
   return (
     <div className="flex flex-col items-center justify-center w-full h-1/3 px-horizontalSm">
       <div className="flex flex-col items-center justify-center w-full h-full">
@@ -27,6 +42,9 @@ const UserCard: React.FC<any> = () => {
               <PrimeText>{userState?.first_name}</PrimeText>
               <PrimeText>{userState?.last_name}</PrimeText>
               <PrimeFadeText>{userState?.email}</PrimeFadeText>
+              {params.user_addr && <span className=' max-w-[70px] bg-gray-200 rounded-lg p-2'>
+                {formatAddress(userState?.public_address)}{' '}
+              </span>}
             </span>
           </span>
           {/* finance */}

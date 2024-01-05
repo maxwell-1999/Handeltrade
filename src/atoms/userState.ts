@@ -16,11 +16,19 @@ type UserState =
   | null;
 
 const UserStateAtom = atom<UserState>({ default: null, key: 'UserState' });
+const OtherUserStateAtom = atom<UserState>({ default: null, key: 'UserState' });
 
 const useUserState = () => {
   const setUserState = useSetRecoilState(UserStateAtom);
 
   const userState = useRecoilValue(UserStateAtom);
+  return [userState, setUserState] as [UserState, typeof setUserState];
+};
+
+export const useOtherUserState = () => {
+  const setUserState = useSetRecoilState(OtherUserStateAtom);
+
+  const userState = useRecoilValue(OtherUserStateAtom);
   return [userState, setUserState] as [UserState, typeof setUserState];
 };
 

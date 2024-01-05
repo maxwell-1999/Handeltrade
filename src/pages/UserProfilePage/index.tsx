@@ -15,12 +15,15 @@ import { UserCard } from './UserCard';
 import { useAccount, useDisconnect } from 'wagmi';
 import useUserState from '../../atoms/userState';
 import { LoginPage } from '../Web3auth/Web3AuthWithWagmi';
+import { useParams } from 'react-router-dom';
 
 export default function UserProfilePage() {
   const [activeTab, setActiveTab] = useState('Holdings');
   const searchManager = useSearchMarket();
-
-  const account = useAccount();
+  const params = useParams();
+  const myAccount = useAccount();
+  const account = params.user_addr ? { address: params.user_addr } : myAccount;
+  console.log({ UserProfilePageAc: account.address });
   if (!account.address) return <LoginPage />;
   return (
     <div className="flex flex-col items-center justify-center w-full h-full ">
