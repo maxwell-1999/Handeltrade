@@ -76,7 +76,7 @@ const MarketInfo: React.FC<any> = ({ }) => {
     <div className="flex flex-col gap-4 px-4 ">
       <div>
         {data && <MarketCard market={data} preview />}
-        {data?.on_chain || BigInt(data?.shares) ? (
+        {data?.on_chain || data?.shares ? (
           <div className="flex justify-between">
             <div className="flex gap-3 mb-4">
               <PrimaryBtn

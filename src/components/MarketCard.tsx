@@ -67,7 +67,7 @@ const MarketCard: React.FC<{
                 <TimeAgo date={toJSEpoch(market.lastUpdated)} />
                 <div>
                   Price{' '}
-                  {market.buyPrice ? viewDec(BigInt(market.buyPrice)) : 'No Price'}{' '}
+                  {market?.buyPrice ? viewDec(BigInt(market.buyPrice)) : 'No Price'}{' '}
                   {network.chain?.nativeCurrency.symbol}
                 </div>
               </div>
