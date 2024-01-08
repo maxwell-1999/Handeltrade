@@ -11,7 +11,6 @@ import {
   Watchlist,
   tabs,
   UserActivityTab,
-  ClaimRewards,
 } from './userProfileTabs';
 import { UserCard } from './UserCard';
 import { useAccount, useDisconnect } from 'wagmi';
@@ -54,9 +53,7 @@ export default function UserProfilePage() {
               <Watchlist user_addr={account.address} />
             ) : activeTab == 'Activities' ? (
               <UserActivityTab user_addr={account.address} />
-            ) : (
-              <ClaimRewards user_addr={account.address} />
-            )}
+            ) : null}
           </div>
         </div>
         <div className="mt-[-25px] min-h-10 w-[95%] gradient-container-rev z-10"></div>
