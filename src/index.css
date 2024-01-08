@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 .responsive-layout {
-  @apply xl:w-[600px] lg:w-[600px] md:w-[600px] sm:w-full min-w-[416px] grow md:grow-0
+  @apply xl:w-[600px] lg:w-[600px] md:w-[600px] sm:w-full min-w-full grow md:grow-0
 }
