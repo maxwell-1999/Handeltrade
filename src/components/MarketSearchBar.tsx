@@ -6,7 +6,7 @@ const MarketSearchBar: React.FC<any> = ({}) => {
   const [value, setValue] = useState('');
   const searchManager = useSearchMarket();
   return (
-    <div className="bg-3b w-full h-[50px] rounded-[10px] flex items-center relative overflow-hidden justify-between pr-6">
+    <div className="bg-3b px-[10px] w-full h-[50px] rounded-[10px] flex items-center relative overflow-hidden justify-between pr-6">
       <MemoSearchIcon />
       <input
         value={searchManager.keyword}

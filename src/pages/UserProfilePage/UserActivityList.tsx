@@ -10,7 +10,7 @@ import { toJSEpoch } from '../../components/MarketCard';
 
 const UserActivityList: React.FC<{ marketMap: MarketIdMap, data: any[]; }> = ({ marketMap, data }) => {
   return (
-    <div>
+    <div className='flex flex-col gap-[10px]'>
       {data.map((activity: BuySellActivity, i) => {
         if (activity.type == "buy" || activity.type == "sell") {
           return <MarketActivityCard activityData={activity} market={marketMap[activity.marketId]} />;
@@ -41,7 +41,7 @@ const MarketActivityCard: React.FC<{
     <div
       role={'button'}
       className={twMerge(
-        'p-[10px] bg-white rounded-[10px] justify-between flex gap-[15px] w-full',
+        'p-[10px] bg-white rounded-[10px] justify-between flex gap-[15px]  w-full',
         className
       )}
       onClick={() => navigate('/markets/' + market.market_id)}

@@ -28,7 +28,7 @@ import Web3AuthConnectorInstance from './pages/Web3auth/Web3AuthConnectorInstanc
 import { LoginPage } from './pages/Web3auth/Web3AuthWithWagmi';
 import UserProfilePage from './pages/UserProfilePage';
 import { TestComponent } from './pages/TestComponent';
-import 'react-tooltip/dist/react-tooltip.css'
+import 'react-tooltip/dist/react-tooltip.css';
 
 // Configure chains & providers with the Public provider.
 const { chains, publicClient, webSocketPublicClient } = configureChains(
@@ -37,7 +37,7 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
 );
 
 // Set up client
-const config = createConfig({
+export const config = createConfig({
   autoConnect: true,
   connectors: [Web3AuthConnectorInstance(chains) as any],
   publicClient,

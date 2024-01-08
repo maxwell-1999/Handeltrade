@@ -1,4 +1,4 @@
-import { useAccount, useDisconnect, useBalance } from 'wagmi';
+import { useAccount, useDisconnect, useBalance, useNetwork } from 'wagmi';
 import useUserState from '../atoms/userState';
 import { formatAddress } from '../Helpers/web3utils';
 import useDrawerState from '../atoms/drawerState';
@@ -6,11 +6,14 @@ import toast from 'react-hot-toast';
 import { useState } from 'react';
 import { faEthereum } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { view } from '../Helpers/bigintUtils';
+import { view, viewDec } from '../Helpers/bigintUtils';
+import { useProtection } from '../Helpers/useProtection';
 
 const AccountDropdown: React.FC<any> = ({ }) => {
   const account = useAccount();
   const [userState, setUserState] = useUserState();
+  const [protect] = useProtection();
+  const network = useNetwork();
   const { data, isError, isLoading } = useBalance({
     address: account.address,
   });
@@ -41,7 +44,7 @@ const AccountDropdown: React.FC<any> = ({ }) => {
         <FontAwesomeIcon
           height={15}
           width={15}
-          className="h-6 p-1 rounded rounded-full bg-2 text-[white] cursor-pointer"
+          className="h-6 p-1 rounded-full bg-2 text-[white] cursor-pointer"
           icon={faEthereum}
           onClick={() => { }}
         />
@@ -62,9 +65,17 @@ const AccountDropdown: React.FC<any> = ({ }) => {
         </svg>
       </div>
       {show ? (
-        <div className="absolute z-50  flex flex-col bg-gray-200  py-3 top-[110%] w-full gap-2 left-0 rounded-[4px]">
+        <div className="absolute z-50 flex flex-col bg-[#F6F7FC] py-3 top-[110%] w-full gap-2 left-0 rounded-[4px]">
           <div
-            className="p-1 px-3 "
+            className="p-1 px-8"
+            onClick={() => {
+              protect(() => drawerManager.openBalanceDrawer());
+            }}
+          >
+            {viewDec(data?.value)}{" " + network.chain?.nativeCurrency.symbol}
+          </div>
+          <div
+            className="p-1 px-8 "
             onClick={(e) => {
               navigator.clipboard.writeText(account.address);
               toast('Account copied to clipboard Successfully!');
@@ -73,13 +84,21 @@ const AccountDropdown: React.FC<any> = ({ }) => {
             Copy
           </div>
           <div
-            className="p-1 px-3"
+            className="p-1 px-8"
             onClick={() => {
               disconnect();
               setUserState(null);
             }}
           >
             Disconnect
+          </div>
+          <div
+            className="p-1 px-8"
+            onClick={() => {
+              protect(() => drawerManager.openWalletDrawer());
+            }}
+          >
+            Export Wallet
           </div>
         </div>
       ) : null}

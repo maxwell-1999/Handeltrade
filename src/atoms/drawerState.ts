@@ -5,7 +5,9 @@ type DrawerStates =
   | null
   | { screen: 'handel-buy'; market: Market }
   | { screen: 'login'; cb: () => void }
-  | { screen: 'handel-sell'; market: Market };
+  | { screen: 'handel-sell'; market: Market }
+  | { screen: 'wallet'; cb: () => void }
+  | { screen: 'balance'; cb: () => void };
 
 const DrawerStateAtom = atom<DrawerStates>({
   key: 'DrawerState',
@@ -23,6 +25,21 @@ const useDrawerState = () => {
   const openSellDrawer = (market: Market) => {
     setDrawerState({ screen: 'handel-sell', market });
   };
+
+  const openWalletDrawer = (cb?: () => void) => {
+    if (!cb) {
+      cb = () => {};
+    }
+    setDrawerState({ screen: 'wallet', cb });
+  };
+
+  const openBalanceDrawer = (cb?: () => void) => {
+    if (!cb) {
+      cb = () => {};
+    }
+    setDrawerState({ screen: 'balance', cb });
+  };
+
   const closeDrawer = () => {
     setDrawerState(null);
   };
@@ -40,6 +57,8 @@ const useDrawerState = () => {
   };
   return {
     drawerState,
+    openWalletDrawer,
+    openBalanceDrawer,
     closeDrawer,
     openBuyDrwer,
     openSellDrawer,

@@ -24,7 +24,7 @@ const useActiveChain = () => {
   }, [connectors, account.address]);
 };
 
-const MarketListing: React.FC<any> = ({}) => {
+const MarketListing: React.FC<any> = ({ }) => {
   const [activeTab, setActiveTab] = useState('Top');
   const searchManager = useSearchMarket();
   const network = useActiveChain();
@@ -41,8 +41,8 @@ const MarketListing: React.FC<any> = ({}) => {
   }, [account.address]);
   console.log(`MarketListing-network: `, net);
   return (
-    <div className="px-[20px] flex flex-col gap-[10px]">
-      <div className="sticky top-0 flex flex-col w-full pt-4 pb-2 bg-[#f6f7fc] gap-y-2">
+    <div className="px-[20px] bg-brandGrey min-h-full pb-10 flex flex-col gap-[10px]">
+      <div className="sticky top-0 flex flex-col bg-brandGrey w-full pt-4 pb-2 gap-y-2">
         <MarketSearchBar />
         <div className="flex">
           {searchManager.keyword ? (
@@ -105,7 +105,7 @@ const Top = () => {
   if (!data?.length) return <ListLoader />;
   return <MarketList markets={data} />;
 };
-const Mine: React.FC<{ address?: string }> = ({ address }) => {
+const Mine: React.FC<{ address?: string; }> = ({ address }) => {
   const ads = address || '0x8c6b7Cc652343e6a4B6CaF7F474A27D6cF8F19Ef';
   const { data, isLoading } = useSWR<Market[]>('mine-', {
     fetcher: async () => {

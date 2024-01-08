@@ -13,6 +13,8 @@ export default {
         brand: '#3C32A3',
         lightBrand: '#ecf2fe',
         white: '#fff',
+        brandGrey: "#f6f7fc",
+        // brandGrey: "pink",
         '1': 'black',
         '2': '#8f95a4',
         '1b': '#fff',

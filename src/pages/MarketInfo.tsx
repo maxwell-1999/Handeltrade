@@ -73,7 +73,7 @@ const MarketInfo: React.FC<any> = ({ }) => {
   };
 
   return (
-    <div className="flex flex-col gap-4 px-4 ">
+    <div className="flex flex-col gap-4 px-4 h-full ">
       <div>
         {data && <MarketCard market={data} preview />}
         {data?.on_chain || data?.shares ? (
@@ -117,18 +117,22 @@ const MarketInfo: React.FC<any> = ({ }) => {
         ) : (
           <PrimaryBtn
             onClick={() => protect(() => drawerManager.openBuyDrwer(data))}
-            className="p-1 text-[white] text-[12px]  w-[70px] h-fit min-w-fit font-semibold rounded-[4px] px-2"
+            className="p-1 text-[white] text-[12px] w-[70px] h-fit min-w-fit font-semibold rounded-[4px] px-2"
           >
             Buy 1st Share
           </PrimaryBtn>
         )}
       </div>
-      <Tablist tablist={tabs} onTabSelect={seActiveTab} activeTab={activeTab} />
-      {activeTab == 'Holders' ? (
-        <HoldersTab market={data} />
-      ) : activeTab == 'Watchlisted By' ? (
-        <WatchListedByTab market={data} />
-      ) : <MarketActivityTab market={data} />}
+      <div className='px-[20px]'>
+        <Tablist tablist={tabs} onTabSelect={seActiveTab} activeTab={activeTab} />
+      </div>
+      <div className='bg-brandGrey h-full px-[20px]'>
+        {activeTab == 'Holders' ? (
+          <HoldersTab market={data} />
+        ) : activeTab == 'Watchlisted By' ? (
+          <WatchListedByTab market={data} />
+        ) : <MarketActivityTab market={data} />}
+      </div>
     </div>
   );
 };

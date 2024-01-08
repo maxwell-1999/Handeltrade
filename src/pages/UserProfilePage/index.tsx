@@ -11,6 +11,7 @@ import {
   Watchlist,
   tabs,
   UserActivityTab,
+  ClaimRewards,
 } from './userProfileTabs';
 import { UserCard } from './UserCard';
 import { useAccount, useDisconnect } from 'wagmi';
@@ -27,29 +28,23 @@ export default function UserProfilePage() {
   console.log({ UserProfilePageAc: account.address });
   if (!account.address) return <LoginPage />;
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full ">
+    <div className="flex flex-col items-center justify-center w-full h-full overflow-hidden ">
       <LoginPage viewOnly />
       {/* creating a 1/3 height section for user details and 2/3 page section for user specific details  */}
 
       <UserCard />
 
-      <div className="flex flex-col w-full h-2/3 px-horizontalSm ">
-        <div className="flex">
+      <div className="flex flex-col w-full h-2/3 ">
+        <div className="flex  px-[20px]">
           <Tablist
             tablist={tabs}
             activeTab={searchManager.keyword ? '-1' : activeTab}
             onTabSelect={setActiveTab}
           />
-          {/* {searchManager.keyword ? (
-            <SearchTab
-              keyword={searchManager.keyword}
-              onClose={searchManager.cancelSearch}
-            />
-          ) : null} */}
         </div>
 
-        <div className="mt-4 min-h-10 w-[95%] gradient-container z-10"></div>
-        <div className=" w-full overflow-x-hidden over mt-[-25px] ">
+        <div className="mt-4 min-h-10 w-[95%] gradient-container z-10  "></div>
+        <div className=" w-full overflow-x-hidden over mt-[-25px] bg-brandGrey min-h-full pb-20  px-[20px] ">
           <div className=" mt-10 pv-10 flex flex-col gap-[10px]">
             {activeTab == 'Holdings' ? (
               <Holdings user_addr={account.address} />
@@ -57,8 +52,10 @@ export default function UserProfilePage() {
               <Markets user_addr={account.address} />
             ) : activeTab == 'Watchlist' ? (
               <Watchlist user_addr={account.address} />
-            ) : (
+            ) : activeTab == 'Activities' ? (
               <UserActivityTab user_addr={account.address} />
+            ) : (
+              <ClaimRewards user_addr={account.address} />
             )}
           </div>
         </div>

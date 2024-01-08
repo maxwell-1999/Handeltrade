@@ -2,8 +2,11 @@ import useDrawerState from '../atoms/drawerState';
 import Drawer from 'react-bottom-drawer';
 import { LoginPage } from '../pages/Web3auth/Web3AuthWithWagmi';
 import { ShareManagementDrawer } from './ShareManagementDrawer';
+import WalletDrawer from './WalletDrawer';
+import AccountBalanceDrawer from './AccountBalanceDrawer';
+import ExportWalletDrawer from './ExportWalletDrawer';
 
-const MobileDrawer: React.FC<any> = ({}) => {
+const MobileDrawer: React.FC<any> = ({ }) => {
   const drawerManager = useDrawerState();
 
   return (
@@ -16,9 +19,15 @@ const MobileDrawer: React.FC<any> = ({}) => {
     >
       {drawerManager.drawerState?.screen == 'login' ? (
         <LoginPage />
-      ) : (
-        <ShareManagementDrawer />
-      )}
+      )
+        : drawerManager.drawerState?.screen == 'wallet' ? (
+          <ExportWalletDrawer />
+        ) : drawerManager.drawerState?.screen == 'balance' ? (
+          <AccountBalanceDrawer />
+        )
+          : (
+            <ShareManagementDrawer />
+          )}
     </Drawer>
   );
 };
