@@ -16,7 +16,10 @@ type UserState =
   | null;
 
 const UserStateAtom = atom<UserState>({ default: null, key: 'UserState' });
-const OtherUserStateAtom = atom<UserState>({ default: null, key: 'UserState' });
+const OtherUserStateAtom = atom<UserState>({
+  default: null,
+  key: 'UserState2',
+});
 
 const useUserState = () => {
   const setUserState = useSetRecoilState(UserStateAtom);
