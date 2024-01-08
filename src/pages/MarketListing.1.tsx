@@ -9,7 +9,7 @@ const MarketListing: React.FC<any> = ({}) => {
   const [activeTab, setActiveTab] = useState('Mine');
   const searchManager = useSearchMarket();
   return (
-    <div className="px-[20px] flex flex-col gap-[10px]">
+    <div className="px-[15px] flex flex-col gap-[10px]">
       <MarketSearchBar />
       <div className="flex">
         <Tablist

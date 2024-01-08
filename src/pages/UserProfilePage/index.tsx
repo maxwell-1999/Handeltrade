@@ -34,7 +34,7 @@ export default function UserProfilePage() {
       <UserCard />
 
       <div className="flex flex-col w-full h-2/3 ">
-        <div className="flex  px-[20px]">
+        <div className="flex  px-[15px]">
           <Tablist
             tablist={tabs}
             activeTab={searchManager.keyword ? '-1' : activeTab}
@@ -43,7 +43,7 @@ export default function UserProfilePage() {
         </div>
 
         <div className="mt-4 min-h-10 w-[95%] gradient-container z-10  "></div>
-        <div className=" w-full overflow-x-hidden over mt-[-25px] bg-brandGrey min-h-full pb-20  px-[20px] ">
+        <div className=" w-full overflow-x-hidden over mt-[-25px] bg-brandGrey min-h-full pb-20  px-[15px] ">
           <div className=" mt-10 pv-10 flex flex-col gap-[10px]">
             {activeTab == 'Holdings' ? (
               <Holdings user_addr={account.address} />

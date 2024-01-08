@@ -128,14 +128,14 @@ const MarketInfo: React.FC<any> = ({}) => {
           </PrimaryBtn>
         )}
       </div>
-      <div className="px-[20px]">
+      <div className="px-[15px]">
         <Tablist
           tablist={tabs}
           onTabSelect={seActiveTab}
           activeTab={activeTab}
         />
       </div>
-      <div className="bg-brandGrey h-full px-[20px]">
+      <div className="bg-brandGrey h-full px-[15px]">
         {activeTab == 'Holders' ? (
           <HoldersTab market={data} />
         ) : activeTab == 'Watchlisted By' ? (
