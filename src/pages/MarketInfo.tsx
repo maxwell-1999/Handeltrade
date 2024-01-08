@@ -12,16 +12,16 @@ import { useProtection } from '../Helpers/useProtection';
 import { UserCardList } from '../components/UserCardList';
 import { useAccount } from 'wagmi';
 import useUserState from '../atoms/userState';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBookmark as solidBookmark } from "@fortawesome/free-solid-svg-icons";
-import { faBookmark as emptyBookmark } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBookmark as solidBookmark } from '@fortawesome/free-solid-svg-icons';
+import { faBookmark as emptyBookmark } from '@fortawesome/free-regular-svg-icons';
 import toast from 'react-hot-toast';
 import MarketActivityList from './MarketActivityList';
 
-const tabs = ['Holders', 'Watchlisted By', "Activity"];
-const MarketInfo: React.FC<any> = ({ }) => {
+const tabs = ['Holders', 'Watchlisted By', 'Activity'];
+const MarketInfo: React.FC<any> = ({}) => {
   const account = useAccount();
-  const [userState,] = useUserState();
+  const [userState] = useUserState();
   const params = useParams();
   const [protect] = useProtection();
 
@@ -30,7 +30,7 @@ const MarketInfo: React.FC<any> = ({ }) => {
     fetcher: async (marketid) => {
       const res = await axios.get(
         `${import.meta.env.VITE_API_ENDPOINT}/market/market_id/${marketid}`,
-        { headers: { "session-id": userState?.session_id ?? "" } }
+        { headers: { 'session-id': userState?.session_id ?? '' } }
       );
       return res.data.data;
     },
@@ -42,38 +42,39 @@ const MarketInfo: React.FC<any> = ({ }) => {
   console.log(`MarketInfo-data: `, data);
 
   const handleAddToWatchlist = async () => {
-    console.log("Add to watchlist");
+    console.log('Add to watchlist');
     const res = await axios.post(
       `${import.meta.env.VITE_API_ENDPOINT}/user/watchlist/add`,
       { ids: [data.id] },
       {
-        headers: { "session-id": userState?.session_id ?? "" },
+        headers: { 'session-id': userState?.session_id ?? '' },
       }
     );
-    if (res.data.status == "success") {
+    // console.log(`MarketInfo-res: `, res);
+    if (!('error' in res.data)) {
       data.watchlisted = true;
-      toast("Market added to watchlist");
-      console.log("Added to watchlist");
+      toast('Market added to watchlist');
+      console.log('Added to watchlist');
     }
   };
   const handleRemoveFromWatchlist = async () => {
-    console.log("Remove from watchlist");
+    console.log('Remove from watchlist');
     const res = await axios.post(
       `${import.meta.env.VITE_API_ENDPOINT}/user/watchlist/remove`,
       { ids: [data.id] },
       {
-        headers: { "session-id": userState?.session_id ?? "" },
+        headers: { 'session-id': userState?.session_id ?? '' },
       }
     );
-    if (res.data.status == "success") {
+    if (!('error' in res.data)) {
       data.watchlisted = false;
-      toast("Removed from watchlist");
-      console.log("Removed from watchlist");
+      toast('Removed from watchlist');
+      console.log('Removed from watchlist');
     }
   };
 
   return (
-    <div className="flex flex-col gap-4 px-4 h-full ">
+    <div className="flex flex-col h-full gap-4 px-4 ">
       <div>
         {data && <MarketCard market={data} preview />}
         {data?.on_chain || data?.shares ? (
@@ -86,32 +87,36 @@ const MarketInfo: React.FC<any> = ({ }) => {
                 Buy
               </PrimaryBtn>
               <SecondaryBtn
-                onClick={() => protect(() => drawerManager.openSellDrawer(data))}
+                onClick={() =>
+                  protect(() => drawerManager.openSellDrawer(data))
+                }
                 className="p-1 text-[12px] w-[70px] font-semibold rounded-[4px] px-2 "
               >
                 Sell
               </SecondaryBtn>
             </div>
             <div className="flex mb-4">
-              {data && ("watchlisted" in data) ? (data?.watchlisted ?
-                <FontAwesomeIcon
-                  height={30}
-                  className="h-8 mr-4 text-brand cursor-pointer"
-                  icon={solidBookmark}
-                  onClick={() => handleRemoveFromWatchlist()}
-                  data-tooltip-id="tooltip"
-                  data-tooltip-content={"Remove from watchlist"}
-                />
-                : <FontAwesomeIcon
-                  height={30}
-                  className="h-8 mr-4 text-brand cursor-pointer"
-                  icon={emptyBookmark}
-                  onClick={() => handleAddToWatchlist()}
-                  data-tooltip-id="tooltip"
-                  data-tooltip-content={"Add to watchlist"}
-
-                />) : null
-              }
+              {data && 'watchlisted' in data ? (
+                data?.watchlisted ? (
+                  <FontAwesomeIcon
+                    height={30}
+                    className="h-8 mr-4 cursor-pointer text-brand"
+                    icon={solidBookmark}
+                    onClick={() => handleRemoveFromWatchlist()}
+                    data-tooltip-id="tooltip"
+                    data-tooltip-content={'Remove from watchlist'}
+                  />
+                ) : (
+                  <FontAwesomeIcon
+                    height={30}
+                    className="h-8 mr-4 cursor-pointer text-brand"
+                    icon={emptyBookmark}
+                    onClick={() => handleAddToWatchlist()}
+                    data-tooltip-id="tooltip"
+                    data-tooltip-content={'Add to watchlist'}
+                  />
+                )
+              ) : null}
             </div>
           </div>
         ) : (
@@ -123,15 +128,21 @@ const MarketInfo: React.FC<any> = ({ }) => {
           </PrimaryBtn>
         )}
       </div>
-      <div className='px-[20px]'>
-        <Tablist tablist={tabs} onTabSelect={seActiveTab} activeTab={activeTab} />
+      <div className="px-[20px]">
+        <Tablist
+          tablist={tabs}
+          onTabSelect={seActiveTab}
+          activeTab={activeTab}
+        />
       </div>
-      <div className='bg-brandGrey h-full px-[20px]'>
+      <div className="bg-brandGrey h-full px-[20px]">
         {activeTab == 'Holders' ? (
           <HoldersTab market={data} />
         ) : activeTab == 'Watchlisted By' ? (
           <WatchListedByTab market={data} />
-        ) : <MarketActivityTab market={data} />}
+        ) : (
+          <MarketActivityTab market={data} />
+        )}
       </div>
     </div>
   );
@@ -139,11 +150,13 @@ const MarketInfo: React.FC<any> = ({ }) => {
 
 export { MarketInfo };
 
-const HoldersTab: React.FC<{ market: Market; }> = ({ market }) => {
+const HoldersTab: React.FC<{ market: Market }> = ({ market }) => {
   const { data, isLoading } = useSWR<User[]>('holders' + market.id, {
     fetcher: async () => {
       const results = await axios.get(
-        `${import.meta.env.VITE_API_ENDPOINT}/market/market_holders_by_market_id/${market.market_id}/400/0`
+        `${
+          import.meta.env.VITE_API_ENDPOINT
+        }/market/market_holders_by_market_id/${market.market_id}/400/0`
       );
       return results.data.data as User[];
     },
@@ -159,11 +172,13 @@ const HoldersTab: React.FC<{ market: Market; }> = ({ market }) => {
   );
 };
 
-const WatchListedByTab: React.FC<{ market: Market; }> = ({ market }) => {
+const WatchListedByTab: React.FC<{ market: Market }> = ({ market }) => {
   const { data, isLoading } = useSWR<User[]>('watchlistedBy' + market.id, {
     fetcher: async () => {
       const results = await axios.get(
-        `${import.meta.env.VITE_API_ENDPOINT}/market/market_watchlisted_by_market_id/${market.market_id}/400/0`
+        `${
+          import.meta.env.VITE_API_ENDPOINT
+        }/market/market_watchlisted_by_market_id/${market.market_id}/400/0`
       );
       return results.data.data as User[];
     },
@@ -179,12 +194,13 @@ const WatchListedByTab: React.FC<{ market: Market; }> = ({ market }) => {
   );
 };
 
-
-const MarketActivityTab: React.FC<{ market: Market; }> = ({ market }) => {
+const MarketActivityTab: React.FC<{ market: Market }> = ({ market }) => {
   const { data, isLoading } = useSWR<any>('MarketActivity' + market.id, {
     fetcher: async () => {
       const results = await axios.get(
-        `${import.meta.env.VITE_API_ENDPOINT}/market/market_activities_by_market_id/${market.market_id}/400/0`
+        `${
+          import.meta.env.VITE_API_ENDPOINT
+        }/market/market_activities_by_market_id/${market.market_id}/400/0`
       );
       return results.data;
     },
@@ -200,5 +216,3 @@ const MarketActivityTab: React.FC<{ market: Market; }> = ({ market }) => {
     </div>
   );
 };
-
-
