@@ -1,4 +1,7 @@
-import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCircleQuestion,
+  faSackDollar,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -35,7 +38,11 @@ const MarketActivityList: React.FC<{
           );
         }
         if (activity.type == 'claimedRewards') {
-          return <></>;
+          // return <RewardsOfferedCard data={activity} />;
+        }
+        if (activity.type == 'rewardsOffereds') {
+          activity.type2 = 'Rewards Offered';
+          return <RewardsOfferedCard data={activity} />;
         }
       })}
     </div>
@@ -142,4 +149,51 @@ const UserActivityCard: React.FC<{
       </div>
     </div>
   );
+};
+
+const RewardsOfferedCard: React.FC<{ data: any }> = ({ data }) => {
+  const network = useNetwork();
+  return (
+    <div className="flex flex-col bg-white rounded-[10px] p-4 justify-between w-full h-full items-center cursor-pointer ">
+      <div className="flex w-full">
+        {/* profile img section */}
+        <span className="flex flex-grow">
+          <FontAwesomeIcon
+            height={27}
+            width={27}
+            className="w-[45px] h-[45px] mr-[7px] p-1 text-2 cursor-pointer"
+            icon={faSackDollar}
+            onClick={() => {}}
+          />
+          {/* demographics */}
+          <span className="flex flex-col w-full">
+            <span className="flex justify-between w-full ">
+              <span className="font-semibold text-f14">
+                {viewDec(data?.amount)} {network.chain?.nativeCurrency.symbol}
+              </span>
+            </span>
+            {/* <PrimeText>{user.last_name}</PrimeText> */}
+            <span className="flex justify-between w-full text-2 ">
+              <div className="flex font-[500] items-center justify-between">
+                <div className="flex items-center gap-2 text-f10">
+                  <MemoTImerIcon />
+                  <TimeAgo date={toJSEpoch(data?.blockTimestamp)} />
+                </div>
+              </div>
+              <SecondaryBtn
+                className="p-1 text-[10px] font-semibold rounded-[4px] px-2 "
+                onClick={() => console.log}
+              >
+                {data?.type2.toUpperCase()}
+              </SecondaryBtn>
+            </span>
+          </span>
+        </span>
+      </div>
+    </div>
+  );
+};
+
+const RewardsClaimedCard: React.FC<{ data: any }> = ({ data }) => {
+  return <div className="">{JSON.stringify(data)}</div>;
 };

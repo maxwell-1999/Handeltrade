@@ -12,6 +12,7 @@ const UserActivityList: React.FC<{ marketMap: MarketIdMap; data: any[] }> = ({
   marketMap,
   data,
 }) => {
+  console.log({ UserActivitys: data });
   return (
     <div className="flex flex-col gap-[10px]">
       {data.map((activity: BuySellActivity, i) => {
@@ -24,7 +25,22 @@ const UserActivityList: React.FC<{ marketMap: MarketIdMap; data: any[] }> = ({
           );
         }
         if (activity.type == 'claimedRewards') {
-          return <></>;
+          activity.type2 = 'Claimed Rewards';
+          return (
+            <ClaimRewardActivityCard
+              activityData={activity}
+              market={marketMap[activity.marketId]}
+            />
+          );
+        }
+        if (activity.type == 'claimedReflectionFees') {
+          activity.type2 = 'Claimed Reflection';
+          return (
+            <ClaimReflectionActivityCard
+              activityData={activity}
+              market={marketMap[activity.marketIds]}
+            />
+          );
         }
       })}
     </div>
@@ -115,6 +131,130 @@ const MarketActivityCard: React.FC<{
             onClick={() => console.log}
           >
             {activityData.type.toUpperCase()}
+          </SecondaryBtn>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ClaimRewardActivityCard: React.FC<{
+  market: Market;
+  activityData: BuySellActivity;
+  className?: string;
+}> = ({ market, className, activityData }) => {
+  console.log(`ActivityData: `, market);
+  const network = useNetwork();
+  const navigate = useNavigate();
+
+  return (
+    <div
+      role={'button'}
+      className={twMerge(
+        'p-[10px] bg-white rounded-[10px] justify-between flex gap-[15px]  w-full',
+        className
+      )}
+      onClick={() => navigate('/markets/' + market.market_id)}
+    >
+      <div className="flex flex-col gap-[3px] items-center justify-center ">
+        <img src={market.img_url} className="w-[40px] h-[40px] rounded-[5px]" />
+        <span className="font-semibold text-f14">#{market?.rank || 'New'}</span>
+      </div>
+      <div className="flex flex-col items-center w-full ">
+        <div className={`flex justify-between w-full mb-[2px] mt-1`}>
+          <span className="font-semibold text-f14">{market.name}</span>
+        </div>
+        {/* <div className={'mb-1 text-overflow-2-lines w-full font-semibold text-2 text-f9 '}>
+          @{market?.social_handle}
+        </div> */}
+        <div
+          className={
+            'mb-1 text-overflow-2-lines w-full font-semibold text-2 text-f9 '
+          }
+        >
+          Claimed Amount {viewDec(activityData?.claimedRewards)}{' '}
+          {network.chain?.nativeCurrency.symbol}
+        </div>
+
+        <div
+          className={
+            'w-full font-semibold text-2 text-f9 flex justify-between items-center'
+          }
+        >
+          <div className="flex font-[500] items-center justify-between">
+            <div className="flex items-center gap-2 text-f10">
+              <MemoTImerIcon />
+              <TimeAgo date={toJSEpoch(activityData.blockTimestamp)} />
+            </div>
+          </div>
+
+          <SecondaryBtn
+            className="p-1 text-[10px] font-semibold rounded-[4px] px-2 "
+            onClick={() => console.log}
+          >
+            {activityData.type2.toUpperCase()}
+          </SecondaryBtn>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ClaimReflectionActivityCard: React.FC<{
+  market: Market;
+  activityData: BuySellActivity;
+  className?: string;
+}> = ({ market, className, activityData }) => {
+  console.log(`ActivityData: `, market);
+  const network = useNetwork();
+  const navigate = useNavigate();
+
+  return (
+    <div
+      role={'button'}
+      className={twMerge(
+        'p-[10px] bg-white rounded-[10px] justify-between flex gap-[15px]  w-full',
+        className
+      )}
+      onClick={() => navigate('/markets/' + market.market_id)}
+    >
+      <div className="flex flex-col gap-[3px] items-center justify-center ">
+        <img src={market.img_url} className="w-[40px] h-[40px] rounded-[5px]" />
+        <span className="font-semibold text-f14">#{market?.rank || 'New'}</span>
+      </div>
+      <div className="flex flex-col items-center w-full ">
+        <div className={`flex justify-between w-full mb-[2px] mt-1`}>
+          <span className="font-semibold text-f14">{market.name}</span>
+        </div>
+        {/* <div className={'mb-1 text-overflow-2-lines w-full font-semibold text-2 text-f9 '}>
+          @{market?.social_handle}
+        </div> */}
+        <div
+          className={
+            'mb-1 text-overflow-2-lines w-full font-semibold text-2 text-f9 '
+          }
+        >
+          Claimed Amount {viewDec(activityData?.claimedFees)}{' '}
+          {network.chain?.nativeCurrency.symbol}
+        </div>
+
+        <div
+          className={
+            'w-full font-semibold text-2 text-f9 flex justify-between items-center'
+          }
+        >
+          <div className="flex font-[500] items-center justify-between">
+            <div className="flex items-center gap-2 text-f10">
+              <MemoTImerIcon />
+              <TimeAgo date={toJSEpoch(activityData.blockTimestamp)} />
+            </div>
+          </div>
+
+          <SecondaryBtn
+            className="p-1 text-[10px] font-semibold rounded-[4px] px-2 "
+            onClick={() => console.log}
+          >
+            {activityData.type2.toUpperCase()}
           </SecondaryBtn>
         </div>
       </div>
