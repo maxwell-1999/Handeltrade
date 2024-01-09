@@ -17,6 +17,12 @@ body {
   height: 100vh;
 }
 
+
+.custom-bg-image{
+  background-image: url('/BGPattern.png');
+  background-size: cover;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
