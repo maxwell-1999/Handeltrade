@@ -1,5 +1,5 @@
 const ListLoader: React.FC<any> = ({}) => {
-  return <div className="w-full"> Loading feed...</div>;
+  return <div className="w-full text-2"> Loading feed...</div>;
 };
 
 export { ListLoader };
