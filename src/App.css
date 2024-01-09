@@ -22,6 +22,9 @@ body {
   background-image: url('/BGPattern.png');
   background-size: cover;
 }
+.tab-gap{
+  gap: min(150px , 20vw);
+}
 .img-loading {
 
   background: #8f95a4 url('/loading_spinner.gif') center no-repeat;
