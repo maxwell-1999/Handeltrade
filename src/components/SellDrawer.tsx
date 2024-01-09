@@ -54,7 +54,7 @@ const SellDrawer: React.FC<{
       <MarketCard market={selectedMarket} preview className="bg-transperent" />
       <div className="flex flex-col p-3 rounded-[5px] bg-1b gap-2">
         <span className="text-2 text-f14 font-[500]">Balance</span>
-        <span className="text-lg font-bold text-1">
+        <span className="font-bold text-1 text-f14">
           {renderShares(data.userBalance)}
         </span>
       </div>
