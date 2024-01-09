@@ -98,5 +98,7 @@ color:transparent;
 .drawer__handle {}
 
 .drawer__content {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
   @apply bg-brandGrey
 }

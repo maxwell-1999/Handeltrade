@@ -17,7 +17,7 @@ const MobileDrawer: React.FC<any> = ({}) => {
       isVisible={drawerManager.drawerState?.screen ? true : false}
       className={'drawer'}
     >
-      <div className="m-auto root-w">
+      <div className="m-auto root-w px-[15px]">
         {drawerManager.drawerState?.screen == 'login' ? (
           <LoginPage />
         ) : drawerManager.drawerState?.screen == 'wallet' ? (
