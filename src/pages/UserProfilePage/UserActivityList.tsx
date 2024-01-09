@@ -81,6 +81,9 @@ const MarketActivityCard: React.FC<{
             </span>
           )}{' '}
         </div>
+        {/* <div className={'mb-1 text-overflow-2-lines w-full font-semibold text-2 text-f9 '}>
+            @{market?.social_handle}
+          </div> */}
         <div
           className={
             'w-full font-semibold text-2 text-f9  ' +

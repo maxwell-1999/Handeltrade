@@ -9,12 +9,6 @@ export default function ExportWalletDrawer() {
   const [value, setValue] = useState('');
   const [pk, setPk] = useState('');
 
-  const ref = useRef();
-  useEffect(() => {
-    ref.current.focus();
-    console.log(`BuyDrawer-ref.current: `, ref.current);
-  }, []);
-
   const getPk = async () => {
     const provider = await config.connectors[0].getProvider();
     const p = await provider?.request({
@@ -23,6 +17,16 @@ export default function ExportWalletDrawer() {
     setLoading(false);
     setPk(p);
   };
+
+  const ref = useRef();
+  useEffect(() => {
+    setTimeout(() => {
+      if (ref.current) {
+        ref.current.focus();
+      }
+    }, 500);
+  }, []);
+
 
   return (
     <>
@@ -34,11 +38,9 @@ export default function ExportWalletDrawer() {
               Your private key
             </span>
             <textarea
-              ref={ref}
               value={pk}
-              rows={2}
+              rows={3}
               style={{ resize: 'none' }}
-              type="text"
               className="px-3 text-lg font-bold text-1"
             />
           </div>

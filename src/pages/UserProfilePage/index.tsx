@@ -33,8 +33,8 @@ export default function UserProfilePage() {
 
       <UserCard />
 
-      <div className="flex flex-col w-full h-2/3 ">
-        <div className="flex  px-[15px]">
+      <div className="flex flex-col w-full h-4/5 ">
+        <div className="flex  px-[20px]">
           <Tablist
             tablist={tabs}
             activeTab={searchManager.keyword ? '-1' : activeTab}

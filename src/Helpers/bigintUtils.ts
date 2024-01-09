@@ -30,6 +30,29 @@ const renderShares = (a: bigint | string) => {
   return shares > 1 ? shares + ' Shares' : shares + ' Share';
 };
 
+const bigIntToStringWithDecimal = (
+  bigintValue: BigInt,
+  decimalPlaces: number
+): string => {
+  // Convert the BigInt to a string
+  let stringValue = bigintValue.toString();
+
+  // Pad the string with zeros if it's shorter than the decimal places
+  while (stringValue.length <= decimalPlaces) {
+    stringValue = '0' + stringValue;
+  }
+
+  // Insert the decimal point at the correct position
+  const decimalPointIndex = stringValue.length - decimalPlaces;
+  stringValue =
+    stringValue.substring(0, decimalPointIndex) +
+    '.' +
+    stringValue.substring(decimalPointIndex);
+
+  // Remove any unnecessary leading zeros
+  return stringValue.replace(/^0+(?!\.|$)/, '');
+};
+
 export {
   bigIntMin,
   bigIntMax,
@@ -38,4 +61,5 @@ export {
   view,
   renderShares,
   viewDec,
+  bigIntToStringWithDecimal,
 };
