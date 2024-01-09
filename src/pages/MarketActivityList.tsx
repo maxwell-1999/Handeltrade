@@ -61,7 +61,7 @@ const UserActivityCard: React.FC<{
         <span className="flex flex-grow">
           {user?.img_url ? (
             <img
-              className="w-[45px] h-[45px] rounded-[5px] mr-[10px]"
+              className="w-[45px] h-[45px] rounded-[5px] mr-[10px] img-loading"
               // height={30}
               // width={30}
               src={user.img_url}

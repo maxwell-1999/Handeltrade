@@ -19,7 +19,7 @@ const UserCardSm: React.FC<any> = ({ user }) => {
           <span className="flex flex-grow">
             {user.img_url ? (
               <img
-                className="w-[45px] h-[45px] rounded-[5px] mr-[10px]"
+                className="w-[45px] h-[45px] rounded-[5px] mr-[10px] img-loading"
                 src={user.img_url}
                 alt="user profile"
               />

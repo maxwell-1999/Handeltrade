@@ -22,7 +22,11 @@ body {
   background-image: url('/BGPattern.png');
   background-size: cover;
 }
+.img-loading {
 
+  background: #8f95a4 url('/loading_spinner.gif') center no-repeat;
+  background-size: 100% 100%;
+}
 .logo {
   height: 6em;
   padding: 1.5em;

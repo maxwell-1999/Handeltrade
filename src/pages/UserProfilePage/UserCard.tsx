@@ -10,19 +10,25 @@ import { formatAddress } from '../../Helpers/web3utils';
 const UserCard: React.FC<any> = () => {
   const params = useParams();
   const account = useAccount();
-  const { address } = params?.user_addr ? { address: params.user_addr } : account;
-  const [userState, setUserState] = params?.user_addr ? useOtherUserState() : useUserState();
+  const { address } = params?.user_addr
+    ? { address: params.user_addr }
+    : account;
+  const [userState, setUserState] = params?.user_addr
+    ? useOtherUserState()
+    : useUserState();
 
   const { data, isError, isLoading } = useBalance({
     address: address,
   });
 
   if (params?.user_addr) {
-    axios.get(
-      `${import.meta.env.VITE_API_ENDPOINT}/user/address/${params.user_addr}`,
-    ).then(res => {
-      setUserState(res.data.data);
-    });
+    axios
+      .get(
+        `${import.meta.env.VITE_API_ENDPOINT}/user/address/${params.user_addr}`
+      )
+      .then((res) => {
+        setUserState(res.data.data);
+      });
   }
 
   return (
@@ -32,7 +38,7 @@ const UserCard: React.FC<any> = () => {
           {/* profile img section */}
           <span className="flex flex-grow">
             <img
-              className=" rounded-[10px] mr-4  w-[60px] h-[60px]"
+              className=" rounded-[10px] mr-4  w-[60px] h-[60px] img-loading"
               // height={20}
               src={userState?.img_url}
               alt="user profile"
@@ -42,9 +48,11 @@ const UserCard: React.FC<any> = () => {
               <PrimeText>{userState?.first_name}</PrimeText>
               <PrimeText>{userState?.last_name}</PrimeText>
               <PrimeFadeText>{userState?.email}</PrimeFadeText>
-              {params.user_addr && <span className=' max-w-[70px] bg-gray-200 rounded-lg p-2'>
-                {formatAddress(userState?.public_address)}{' '}
-              </span>}
+              {params.user_addr && (
+                <span className=" max-w-[70px] bg-gray-200 rounded-lg p-2">
+                  {formatAddress(userState?.public_address)}{' '}
+                </span>
+              )}
             </span>
           </span>
           {/* finance */}

@@ -57,7 +57,10 @@ const MarketActivityCard: React.FC<{
       onClick={() => navigate('/markets/' + market.market_id)}
     >
       <div className="flex flex-col gap-[3px] items-center justify-center ">
-        <img src={market.img_url} className="w-[40px] h-[40px] rounded-[5px]" />
+        <img
+          src={market.img_url}
+          className="w-[40px] h-[40px] rounded-[5px]  img-loading"
+        />
         {nonPrice ? null : (
           <span className="font-semibold text-f14">
             #{market?.rank || 'New'}

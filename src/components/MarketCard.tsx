@@ -33,7 +33,8 @@ const MarketCard: React.FC<{
       <div className="flex flex-col gap-[3px] items-center justify-center ">
         <img
           src={market?.img_url}
-          className="w-[40px] h-[40px] rounded-[5px]"
+          loading="lazy"
+          className="w-[40px] h-[40px] rounded-[5px] img-loading"
         />
         {nonPrice ? null : (
           <span className="font-semibold text-f14">
