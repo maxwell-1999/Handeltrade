@@ -64,7 +64,7 @@ const MarketCreation: React.FC<any> = ({}) => {
 
   return (
     <Layout>
-      <div className="flex flex-col items-center justify-end h-full bg-[#867CF4] custom-bg-image">
+      <div className="flex flex-col items-center justify-end h-full  custom-bg-image">
         <div className="flex flex-col items-center h-[70%] gap-[20px] bg-white w-full rounded-t-[20px] p-[30px]">
           <div className="text-lg font-bold">Create new Market</div>
           <div className="w-full text-center text-f12 text-2 ">

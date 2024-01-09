@@ -30,7 +30,7 @@ const UserCardSm: React.FC<any> = ({ user }) => {
                 width={27}
                 className="w-[45px] h-[45px] mr-[7px] p-1 text-2 cursor-pointer"
                 icon={faCircleQuestion}
-                onClick={() => {}}
+                onClick={() => { }}
               />
             )}
             {/* demographics */}
@@ -58,7 +58,10 @@ const UserCardSm: React.FC<any> = ({ user }) => {
               </span>
               <span className="flex justify-between w-full text-2 ">
                 <span className="mt-1 font-semibold text-f12">
-                  {user?.email ? user.email : 'No details'}
+                  {/* {user?.email ? user.email : 'No details'} */}
+                  <span className=" max-w-[70px] bg-gray-200 rounded-lg p-2">
+                    {formatAddress(user?.public_address)}{' '}
+                  </span>
                 </span>
               </span>
             </span>

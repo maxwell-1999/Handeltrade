@@ -32,7 +32,7 @@ const UserCard: React.FC<any> = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-1/5 px-horizontalSm">
+    <div className="flex flex-col items-center justify-center w-full h-1/5 px-horizontalSm custom-bg-image">
       <div className="flex flex-col items-center justify-center w-full h-full">
         <div className="flex w-full">
           {/* profile img section */}
@@ -47,7 +47,7 @@ const UserCard: React.FC<any> = () => {
             <span className="flex flex-col">
               <PrimeText>{userState?.first_name}</PrimeText>
               <PrimeText>{userState?.last_name}</PrimeText>
-              <PrimeFadeText>{userState?.email}</PrimeFadeText>
+              {!params?.user_addr && <PrimeFadeText>{userState?.email}</PrimeFadeText>}
               {params.user_addr && (
                 <span className=" max-w-[70px] bg-gray-200 rounded-lg p-2">
                   {formatAddress(userState?.public_address)}{' '}

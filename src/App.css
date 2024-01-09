@@ -1,6 +1,7 @@
-:root{
-  --root-width:min(100vw , 540px );
+:root {
+  --root-width: min(100vw, 540px);
 }
+
 html,
 body {
   font-size: 10px;
@@ -10,6 +11,7 @@ body {
   width: var(--root-width);
   margin: auto;
 }
+
 * {
   font-family: 'Poppins', sans-serif !important;
 }
@@ -20,18 +22,23 @@ body {
 }
 
 
-.custom-bg-image{
+.custom-bg-image {
   background-image: url('/BGPattern.png');
   background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 0px 0px;
 }
-.tab-gap{
-  gap: min(150px , 20vw);
+
+.tab-gap {
+  gap: min(150px, 20vw);
 }
+
 .img-loading {
-color:transparent;
-  background: #8f95a4 url('/loading_spinner.gif') center no-repeat;
-  background-size: 100% 100%;
+  color: transparent;
+  background: #8f95a4 url('/spinning-loading.gif') center no-repeat;
+  background-size: 250% 150%;
 }
+
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -78,7 +85,7 @@ color:transparent;
 }
 
 
-.root-w{
+.root-w {
   width: var(--root-width);
 }
 
@@ -88,7 +95,7 @@ color:transparent;
 }
 
 .drawer {
-  margin:auto;
+  margin: auto;
 
 }
 

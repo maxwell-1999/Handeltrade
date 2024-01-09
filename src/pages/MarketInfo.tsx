@@ -31,7 +31,7 @@ import { bigIntToStringWithDecimal, viewDec } from '../Helpers/bigintUtils';
 import MemoButtonLoader from '../components/ButtonLoader';
 
 const tabs = ['Holders', 'Watchlisted By', 'Activity', 'Claimable'];
-const MarketInfo: React.FC<any> = ({}) => {
+const MarketInfo: React.FC<any> = ({ }) => {
   const account = useAccount();
   const [userState] = useUserState();
   const params = useParams();
@@ -115,8 +115,8 @@ const MarketInfo: React.FC<any> = ({}) => {
                     className="h-8 mr-4 cursor-pointer text-brand"
                     icon={solidBookmark}
                     onClick={() => handleRemoveFromWatchlist()}
-                    // data-tooltip-id="tooltip"
-                    // data-tooltip-content={'Remove from watchlist'}
+                  // data-tooltip-id="tooltip"
+                  // data-tooltip-content={'Remove from watchlist'}
                   />
                 ) : (
                   <FontAwesomeIcon
@@ -124,8 +124,8 @@ const MarketInfo: React.FC<any> = ({}) => {
                     className="h-8 mr-4 cursor-pointer text-brand"
                     icon={emptyBookmark}
                     onClick={() => handleAddToWatchlist()}
-                    // data-tooltip-id="tooltip"
-                    // data-tooltip-content={'Add to watchlist'}
+                  // data-tooltip-id="tooltip"
+                  // data-tooltip-content={'Add to watchlist'}
                   />
                 )
               ) : null}
@@ -147,7 +147,7 @@ const MarketInfo: React.FC<any> = ({}) => {
           activeTab={activeTab}
         />
       </div>
-      <div className="h-full bg-brandGrey ">
+      <div className="h-full bg-brandGrey mx-[-4px] ">
         {activeTab == 'Holders' ? (
           <HoldersTab market={data} />
         ) : activeTab == 'Watchlisted By' ? (
@@ -164,12 +164,11 @@ const MarketInfo: React.FC<any> = ({}) => {
 
 export { MarketInfo };
 
-const HoldersTab: React.FC<{ market: Market }> = ({ market }) => {
+const HoldersTab: React.FC<{ market: Market; }> = ({ market }) => {
   const { data, isLoading } = useSWR<User[]>('holders' + market.id, {
     fetcher: async () => {
       const results = await axios.get(
-        `${
-          import.meta.env.VITE_API_ENDPOINT
+        `${import.meta.env.VITE_API_ENDPOINT
         }/market/market_holders_by_market_id/${market.market_id}/400/0`
       );
       return results.data.data as User[];
@@ -186,12 +185,11 @@ const HoldersTab: React.FC<{ market: Market }> = ({ market }) => {
   );
 };
 
-const WatchListedByTab: React.FC<{ market: Market }> = ({ market }) => {
+const WatchListedByTab: React.FC<{ market: Market; }> = ({ market }) => {
   const { data, isLoading } = useSWR<User[]>('watchlistedBy' + market.id, {
     fetcher: async () => {
       const results = await axios.get(
-        `${
-          import.meta.env.VITE_API_ENDPOINT
+        `${import.meta.env.VITE_API_ENDPOINT
         }/market/market_watchlisted_by_market_id/${market.market_id}/400/0`
       );
       return results.data.data as User[];
@@ -208,12 +206,11 @@ const WatchListedByTab: React.FC<{ market: Market }> = ({ market }) => {
   );
 };
 
-const MarketActivityTab: React.FC<{ market: Market }> = ({ market }) => {
+const MarketActivityTab: React.FC<{ market: Market; }> = ({ market }) => {
   const { data, isLoading } = useSWR<any>('MarketActivity' + market.id, {
     fetcher: async () => {
       const results = await axios.get(
-        `${
-          import.meta.env.VITE_API_ENDPOINT
+        `${import.meta.env.VITE_API_ENDPOINT
         }/market/market_activities_by_market_id/${market.market_id}/400/0`
       );
       return results.data;
@@ -231,9 +228,10 @@ const MarketActivityTab: React.FC<{ market: Market }> = ({ market }) => {
   );
 };
 
-const ClaimMarketRewards: React.FC<{ market: Market }> = ({ market }) => {
+const ClaimMarketRewards: React.FC<{ market: Market; }> = ({ market }) => {
   const account = useAccount();
   const network = useNetwork();
+  const symbol = network.chain?.nativeCurrency.symbol;
   const [loadingRewards, setLoadingRewards] = useState(false);
   const [loadingReflection, setLoadingReflection] = useState(false);
 
@@ -322,49 +320,47 @@ const ClaimMarketRewards: React.FC<{ market: Market }> = ({ market }) => {
 
   return (
     <div>
-      <div className="flex flex-col gap-[10px] pt-[20px]">
-        <div className="flex flex-col bg-white p-4 rounded-[10px] justify-between items-center ">
-          <PrimeFadeText>Collected Weekly Rewards</PrimeFadeText>
-          <PrimeText classname=" text-[20px] p-10 ">
-            {data[0]?.result
-              ? viewDec(data[0].result, 18) +
-                ' ' +
-                network.chain?.nativeCurrency.symbol
-              : '...'}
-          </PrimeText>
-          <PrimaryBtn
-            className={`flex items-center justify-center gap-5 h-[40px] text-white ${
-              claimable(data[0]?.result) ? 'bg-brand' : 'bg-gray-400'
-            }`}
-            onClick={() => claimWeeklyRewards()}
-          >
-            <MemoButtonLoader className="scale-110 " loading={loadingRewards} />{' '}
-            Claim Weekly Rewards
-          </PrimaryBtn>
+      <div className="flex flex-col gap-[10px] pt-[20px] pr-6 pl-6">
+
+        <div className="flex flex-col bg-white p-4 rounded-[10px] ">
+          <span className='font-semibold text-f14'>Collected Weekly Rewards</span>
+          <span className='flex justify-between'>
+            <span className=" text-[20px] text-2  ">
+              {data[0]?.result
+                ? viewDec(data[0].result, 18) +
+                ' ' + symbol
+                : '0.00 ' + symbol}
+            </span>
+            <PrimaryBtn
+              className={`p-1 text-[white] text-[12px] mr-2 w-[70px] h-fit min-w-fit font-semibold rounded-[4px] px-2 ${claimable(data[0]?.result) ? "" : "bg-2 cursor-not-allowed"}`}
+              onClick={() => claimWeeklyRewards()}
+            >
+              <MemoButtonLoader className="scale-110 " loading={loadingRewards} />{' '}
+              {loadingRewards ? "" : "Claim"}
+            </PrimaryBtn>
+          </span>
         </div>
 
-        <div className="flex flex-col bg-white p-4 rounded-[10px] justify-between items-center ">
-          <PrimeFadeText>Collected Reflection</PrimeFadeText>
-          <PrimeText classname="text-[20px] p-10 ">
-            {data[1]?.result
-              ? viewDec(data[1].result) +
-                ' ' +
-                network.chain?.nativeCurrency.symbol
-              : '...'}
-          </PrimeText>
-          <PrimaryBtn
-            className={`flex items-center justify-center gap-5 h-[40px] text-white ${
-              claimable(data[1]?.result) ? 'bg-brand' : 'bg-gray-400'
-            }`}
-            onClick={() => claimReflection()}
-          >
-            <MemoButtonLoader
-              className="scale-110 "
-              loading={loadingReflection}
-            />{' '}
-            Claim Reflection
-          </PrimaryBtn>
+        {/* Claim Reflection Card */}
+        <div className="flex flex-col bg-white p-4 rounded-[10px] ">
+          <span className='font-semibold text-f14'>Collected Reflection</span>
+          <span className='flex justify-between'>
+            <span className=" text-[20px] text-2 ">
+              {data[1]?.result
+                ? viewDec(data[1].result, 18) +
+                ' ' + symbol
+                : '0.00 ' + symbol}
+            </span>
+            <PrimaryBtn
+              className={`p-1 text-[white] text-[12px] mr-2 w-[70px] h-fit min-w-fit font-semibold rounded-[4px] px-2 ${claimable(data[1]?.result) ? "" : "bg-2 cursor-not-allowed"}`}
+              onClick={() => claimReflection()}
+            >
+              <MemoButtonLoader className="scale-110 " loading={loadingReflection} />{' '}
+              {loadingReflection ? "" : "Claim"}
+            </PrimaryBtn>
+          </span>
         </div>
+
         <div className="flex flex-row-reverse text-1">
           Minimum claimable {viewDec(data[2]?.result, 18)}*
         </div>
