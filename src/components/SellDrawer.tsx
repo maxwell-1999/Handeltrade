@@ -76,7 +76,7 @@ const SellDrawer: React.FC<{
             else {
               setErrors((e) => ({ ...e, [ip.name]: null }));
             }
-            setValue(e.target.value);
+            setValue(e.target.value.replace(/[^0-9]/g, ''));
           }}
           className="px-3 text-lg font-bold text-1"
         />

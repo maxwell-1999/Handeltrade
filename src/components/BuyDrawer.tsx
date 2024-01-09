@@ -63,7 +63,9 @@ const BuyDrawer: React.FC<{
           ref={ref}
           value={value}
           type="number"
-          onChange={(e) => setValue(e.target.value)}
+          pattern="[0-9]"
+          title="Numbers only"
+          onChange={(e) => setValue(e.target.value.replace(/[^0-9]/g, ''))}
           className="px-3 text-lg font-bold text-1"
         />
       </div>
