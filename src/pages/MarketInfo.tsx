@@ -10,7 +10,7 @@ import { ListLoader } from '../components/ListLoader';
 import { marketsRefreshInterval } from './MarketListing';
 import { useProtection } from '../Helpers/useProtection';
 import { UserCardList } from '../components/UserCardList';
-import { useAccount, useContractReads, useNetwork } from 'wagmi';
+import { useAccount, useContractReads, useContractWrite, useNetwork, usePublicClient } from 'wagmi';
 import useUserState from '../atoms/userState';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookmark as solidBookmark } from '@fortawesome/free-solid-svg-icons';
@@ -22,6 +22,7 @@ import PrimeText from '../components/PrimeText';
 import HandleTradeAbi from '../ABI/HandelTrade.json';
 import { appConfig } from '../config';
 import { bigIntToStringWithDecimal, viewDec } from '../Helpers/bigintUtils';
+import MemoButtonLoader from '../components/ButtonLoader';
 
 
 const tabs = ['Holders', 'Watchlisted By', 'Activity', 'Claimable'];
@@ -251,11 +252,9 @@ const ClaimMarketRewards: React.FC<{ market: Market; }> = ({ market }) => {
     ]
   });
 
-  if (!data || data.length == 0) return <ClaimableLoading />;
-  console.log({ data });
 
   const claimable = (earned: BigInt): boolean => {
-    if (data[2]?.result) {
+    if (data && data.length && data[2]?.result) {
       const minFeesClaimThreshold = data[2]?.result;
       if (earned > minFeesClaimThreshold) {
         return true;
@@ -264,10 +263,55 @@ const ClaimMarketRewards: React.FC<{ market: Market; }> = ({ market }) => {
     return false;
   };
 
+  const { waitForTransactionReceipt } = usePublicClient();
+  const { writeAsync: claimRewardAsync } = useContractWrite({
+    address: appConfig.handelTradeAddress,
+    abi: HandleTradeAbi,
+    functionName: 'claimRewards',
+  });
+  const { writeAsync: claimReflectionAsync } = useContractWrite({
+    address: appConfig.handelTradeAddress,
+    abi: HandleTradeAbi,
+    functionName: 'claimReflectionFees',
+  });
+
   const claimWeeklyRewards = async () => {
+    if (!market?.market_id || !account?.address) return;
+    setLoadingRewards(true);
+
+    const argPack = {
+      args: [market?.market_id, account?.address]
+    };
+    const { hash } = await claimRewardAsync(argPack);
+    const { status: completionStatus } = await waitForTransactionReceipt({
+      hash,
+    });
+
+    data[0].result = BigInt(0);
+    setLoadingRewards(false);
+    console.log(`handel-ClaimReward:completionStatus: `, completionStatus);
+    toast.success('Rewards claimed');
   };
+
   const claimReflection = async () => {
+    if (!market?.market_id || !account?.address) return;
+    setLoadingReflection(true);
+    const argPack = {
+      args: [market?.market_id, account?.address]
+    };
+    const { hash } = await claimReflectionAsync(argPack);
+    const { status: completionStatus } = await waitForTransactionReceipt({
+      hash,
+    });
+
+    data[1].result = BigInt(0);
+    setLoadingReflection(false);
+    console.log(`handel-ClaimReflection:completionStatus: `, completionStatus);
+    toast.success('Reflection claimed');
   };
+
+  if (!data || data.length == 0) return <ClaimableLoading />;
+  console.log({ data });
 
   return (
     <div>
@@ -283,7 +327,7 @@ const ClaimMarketRewards: React.FC<{ market: Market; }> = ({ market }) => {
             className={`flex items-center justify-center gap-5 h-[40px] text-white ${claimable(data[0]?.result) ? 'bg-brand' : 'bg-gray-400'}`}
             onClick={() => claimWeeklyRewards()}
           >
-            Claim Weekly Rewards
+            <MemoButtonLoader className="scale-110 " loading={loadingRewards} />  Claim Weekly Rewards
           </PrimaryBtn>
         </div>
 
@@ -298,14 +342,12 @@ const ClaimMarketRewards: React.FC<{ market: Market; }> = ({ market }) => {
             className={`flex items-center justify-center gap-5 h-[40px] text-white ${claimable(data[1]?.result) ? 'bg-brand' : 'bg-gray-400'}`}
             onClick={() => claimReflection()}
           >
-            Claim Reflection
+            <MemoButtonLoader className="scale-110 " loading={loadingReflection} /> Claim Reflection
           </PrimaryBtn>
         </div>
         <div className='flex flex-row-reverse text-1'>
           Minimum claimable {viewDec(data[2]?.result, 18)}*
         </div>
-
-
       </div>
     </div>
   );
