@@ -13,6 +13,7 @@ const UserCardSm: React.FC<any> = ({ user }) => {
       onClick={() => user.id && navigate('/profile/' + user.public_address)}
       className="flex flex-col items-center justify-center w-full cursor-pointer "
     >
+      {/*  */}
       <div className="flex flex-col items-center justify-center w-full h-full bg-[white] p-4 rounded-[10px]">
         <div className="flex w-full ">
           {/* profile img section */}
