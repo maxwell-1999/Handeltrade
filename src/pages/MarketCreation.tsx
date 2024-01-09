@@ -95,7 +95,7 @@ const MarketCreation: React.FC<any> = ({}) => {
             </form>
             {value ? (
               <div
-                className=" text-f14 z-[100] bg-brand w-fit h-fit px-3 py-3 rounded-[12px]"
+                className=" text-f14 z-[10] bg-brand w-fit h-fit px-3 py-3 rounded-[12px]"
                 onClick={() => {
                   fetchMarketStatus();
                 }}
