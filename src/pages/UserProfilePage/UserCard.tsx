@@ -26,7 +26,7 @@ const UserCard: React.FC<any> = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-1/3 px-horizontalSm">
+    <div className="flex flex-col items-center justify-center w-full h-1/5 px-horizontalSm">
       <div className="flex flex-col items-center justify-center w-full h-full">
         <div className="flex w-full">
           {/* profile img section */}

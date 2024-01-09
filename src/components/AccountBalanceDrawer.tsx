@@ -2,6 +2,8 @@ import React from 'react';
 import { PrimaryBtn } from './Buttons';
 import MemoButtonLoader from './ButtonLoader';
 import { useAccount, useBalance, useNetwork } from 'wagmi';
+import { bigIntToStringWithDecimal, viewDec } from '../Helpers/bigintUtils';
+import PrimeText from './PrimeText';
 
 
 export default function AccountBalanceDrawer() {
@@ -18,11 +20,12 @@ export default function AccountBalanceDrawer() {
           <span className="text-2 text-f14 font-[500]">
             Your Account balance is:
           </span>
-          <textarea
-            value={isLoading ? '...' : (data?.value)+""}
+          <PrimeText
+            classname="px-3 text-lg font-bold text-1"
             style={{ resize: 'none' }}
-            className="px-3 text-lg font-bold text-1"
-          />
+          >
+            {isLoading ? '...' : bigIntToStringWithDecimal(data?.value, network.chain?.nativeCurrency.decimals) + " " + network.chain?.nativeCurrency.symbol}
+          </PrimeText>
         </div>
       </div>
     </div>

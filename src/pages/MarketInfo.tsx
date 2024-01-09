@@ -3,23 +3,29 @@ import { useParams } from 'react-router-dom';
 import useSWR from 'swr';
 import useDrawerState from '../atoms/drawerState';
 import { MarketCard } from '../components/MarketCard';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Tablist } from '../components/Tablist';
 import { PrimaryBtn, SecondaryBtn } from '../components/Buttons';
 import { ListLoader } from '../components/ListLoader';
 import { marketsRefreshInterval } from './MarketListing';
 import { useProtection } from '../Helpers/useProtection';
 import { UserCardList } from '../components/UserCardList';
-import { useAccount } from 'wagmi';
+import { useAccount, useContractReads, useNetwork } from 'wagmi';
 import useUserState from '../atoms/userState';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookmark as solidBookmark } from '@fortawesome/free-solid-svg-icons';
 import { faBookmark as emptyBookmark } from '@fortawesome/free-regular-svg-icons';
 import toast from 'react-hot-toast';
 import MarketActivityList from './MarketActivityList';
+import PrimeFadeText from '../components/PrimeFadeText';
+import PrimeText from '../components/PrimeText';
+import HandleTradeAbi from '../ABI/HandelTrade.json';
+import { appConfig } from '../config';
+import { bigIntToStringWithDecimal, viewDec } from '../Helpers/bigintUtils';
 
-const tabs = ['Holders', 'Watchlisted By', 'Activity'];
-const MarketInfo: React.FC<any> = ({}) => {
+
+const tabs = ['Holders', 'Watchlisted By', 'Activity', 'Claimable'];
+const MarketInfo: React.FC<any> = ({ }) => {
   const account = useAccount();
   const [userState] = useUserState();
   const params = useParams();
@@ -103,8 +109,8 @@ const MarketInfo: React.FC<any> = ({}) => {
                     className="h-8 mr-4 cursor-pointer text-brand"
                     icon={solidBookmark}
                     onClick={() => handleRemoveFromWatchlist()}
-                    data-tooltip-id="tooltip"
-                    data-tooltip-content={'Remove from watchlist'}
+                  // data-tooltip-id="tooltip"
+                  // data-tooltip-content={'Remove from watchlist'}
                   />
                 ) : (
                   <FontAwesomeIcon
@@ -112,8 +118,8 @@ const MarketInfo: React.FC<any> = ({}) => {
                     className="h-8 mr-4 cursor-pointer text-brand"
                     icon={emptyBookmark}
                     onClick={() => handleAddToWatchlist()}
-                    data-tooltip-id="tooltip"
-                    data-tooltip-content={'Add to watchlist'}
+                  // data-tooltip-id="tooltip"
+                  // data-tooltip-content={'Add to watchlist'}
                   />
                 )
               ) : null}
@@ -140,8 +146,10 @@ const MarketInfo: React.FC<any> = ({}) => {
           <HoldersTab market={data} />
         ) : activeTab == 'Watchlisted By' ? (
           <WatchListedByTab market={data} />
-        ) : (
+        ) : activeTab == "Activity" ? (
           <MarketActivityTab market={data} />
+        ) : (
+          <ClaimMarketRewards market={data} />
         )}
       </div>
     </div>
@@ -150,12 +158,11 @@ const MarketInfo: React.FC<any> = ({}) => {
 
 export { MarketInfo };
 
-const HoldersTab: React.FC<{ market: Market }> = ({ market }) => {
+const HoldersTab: React.FC<{ market: Market; }> = ({ market }) => {
   const { data, isLoading } = useSWR<User[]>('holders' + market.id, {
     fetcher: async () => {
       const results = await axios.get(
-        `${
-          import.meta.env.VITE_API_ENDPOINT
+        `${import.meta.env.VITE_API_ENDPOINT
         }/market/market_holders_by_market_id/${market.market_id}/400/0`
       );
       return results.data.data as User[];
@@ -172,12 +179,11 @@ const HoldersTab: React.FC<{ market: Market }> = ({ market }) => {
   );
 };
 
-const WatchListedByTab: React.FC<{ market: Market }> = ({ market }) => {
+const WatchListedByTab: React.FC<{ market: Market; }> = ({ market }) => {
   const { data, isLoading } = useSWR<User[]>('watchlistedBy' + market.id, {
     fetcher: async () => {
       const results = await axios.get(
-        `${
-          import.meta.env.VITE_API_ENDPOINT
+        `${import.meta.env.VITE_API_ENDPOINT
         }/market/market_watchlisted_by_market_id/${market.market_id}/400/0`
       );
       return results.data.data as User[];
@@ -194,12 +200,11 @@ const WatchListedByTab: React.FC<{ market: Market }> = ({ market }) => {
   );
 };
 
-const MarketActivityTab: React.FC<{ market: Market }> = ({ market }) => {
+const MarketActivityTab: React.FC<{ market: Market; }> = ({ market }) => {
   const { data, isLoading } = useSWR<any>('MarketActivity' + market.id, {
     fetcher: async () => {
       const results = await axios.get(
-        `${
-          import.meta.env.VITE_API_ENDPOINT
+        `${import.meta.env.VITE_API_ENDPOINT
         }/market/market_activities_by_market_id/${market.market_id}/400/0`
       );
       return results.data;
@@ -215,4 +220,99 @@ const MarketActivityTab: React.FC<{ market: Market }> = ({ market }) => {
       <MarketActivityList userAddrMap={userAddrMap} data={data.data} />
     </div>
   );
+};
+
+const ClaimMarketRewards: React.FC<{ market: Market; }> = ({ market }) => {
+  const account = useAccount();
+  const network = useNetwork();
+  const [loadingRewards, setLoadingRewards] = useState(false);
+  const [loadingReflection, setLoadingReflection] = useState(false);
+
+  const { data } = useContractReads({
+    contracts: [
+      {
+        address: appConfig.handelTradeAddress,
+        abi: HandleTradeAbi,
+        functionName: 'checkEarnedRewards',
+        args: [market?.market_id, account?.address],
+      },
+      {
+        address: appConfig.handelTradeAddress,
+        abi: HandleTradeAbi,
+        functionName: 'dividendsOf',
+        args: [market?.market_id, account?.address],
+      },
+      {
+        address: appConfig.handelTradeAddress,
+        abi: HandleTradeAbi,
+        functionName: 'minFeesClaimThreshold',
+        args: []
+      }
+    ]
+  });
+
+  if (!data || data.length == 0) return <ClaimableLoading />;
+  console.log({ data });
+
+  const claimable = (earned: BigInt): boolean => {
+    if (data[2]?.result) {
+      const minFeesClaimThreshold = data[2]?.result;
+      if (earned > minFeesClaimThreshold) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const claimWeeklyRewards = async () => {
+  };
+  const claimReflection = async () => {
+  };
+
+  return (
+    <div>
+      <div className='flex flex-col gap-[10px] pt-[20px]'>
+        <div className="flex flex-col bg-white p-4 rounded-[10px] justify-between items-center ">
+          <PrimeFadeText>
+            Collected Weekly Rewards
+          </PrimeFadeText>
+          <PrimeText classname=' text-[20px] p-10 '>
+            {data[0]?.result ? viewDec(data[0].result, 18) + " " + network.chain?.nativeCurrency.symbol : "..."}
+          </PrimeText>
+          <PrimaryBtn
+            className={`flex items-center justify-center gap-5 h-[40px] text-white ${claimable(data[0]?.result) ? 'bg-brand' : 'bg-gray-400'}`}
+            onClick={() => claimWeeklyRewards()}
+          >
+            Claim Weekly Rewards
+          </PrimaryBtn>
+        </div>
+
+        <div className="flex flex-col bg-white p-4 rounded-[10px] justify-between items-center ">
+          <PrimeFadeText>
+            Collected Reflection
+          </PrimeFadeText>
+          <PrimeText classname='text-[20px] p-10 '>
+            {data[1]?.result ? viewDec(data[1].result) + " " + network.chain?.nativeCurrency.symbol : "..."}
+          </PrimeText>
+          <PrimaryBtn
+            className={`flex items-center justify-center gap-5 h-[40px] text-white ${claimable(data[1]?.result) ? 'bg-brand' : 'bg-gray-400'}`}
+            onClick={() => claimReflection()}
+          >
+            Claim Reflection
+          </PrimaryBtn>
+        </div>
+        <div className='flex flex-row-reverse text-1'>
+          Minimum claimable {viewDec(data[2]?.result, 18)}*
+        </div>
+
+
+      </div>
+    </div>
+  );
+};
+
+const ClaimableLoading: React.FC = () => {
+  return <div className='p-2'>
+    Loading...
+  </div>;
 };

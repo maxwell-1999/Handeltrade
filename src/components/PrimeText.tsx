@@ -7,10 +7,9 @@ const PrimeText: React.FC<{
 }> = ({ children, classname, style }) => {
   return (
     <span
-      className={`${classname}`}
+      className={`text-[14px] ${classname}`}
       style={{
         fontFamily: 'Poppins',
-        fontSize: '14px',
         lineHeight: '21px',
         letterSpacing: '0em',
         textAlign: 'left',
