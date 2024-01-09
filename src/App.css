@@ -28,7 +28,7 @@ body {
   gap: min(150px , 20vw);
 }
 .img-loading {
-
+color:transparent;
   background: #8f95a4 url('/loading_spinner.gif') center no-repeat;
   background-size: 100% 100%;
 }

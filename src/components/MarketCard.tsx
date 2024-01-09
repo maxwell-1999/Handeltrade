@@ -66,7 +66,7 @@ const MarketCard: React.FC<{
           }
         >
           <div className={'mb-1 ' + (!preview ? 'text-overflow-2-lines' : '')}>
-            {market.description}
+            {preview ? market.social_handle : market.description}
             {/* @{market?.social_handle} */}
           </div>
           {nonPrice ? null : (
