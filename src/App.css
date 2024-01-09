@@ -1,13 +1,15 @@
+:root{
+  --root-width:min(100vw , 540px );
+}
 html,
 body {
   font-size: 10px;
   padding: 0;
   margin: 0;
   background-color: var(--bg-17);
-  max-width: min(100vw , 540px );
+  max-width: var(--root-width);
   margin: auto;
 }
-
 * {
   font-family: 'Poppins', sans-serif !important;
 }
@@ -76,14 +78,19 @@ body {
 }
 
 
-
+.root-w{
+  width: var(--root-width);
+}
 
 
 .drawer__handle-wrapper {
   @apply bg-brandGrey
 }
 
-.drawer {}
+.drawer {
+  margin:auto;
+
+}
 
 .drawer__backdrop {}
 

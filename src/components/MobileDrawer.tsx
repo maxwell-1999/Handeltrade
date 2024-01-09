@@ -6,7 +6,7 @@ import WalletDrawer from './WalletDrawer';
 import AccountBalanceDrawer from './AccountBalanceDrawer';
 import ExportWalletDrawer from './ExportWalletDrawer';
 
-const MobileDrawer: React.FC<any> = ({ }) => {
+const MobileDrawer: React.FC<any> = ({}) => {
   const drawerManager = useDrawerState();
 
   return (
@@ -17,17 +17,17 @@ const MobileDrawer: React.FC<any> = ({ }) => {
       isVisible={drawerManager.drawerState?.screen ? true : false}
       className={'drawer'}
     >
-      {drawerManager.drawerState?.screen == 'login' ? (
-        <LoginPage />
-      )
-        : drawerManager.drawerState?.screen == 'wallet' ? (
+      <div className="m-auto root-w">
+        {drawerManager.drawerState?.screen == 'login' ? (
+          <LoginPage />
+        ) : drawerManager.drawerState?.screen == 'wallet' ? (
           <ExportWalletDrawer />
         ) : drawerManager.drawerState?.screen == 'balance' ? (
           <AccountBalanceDrawer />
-        )
-          : (
-            <ShareManagementDrawer />
-          )}
+        ) : (
+          <ShareManagementDrawer />
+        )}
+      </div>
     </Drawer>
   );
 };
