@@ -13,6 +13,7 @@ import { toJSEpoch } from '../components/MarketCard';
 import { useNetwork } from 'wagmi';
 import { formatAddress } from '../Helpers/web3utils';
 import toast from 'react-hot-toast';
+import { showShares } from './UserProfilePage/UserCardSm';
 
 const MarketActivityList: React.FC<{
   userAddrMap: UserAddrMap;
@@ -106,7 +107,7 @@ const UserActivityCard: React.FC<{
               </span>
 
               <span className="mt-1 font-semibold text-2">
-                {activityData?.qty ? view(activityData.qty) + ' Shares' : ''}
+                {showShares(activityData.qty)}
               </span>
             </span>
             {/* <PrimeText>{user.last_name}</PrimeText> */}

@@ -8,8 +8,9 @@ import { faEthereum } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { view, viewDec } from '../Helpers/bigintUtils';
 import { useProtection } from '../Helpers/useProtection';
+import ClickAwayListener from 'react-click-away-listener';
 
-const AccountDropdown: React.FC<any> = ({ }) => {
+const AccountDropdown: React.FC<any> = ({}) => {
   const account = useAccount();
   const [userState, setUserState] = useUserState();
   const [protect] = useProtection();
@@ -31,78 +32,72 @@ const AccountDropdown: React.FC<any> = ({ }) => {
       </button>
     );
   return (
-    <div
-      className="relative  text-[#8F95A4] bg-[white] rounded-[6px] px-[7px] py-[5px]"
-      role="button"
-      onClick={() => {
-        setShow((s) => !s);
-      }}
-    >
-      <div className="flex items-center gap-2">
-        <WalletIcon />
-        {isLoading ? '...' : view(data?.value)}
-        <FontAwesomeIcon
-          height={15}
-          width={15}
-          className="h-6 p-1 rounded-full bg-2 text-[white] cursor-pointer"
-          icon={faEthereum}
-          onClick={() => { }}
-        />
-        <span className=' bg-gray-200 rounded-lg p-2'>
-          {formatAddress(account.address)}{' '}
-        </span>
-        <svg
-          width="7"
-          height="5"
-          viewBox="0 0 7 5"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M6.04069 0.297363L3.62163 2.90334L1.20258 0.297363L0.459473 1.09964L3.62163 4.51358L5.20272 2.80661L6.7838 1.09964L6.04069 0.297363Z"
-            fill="#8F95A4"
+    <ClickAwayListener onClickAway={() => setShow(false)}>
+      <div
+        className="relative  text-[#8F95A4] bg-[white] rounded-[6px] px-[7px] py-[5px]"
+        role="button"
+        onClick={() => {
+          setShow((s) => !s);
+        }}
+      >
+        <div className="flex items-center gap-2">
+          <WalletIcon />
+          {isLoading ? '...' : view(data?.value)}
+          <FontAwesomeIcon
+            height={15}
+            width={15}
+            className="h-6 p-1 rounded-full bg-2 text-[white] cursor-pointer"
+            icon={faEthereum}
+            onClick={() => {}}
           />
-        </svg>
-      </div>
-      {show ? (
-        <div className="absolute z-50 flex flex-col bg-[#F6F7FC] py-3 top-[110%] w-full gap-2 left-0 rounded-[4px]">
-          <div
-            className="p-1 px-8"
-            onClick={() => {
-              protect(() => drawerManager.openBalanceDrawer());
-            }}
+          <span className="p-2 bg-gray-200 rounded-lg ">
+            {formatAddress(account.address)}{' '}
+          </span>
+          <svg
+            width="7"
+            height="5"
+            viewBox="0 0 7 5"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            {viewDec(data?.value)}{" " + network.chain?.nativeCurrency.symbol}
-          </div>
-          <div
-            className="p-1 px-8 "
-            onClick={(e) => {
-              navigator.clipboard.writeText(account.address);
-              toast('Account copied to clipboard Successfully!');
-            }}
-          >
-            Copy
-          </div>
-          <div
-            className="p-1 px-8"
-            onClick={() => {
-              disconnect();
-              setUserState(null);
-            }}
-          >
-            Disconnect
-          </div>
-          <div
-            className="p-1 px-8"
-            onClick={() => {
-              protect(() => drawerManager.openWalletDrawer());
-            }}
-          >
-            Export Wallet
-          </div>
+            <path
+              d="M6.04069 0.297363L3.62163 2.90334L1.20258 0.297363L0.459473 1.09964L3.62163 4.51358L5.20272 2.80661L6.7838 1.09964L6.04069 0.297363Z"
+              fill="#8F95A4"
+            />
+          </svg>
         </div>
-      ) : null}
-    </div>
+        {show ? (
+          <div className="absolute z-50 flex flex-col bg-[#F6F7FC] py-3 top-[110%] w-full gap-2 left-0 rounded-[4px]">
+            <div
+              className="p-1 px-8 "
+              onClick={(e) => {
+                navigator.clipboard.writeText(account.address);
+                toast('Account copied to clipboard Successfully!');
+              }}
+            >
+              Copy
+            </div>
+            <div
+              className="p-1 px-8"
+              onClick={() => {
+                disconnect();
+                setUserState(null);
+              }}
+            >
+              Disconnect
+            </div>
+            <div
+              className="p-1 px-8"
+              onClick={() => {
+                protect(() => drawerManager.openWalletDrawer());
+              }}
+            >
+              Export Wallet
+            </div>
+          </div>
+        ) : null}
+      </div>
+    </ClickAwayListener>
   );
 };
 

@@ -19,6 +19,7 @@ const UserCard: React.FC<any> = () => {
 
   const { data, isError, isLoading } = useBalance({
     address: address,
+    watch: true,
   });
 
   if (params?.user_addr) {

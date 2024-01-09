@@ -53,7 +53,7 @@ const UserCardSm: React.FC<any> = ({ user }) => {
                   </span>
                 )}
                 <div className="ml-auto text-2 text-f10">
-                  {user?.shares ? view(user.shares) + ' Shares' : ''}
+                  {showShares(user?.shares)}
                 </div>
               </span>
               <span className="flex justify-between w-full text-2 ">
@@ -78,3 +78,12 @@ const UserCardSm: React.FC<any> = ({ user }) => {
 };
 
 export { UserCardSm };
+
+export const showShares = (shares) => {
+  if (shares == '' || shares == null || shares == undefined) return '';
+  console.log(`UserCardSm-shares: `, shares);
+  const shareStr = +shares > 1000000000000000000n ? 'Shares' : 'Share';
+  console.log(`UserCardSm-+shares: `, +shares);
+  return view(shares) + ' ' + shareStr;
+  // return view(shareStr) + ' ' + shareStr;
+};

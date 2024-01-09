@@ -7,6 +7,7 @@ import { view, viewDec } from '../../Helpers/bigintUtils';
 import MemoTImerIcon from '../../SVG/TImerIcon';
 import { SecondaryBtn } from '../../components/Buttons';
 import { toJSEpoch } from '../../components/MarketCard';
+import { showShares } from './UserCardSm';
 
 const UserActivityList: React.FC<{ marketMap: MarketIdMap; data: any[] }> = ({
   marketMap,
@@ -96,7 +97,8 @@ const MarketActivityCard: React.FC<{
               data-tooltip-content={'Total shares supply of the market'}
               className="font-[500] text-f10 text-2 cursor-pointer"
             >
-              {view(activityData.qty)} Shares
+              {/* {view()} Shares */}
+              {showShares(activityData.qty)}
             </span>
           )}{' '}
         </div>

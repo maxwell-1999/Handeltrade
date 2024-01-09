@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { SecondaryBtn } from './Buttons';
 import { view, viewDec } from '../Helpers/bigintUtils';
 import { twMerge } from 'tailwind-merge';
+import { showShares } from '../pages/UserProfilePage/UserCardSm';
 
 export const toJSEpoch = (e: string | number) => +e * 1000;
 
@@ -55,7 +56,7 @@ const MarketCard: React.FC<{
               data-tooltip-content={'Total shares supply of the market'}
               className="font-[500] text-f10 text-2 cursor-pointer"
             >
-              {view(market?.shares)} Shares
+              {showShares(market?.shares)}
             </span>
           )}{' '}
         </div>
