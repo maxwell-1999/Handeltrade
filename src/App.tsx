@@ -12,7 +12,7 @@ import {
 } from 'wagmi';
 import { arbitrumGoerli, baseGoerli } from 'wagmi/chains';
 import {
-  HashRouter,
+  BrowserRouter,
   Outlet,
   Route,
   Routes,
@@ -50,7 +50,7 @@ function Web3AuthWithWagmi() {
     <WagmiConfig config={config}>
       <RecoilRoot>
         <SWRConfig>
-          <HashRouter>
+          <BrowserRouter>
             <Routes>
               <Route path="/markets" element={<Onboarding />}>
                 <Route
@@ -90,9 +90,9 @@ function Web3AuthWithWagmi() {
                   }
                 ></Route>
               </Route>
-
+              {/* <Redirect from="/#/users/:id" to="/users/:id" /> */}
             </Routes>
-          </HashRouter>
+          </BrowserRouter>
         </SWRConfig>
       </RecoilRoot>
     </WagmiConfig>
