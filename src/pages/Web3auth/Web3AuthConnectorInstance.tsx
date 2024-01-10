@@ -19,7 +19,7 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
   };
   const web3AuthInstance = new Web3Auth({
     clientId:
-      'BL61SxVgp_BBvj6tXnRnQQvdvFk4DbnZMywG6OVGnKKq3JmPxkD_C7uJkMwdnBKA-T8FOeydQiszaLGpfcFOYUs',
+      'BFFvxj2A_-e4pLRvk-5D-ApuvOcPgwblDHFvViApGZst_QwQXvZQGB_BC6hiniwGQHCwK0GTT5RTWCNa2sSMzZo',
     chainConfig,
     web3AuthNetwork: 'sapphire_devnet',
     uiConfig: {

@@ -31,7 +31,7 @@ export default function AccountBalanceDrawer() {
                 network.chain?.nativeCurrency.decimals
               ) +
               ' ' +
-              network.chain?.nativeCurrency.symbol ?? ""}
+              (network.chain?.nativeCurrency.symbol ?? "")}
           </PrimeText>
         </div>
       </div>
