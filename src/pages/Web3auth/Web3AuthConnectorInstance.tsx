@@ -24,6 +24,7 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
     clientId:
       'BHDmv9K3eFyIbdyGHNH5toUifSto7fble4H5qpgMFNf3mN2UMTCMiu8CXL2suQLsmt6Ft5KWoeUbSl3NCxxdaXU',
     chainConfig,
+    web3AuthNetwork: 'testnet',
     uiConfig: {
       appName: name,
       theme: 'light',
@@ -32,8 +33,6 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
       // appLogo: 'https://web3auth.o/images/w3a-L-Favicon-1.svg', // Your App Logo Here
       modalZIndex: '2147483647',
     },
-    web3AuthNetwork: 'testnet',
-    enableLogging: true,
   });
 
   // Add openlogin adapter for customisations
