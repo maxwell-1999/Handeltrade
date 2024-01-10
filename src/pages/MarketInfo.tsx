@@ -31,6 +31,7 @@ import { bigIntToStringWithDecimal, viewDec } from '../Helpers/bigintUtils';
 import MemoButtonLoader from '../components/ButtonLoader';
 
 const tabs = ['Holders', 'Watchlisted By', 'Activity', 'Claimable'];
+
 const MarketInfo: React.FC<any> = ({ }) => {
   const account = useAccount();
   const [userState] = useUserState();
@@ -86,15 +87,21 @@ const MarketInfo: React.FC<any> = ({ }) => {
   };
 
   return (
-    <div className="flex flex-col h-full gap-4 px-4 ">
-      <div>
+    <div className="flex flex-col items-center justify-center w-full h-full overflow-hidden relative ">
+      <div className="custom-bg-image absolute top-0 left-0 h-full w-full" />
+      <div className="flex flex-col items-center w-full min-h-[75px] h-[12%] z-10 px-horizontalSm">
+        {/* Market Card Goes here */}
         {data && <MarketCard market={data} preview />}
+
+      </div>
+
+      <div className="flex flex-col w-full h-[88%] ">
         {data?.on_chain || data?.shares ? (
-          <div className="flex justify-between">
-            <div className="flex gap-3 mb-4">
+          <div className="flex justify-between w-full px-4 ">
+            <div className="flex gap-3">
               <PrimaryBtn
                 onClick={() => protect(() => drawerManager.openBuyDrwer(data))}
-                className="p-1 text-[white] text-[12px]  w-[70px] h-fit min-w-fit font-semibold rounded-[4px] px-2"
+                className="p-1 text-[white] text-[12px] w-[70px] h-fit min-w-fit font-semibold rounded-[4px] px-2"
               >
                 Buy
               </PrimaryBtn>
@@ -107,7 +114,7 @@ const MarketInfo: React.FC<any> = ({ }) => {
                 Sell
               </SecondaryBtn>
             </div>
-            <div className="flex mb-4">
+            <div className="flex">
               {data && 'watchlisted' in data ? (
                 data?.watchlisted ? (
                   <FontAwesomeIcon
@@ -115,8 +122,6 @@ const MarketInfo: React.FC<any> = ({ }) => {
                     className="h-8 mr-4 cursor-pointer text-brand"
                     icon={solidBookmark}
                     onClick={() => handleRemoveFromWatchlist()}
-                  // data-tooltip-id="tooltip"
-                  // data-tooltip-content={'Remove from watchlist'}
                   />
                 ) : (
                   <FontAwesomeIcon
@@ -124,8 +129,6 @@ const MarketInfo: React.FC<any> = ({ }) => {
                     className="h-8 mr-4 cursor-pointer text-brand"
                     icon={emptyBookmark}
                     onClick={() => handleAddToWatchlist()}
-                  // data-tooltip-id="tooltip"
-                  // data-tooltip-content={'Add to watchlist'}
                   />
                 )
               ) : null}
@@ -139,24 +142,27 @@ const MarketInfo: React.FC<any> = ({ }) => {
             Buy 1st Share
           </PrimaryBtn>
         )}
-      </div>
-      <div className="">
-        <Tablist
-          tablist={tabs}
-          onTabSelect={seActiveTab}
-          activeTab={activeTab}
-        />
-      </div>
-      <div className="h-full bg-brandGrey mx-[-4px] ">
-        {activeTab == 'Holders' ? (
-          <HoldersTab market={data} />
-        ) : activeTab == 'Watchlisted By' ? (
-          <WatchListedByTab market={data} />
-        ) : activeTab == 'Activity' ? (
-          <MarketActivityTab market={data} />
-        ) : (
-          <ClaimMarketRewards market={data} />
-        )}
+        <div className="my-2 mt-4 w-full px-4 ">
+          <Tablist
+            tablist={tabs}
+            onTabSelect={seActiveTab}
+            activeTab={activeTab}
+          />
+        </div>
+        <div className=" w-full overflow-x-hidden  bg-brandGrey min-h-full pb-40 ">
+          <div className="flex flex-col gap-[10px]">
+            {/* all tabs data goes here   */}
+            {activeTab == 'Holders' ? (
+              <HoldersTab market={data} />
+            ) : activeTab == 'Watchlisted By' ? (
+              <WatchListedByTab market={data} />
+            ) : activeTab == 'Activity' ? (
+              <MarketActivityTab market={data} />
+            ) : (
+              <ClaimMarketRewards market={data} />
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -231,7 +237,7 @@ const MarketActivityTab: React.FC<{ market: Market; }> = ({ market }) => {
 const ClaimMarketRewards: React.FC<{ market: Market; }> = ({ market }) => {
   const account = useAccount();
   const network = useNetwork();
-  const symbol = network.chain?.nativeCurrency.symbol;
+  const symbol = network.chain?.nativeCurrency.symbol ?? "";
   const [loadingRewards, setLoadingRewards] = useState(false);
   const [loadingReflection, setLoadingReflection] = useState(false);
 
@@ -325,14 +331,14 @@ const ClaimMarketRewards: React.FC<{ market: Market; }> = ({ market }) => {
         <div className="flex flex-col bg-white p-4 rounded-[10px] ">
           <span className='font-semibold text-f14'>Collected Weekly Rewards</span>
           <span className='flex justify-between'>
-            <span className=" text-[20px] text-2  ">
+            <PrimeFadeText classname=" text-[12px] text-2  ">
               {data[0]?.result
                 ? viewDec(data[0].result, 18) +
                 ' ' + symbol
                 : '0.00 ' + symbol}
-            </span>
+            </PrimeFadeText>
             <PrimaryBtn
-              className={`p-1 text-[white] text-[12px] mr-2 w-[70px] h-fit min-w-fit font-semibold rounded-[4px] px-2 ${claimable(data[0]?.result) ? "" : "bg-2 cursor-not-allowed"}`}
+              className={`p-1 text-[white] text-[12px] mr-2 w-[50px] h-fit min-w-fit font-semibold rounded-[4px] ${claimable(data[0]?.result) ? "" : "bg-2 cursor-not-allowed"}`}
               onClick={() => claimWeeklyRewards()}
             >
               <MemoButtonLoader className="scale-110 " loading={loadingRewards} />{' '}
@@ -345,14 +351,14 @@ const ClaimMarketRewards: React.FC<{ market: Market; }> = ({ market }) => {
         <div className="flex flex-col bg-white p-4 rounded-[10px] ">
           <span className='font-semibold text-f14'>Collected Reflection</span>
           <span className='flex justify-between'>
-            <span className=" text-[20px] text-2 ">
+            <PrimeFadeText classname=" text-[12px] text-2 ">
               {data[1]?.result
                 ? viewDec(data[1].result, 18) +
                 ' ' + symbol
                 : '0.00 ' + symbol}
-            </span>
+            </PrimeFadeText>
             <PrimaryBtn
-              className={`p-1 text-[white] text-[12px] mr-2 w-[70px] h-fit min-w-fit font-semibold rounded-[4px] px-2 ${claimable(data[1]?.result) ? "" : "bg-2 cursor-not-allowed"}`}
+              className={`p-1 text-[white] text-[12px] mr-2 w-[50px] h-fit min-w-fit font-semibold rounded-[4px] ${claimable(data[1]?.result) ? "" : "bg-2 cursor-not-allowed"}`}
               onClick={() => claimReflection()}
             >
               <MemoButtonLoader className="scale-110 " loading={loadingReflection} />{' '}

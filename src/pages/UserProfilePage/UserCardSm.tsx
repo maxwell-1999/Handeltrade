@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { view } from '../../Helpers/bigintUtils';
 import { formatAddress } from '../../Helpers/web3utils';
 import toast from 'react-hot-toast';
+import { useState } from 'react';
 
 const UserCardSm: React.FC<any> = ({ user }) => {
   const navigate = useNavigate();
@@ -20,8 +21,13 @@ const UserCardSm: React.FC<any> = ({ user }) => {
           <span className="flex flex-grow">
             {user.img_url ? (
               <img
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = '/img_placeholder.svg';
+                  e.currentTarget.classList.remove('img-loading');
+                }}
                 className="w-[45px] h-[45px] rounded-[5px] mr-[10px] img-loading"
-                src={user.img_url}
+                src={user?.img_url}
                 alt="user profile"
               />
             ) : (
@@ -35,31 +41,17 @@ const UserCardSm: React.FC<any> = ({ user }) => {
             )}
             {/* demographics */}
             <span className="flex flex-col w-full">
-              <span className="flex items-center font-semibold text-f14">
-                <span className=" text-f14 font-[500] px-2 py-1 rounded-[5px] text-slate bg-lightBrand">
-                  #{user.id ? user.id : '-'}
-                </span>{' '}
+              <span className="flex items-center font-semibold text-f14 pt-1">
                 {user?.first_name ? (
                   user.first_name
-                ) : (
-                  <span
-                    className="text-[grey]"
-                    data-tooltip-id="tooltip"
-                    data-tooltip-content="User not registered!"
-                  >
-                    {user?.public_address
-                      ? formatAddress(user.public_address)
-                      : 'No Name'}
-                  </span>
-                )}
+                ) : 'No Name'}
                 <div className="ml-auto text-2 text-f10">
                   {showShares(user?.shares)}
                 </div>
               </span>
               <span className="flex justify-between w-full text-2 ">
                 <span className="mt-1 font-semibold text-f12">
-                  {/* {user?.email ? user.email : 'No details'} */}
-                  <span className=" max-w-[70px] bg-gray-200 rounded-lg p-2">
+                  <span className=" max-w-[70px] rounded-lg ">
                     {formatAddress(user?.public_address)}{' '}
                   </span>
                 </span>

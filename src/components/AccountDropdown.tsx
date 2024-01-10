@@ -68,7 +68,7 @@ const AccountDropdown: React.FC<any> = ({}) => {
           </svg>
         </div>
         {show ? (
-          <div className="absolute z-50 flex flex-col bg-[#F6F7FC] py-6 top-[110%] w-full gap-2 left-0 rounded-[4px]">
+          <div className="absolute z-50 flex flex-col bg-[#EAEBF0] py-6 top-[110%] w-full gap-2 left-0 rounded-[4px]">
             <div
               className="flex p-1 px-8"
               onClick={(e) => {

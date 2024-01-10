@@ -6,6 +6,7 @@ import useUserState, { useOtherUserState } from '../../atoms/userState';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { formatAddress } from '../../Helpers/web3utils';
+import { useState } from 'react';
 
 const UserCard: React.FC<any> = () => {
   const params = useParams();
@@ -13,6 +14,7 @@ const UserCard: React.FC<any> = () => {
   const { address } = params?.user_addr
     ? { address: params.user_addr }
     : account;
+    
   const [userState, setUserState] = params?.user_addr
     ? useOtherUserState()
     : useUserState();
@@ -32,49 +34,52 @@ const UserCard: React.FC<any> = () => {
       });
   }
 
+
   return (
-    <div className="flex flex-col items-center justify-center w-full h-1/5 px-horizontalSm custom-bg-image">
-      <div className="flex flex-col items-center justify-center w-full h-full">
-        <div className="flex w-full">
-          {/* profile img section */}
-          <span className="flex flex-grow">
-            <img
-              className=" rounded-[10px] mr-4  w-[60px] h-[60px] img-loading"
-              // height={20}
-              src={userState?.img_url}
-              alt="user profile"
-            />
-            {/* demographics */}
-            <span className="flex flex-col">
-              <PrimeText>{userState?.first_name}</PrimeText>
-              <PrimeText>{userState?.last_name}</PrimeText>
-              {!params?.user_addr && <PrimeFadeText>{userState?.email}</PrimeFadeText>}
-              {params.user_addr && (
-                <span className=" max-w-[70px] bg-gray-200 rounded-lg p-2">
-                  {formatAddress(userState?.public_address)}{' '}
-                </span>
-              )}
-            </span>
-          </span>
-          {/* finance */}
-          <span className="flex flex-col min-w-4">
-            <PrimeText style={{ 'align-self': 'flex-end' }}>
-              {isLoading ? 'Fetching..' : view(data?.value)}
-              &nbsp;ETH
-            </PrimeText>
-            <PrimeFadeText
-              classname=" text-[12px]"
-              style={{ alignSelf: 'flex-end', fontWeight: 100 }}
-            >
-              Wallet Balance
-            </PrimeFadeText>
-            {userState?.country && (
-              <PrimeFadeText classname="" style={{ 'align-self': 'flex-end' }}>
-                {userState?.country}
-              </PrimeFadeText>
+    <div className="flex flex-col items-center justify-center w-full min-h-full">
+      <div className="flex w-full">
+        {/* profile img section */}
+        <span className="flex flex-grow">
+          <img
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = '/img_placeholder.svg';
+              e.currentTarget.classList.remove('img-loading');
+            }}
+            className=" rounded-[10px] mr-4  w-[60px] h-[60px] img-loading"
+            src={userState?.img_url}
+            alt="user profile"
+          />
+          {/* demographics */}
+          <span className="flex flex-col">
+            <PrimeText>{userState?.first_name}</PrimeText>
+            <PrimeText>{userState?.last_name}</PrimeText>
+            {!params?.user_addr && <PrimeFadeText>{userState?.email}</PrimeFadeText>}
+            {params.user_addr && (
+              <span className=" mt-[-4px] pl-0 max-w-[70px] text-2 rounded-lg p-2">
+                {formatAddress(userState?.public_address)}{' '}
+              </span>
             )}
           </span>
-        </div>
+        </span>
+        {/* finance */}
+        <span className="flex flex-col min-w-4">
+          <PrimeText style={{ 'align-self': 'flex-end' }}>
+            {isLoading ? 'Fetching..' : view(data?.value)}
+            &nbsp;ETH
+          </PrimeText>
+          <PrimeFadeText
+            classname=" text-[12px]"
+            style={{ alignSelf: 'flex-end', fontWeight: 100 }}
+          >
+            Wallet Balance
+          </PrimeFadeText>
+          {userState?.country && (
+            <PrimeFadeText classname="" style={{ 'align-self': 'flex-end' }}>
+              {userState?.country}
+            </PrimeFadeText>
+          )}
+        </span>
       </div>
     </div>
   );
