@@ -40,7 +40,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <div className="flex flex-shrink-0 h-[100vh] align-middle items-center justify-center ">
         <div className="flex flex-col responsive-layout  h-[100vh] ">
           <div className="w-full bg-[#eaebf0] h-[40px] items-center justify-between flex px-[10px]">
-            <img className="w-[35px] h-[25px] " src="Logo.svg" />
+            <img className="w-[35px] h-[25px] " src="/Logo.svg" />
             <AccountDropdown />
           </div>
           <div className="flex-1 w-full container-height-fr">{children}</div>
