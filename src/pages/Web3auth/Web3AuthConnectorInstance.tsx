@@ -8,8 +8,7 @@ import { Chain } from 'wagmi';
 
 export default function Web3AuthConnectorInstance(chains: Chain[]) {
   // Create Web3Auth Instance
-  const name = 'HandleTrade';
-  const iconUrl = 'https://web3auth.io/docs/contents/logo-ethereum.png';
+  const name = 'FFrei';
   const chainConfig = {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: '0x' + chains[0].id.toString(16),
