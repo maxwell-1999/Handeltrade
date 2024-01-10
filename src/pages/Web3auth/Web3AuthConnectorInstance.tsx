@@ -17,7 +17,6 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
     ticker: chains[0].nativeCurrency?.symbol,
     blockExplorer: chains[0].blockExplorers?.default.url[0] as string,
   };
-
   const web3AuthInstance = new Web3Auth({
     clientId:
       'BL61SxVgp_BBvj6tXnRnQQvdvFk4DbnZMywG6OVGnKKq3JmPxkD_C7uJkMwdnBKA-T8FOeydQiszaLGpfcFOYUs',
