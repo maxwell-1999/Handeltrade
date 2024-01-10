@@ -21,9 +21,9 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
 
   const web3AuthInstance = new Web3Auth({
     clientId:
-      'BHDmv9K3eFyIbdyGHNH5toUifSto7fble4H5qpgMFNf3mN2UMTCMiu8CXL2suQLsmt6Ft5KWoeUbSl3NCxxdaXU',
+      'BL61SxVgp_BBvj6tXnRnQQvdvFk4DbnZMywG6OVGnKKq3JmPxkD_C7uJkMwdnBKA-T8FOeydQiszaLGpfcFOYUs',
     chainConfig,
-    web3AuthNetwork: 'testnet',
+    web3AuthNetwork: 'sapphire_devnet',
     uiConfig: {
       appName: name,
       theme: 'light',
