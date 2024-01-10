@@ -26,7 +26,6 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
     web3AuthNetwork: 'sapphire_devnet',
     uiConfig: {
       appName: name,
-      theme: 'light',
       loginMethodsOrder: ['google'],
       defaultLanguage: 'en',
       // appLogo: 'https://web3auth.o/images/w3a-L-Favicon-1.svg', // Your App Logo Here
