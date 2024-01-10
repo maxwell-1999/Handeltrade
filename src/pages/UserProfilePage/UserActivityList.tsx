@@ -9,7 +9,7 @@ import { SecondaryBtn } from '../../components/Buttons';
 import { toJSEpoch } from '../../components/MarketCard';
 import { showShares } from './UserCardSm';
 
-const UserActivityList: React.FC<{ marketMap: MarketIdMap; data: any[] }> = ({
+const UserActivityList: React.FC<{ marketMap: MarketIdMap; data: any[]; }> = ({
   marketMap,
   data,
 }) => {
@@ -59,8 +59,8 @@ const MarketActivityCard: React.FC<{
   const nonPrice = activityData?.pricePaid
     ? !activityData.pricePaid
     : activityData?.priceReceived
-    ? !activityData.priceReceived
-    : true;
+      ? !activityData.priceReceived
+      : true;
   const network = useNetwork();
   const navigate = useNavigate();
 
@@ -86,9 +86,8 @@ const MarketActivityCard: React.FC<{
       </div>
       <div className="flex flex-col items-center w-full ">
         <div
-          className={`flex justify-between w-full mb-[2px] mt-${
-            nonPrice ? '1' : '2'
-          } `}
+          className={`flex justify-between w-full mb-[2px] mt-${nonPrice ? '1' : '2'
+            } `}
         >
           <span className="font-semibold text-f14">{market.name}</span>
           {nonPrice ? null : (
@@ -120,8 +119,8 @@ const MarketActivityCard: React.FC<{
                   {activityData?.pricePaid
                     ? 'Bought for ' + viewDec(BigInt(activityData.pricePaid))
                     : activityData?.priceReceived
-                    ? 'Sold for ' + viewDec(BigInt(activityData.priceReceived))
-                    : ''}
+                      ? 'Sold for ' + viewDec(BigInt(activityData.priceReceived))
+                      : ''}
                   {' ' + 'ETH'}
                 </div>
               </div>
@@ -175,7 +174,7 @@ const ClaimRewardActivityCard: React.FC<{
           }
         >
           Claimed Amount {viewDec(activityData?.claimedRewards)}{' '}
-          {network.chain?.nativeCurrency.symbol}
+          {network.chain?.nativeCurrency.symbol ?? ""}
         </div>
 
         <div
@@ -237,7 +236,7 @@ const ClaimReflectionActivityCard: React.FC<{
           }
         >
           Claimed Amount {viewDec(activityData?.claimedFees)}{' '}
-          {network.chain?.nativeCurrency.symbol}
+          {network.chain?.nativeCurrency.symbol ?? ""}
         </div>
 
         <div

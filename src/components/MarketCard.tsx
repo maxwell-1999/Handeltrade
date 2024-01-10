@@ -26,7 +26,7 @@ const MarketCard: React.FC<{
     <div
       role={preview ? 'cell' : 'button'}
       className={twMerge(
-        'p-[10px] bg-white rounded-[10px] justify-between flex gap-[15px] w-full',
+        `p-[10px] rounded-[10px] justify-between flex gap-[15px] w-full ${preview ?? "bg-white"} `,
         className
       )}
       onClick={() => !preview && navigate('/markets/' + market.market_id)}
@@ -34,6 +34,11 @@ const MarketCard: React.FC<{
       <div className="flex flex-col gap-[3px] items-center justify-center ">
         <img
           src={market?.img_url}
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = '/img_placeholder.svg';
+            e.currentTarget.classList.remove('img-loading');
+          }}
           loading="lazy"
           className="w-[40px] h-[40px] rounded-[5px] img-loading"
         />

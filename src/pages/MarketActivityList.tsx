@@ -86,11 +86,8 @@ const UserActivityCard: React.FC<{
           )}
           {/* demographics */}
           <span className="flex flex-col w-full">
-            <span className="flex justify-between w-full ">
+            <span className="flex justify-between w-full pt-1 ">
               <span className="font-semibold text-f14">
-                <span className=" text-f14 font-[500] px-2 py-1 rounded-[5px] text-slate bg-lightBrand">
-                  #{user?.id ? user.id : '-'}
-                </span>{' '}
                 {user?.first_name ? (
                   user.first_name
                 ) : (
@@ -115,11 +112,11 @@ const UserActivityCard: React.FC<{
               {/* <span className="mt-1 font-semibold text-f12">
                   {user?.email ? user.email : "No details"}
                 </span> */}
-              <div className="flex items-center justify-between  mt-3">
-                <div className="flex items-center gap-2 text-f10 !whitespace-nowrap  ">
+              <div className="flex items-center justify-between mt-1">
+                <div className="flex items-center gap-2 text-f10 !whitespace-nowrap ">
                   <MemoTImerIcon />
                   <TimeAgo date={toJSEpoch(activityData?.blockTimestamp)} />
-                  <div className="w-3/4 overflow-ellipsis">
+                  <div className=" overflow-ellipsis">
                     {activityData?.pricePaid
                       ? 'Bought for ' + viewDec(BigInt(activityData.pricePaid))
                       : activityData?.priceReceived
@@ -167,10 +164,10 @@ const RewardsOfferedCard: React.FC<{ data: any; }> = ({ data }) => {
             onClick={() => { }}
           />
           {/* demographics */}
-          <span className="flex flex-col w-full">
+          <span className="flex flex-col w-full mt-2">
             <span className="flex justify-between w-full ">
               <span className="font-semibold text-f14">
-                {viewDec(data?.amount)} {network.chain?.nativeCurrency.symbol}
+                {viewDec(data?.amount)} {network.chain?.nativeCurrency.symbol ?? ""}
               </span>
             </span>
             {/* <PrimeText>{user.last_name}</PrimeText> */}

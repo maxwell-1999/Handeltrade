@@ -27,11 +27,11 @@ export default function AccountBalanceDrawer() {
             {isLoading
               ? '...'
               : bigIntToStringWithDecimal(
-                  data?.value,
-                  network.chain?.nativeCurrency.decimals
-                ) +
-                ' ' +
-                network.chain?.nativeCurrency.symbol}
+                data?.value,
+                network.chain?.nativeCurrency.decimals
+              ) +
+              ' ' +
+              network.chain?.nativeCurrency.symbol ?? ""}
           </PrimeText>
         </div>
       </div>

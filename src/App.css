@@ -24,9 +24,10 @@ body {
 
 .custom-bg-image {
   background-image: url('/BGPattern.png');
-  background-size: cover;
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: 0px 0px;
+  z-index: -1;
 }
 
 .tab-gap {
