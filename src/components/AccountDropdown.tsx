@@ -8,17 +8,18 @@ import { faEthereum } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { view, viewDec } from '../Helpers/bigintUtils';
 import { useProtection } from '../Helpers/useProtection';
+import CopyIcon from '../SVG/CopyIcon';
+import DisconnectIcon from '../SVG/DisconnectIcon';
+import ExportIcon from '../SVG/ExportIcon';
 import ClickAwayListener from 'react-click-away-listener';
 
 const AccountDropdown: React.FC<any> = ({}) => {
   const account = useAccount();
   const [userState, setUserState] = useUserState();
   const [protect] = useProtection();
-  const network = useNetwork();
   const { data, isError, isLoading } = useBalance({
     address: account.address,
   });
-
   const drawerManager = useDrawerState();
   const { disconnect } = useDisconnect();
   const [show, setShow] = useState(false);
@@ -67,32 +68,32 @@ const AccountDropdown: React.FC<any> = ({}) => {
           </svg>
         </div>
         {show ? (
-          <div className="absolute z-50 flex flex-col bg-[#F6F7FC] py-3 top-[110%] w-full gap-2 left-0 rounded-[4px]">
+          <div className="absolute z-50 flex flex-col bg-[#F6F7FC] py-6 top-[110%] w-full gap-2 left-0 rounded-[4px]">
             <div
-              className="p-1 px-8 "
+              className="flex p-1 px-8"
               onClick={(e) => {
                 navigator.clipboard.writeText(account.address);
                 toast('Account copied to clipboard Successfully!');
               }}
             >
-              Copy
+              <CopyIcon style={{ marginRight: '5px' }} /> Copy
             </div>
             <div
-              className="p-1 px-8"
+              className="flex p-1 px-8"
               onClick={() => {
                 disconnect();
                 setUserState(null);
               }}
             >
-              Disconnect
+              <DisconnectIcon style={{ marginRight: '5px' }} /> Disconnect
             </div>
             <div
-              className="p-1 px-8"
+              className="flex p-1 px-8"
               onClick={() => {
                 protect(() => drawerManager.openWalletDrawer());
               }}
             >
-              Export Wallet
+              <ExportIcon style={{ marginRight: '5px' }} /> Export Wallet
             </div>
           </div>
         ) : null}
@@ -100,7 +101,6 @@ const AccountDropdown: React.FC<any> = ({}) => {
     </ClickAwayListener>
   );
 };
-
 export { AccountDropdown };
 const WalletIcon = () => {
   return (

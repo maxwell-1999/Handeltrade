@@ -20,7 +20,7 @@ const MarketActivityList: React.FC<{
   data: BuySellActivityForMarket[];
 }> = ({ userAddrMap, data }) => {
   return (
-    <div className="flex flex-col gap-[10px] py-[20px] ">
+    <div className="flex flex-col gap-[10px] pt-8 px-6 ">
       {data.map((activity: BuySellActivityForMarket, i) => {
         if (activity.type == 'buy') {
           return (
@@ -81,7 +81,7 @@ const UserActivityCard: React.FC<{
               width={27}
               className="w-[45px] h-[45px] mr-[7px] p-1 text-2 cursor-pointer"
               icon={faCircleQuestion}
-              onClick={() => {}}
+              onClick={() => { }}
             />
           )}
           {/* demographics */}
@@ -115,7 +115,7 @@ const UserActivityCard: React.FC<{
               {/* <span className="mt-1 font-semibold text-f12">
                   {user?.email ? user.email : "No details"}
                 </span> */}
-              <div className="flex font-[500] items-center justify-between  mt-3">
+              <div className="flex items-center justify-between  mt-3">
                 <div className="flex items-center gap-2 text-f10 !whitespace-nowrap  ">
                   <MemoTImerIcon />
                   <TimeAgo date={toJSEpoch(activityData?.blockTimestamp)} />
@@ -123,9 +123,9 @@ const UserActivityCard: React.FC<{
                     {activityData?.pricePaid
                       ? 'Bought for ' + viewDec(BigInt(activityData.pricePaid))
                       : activityData?.priceReceived
-                      ? 'Sold for ' +
+                        ? 'Sold for ' +
                         viewDec(BigInt(activityData.priceReceived))
-                      : ''}
+                        : ''}
                     {' ' + 'ETH'}
                   </div>
                 </div>
@@ -152,7 +152,7 @@ const UserActivityCard: React.FC<{
   );
 };
 
-const RewardsOfferedCard: React.FC<{ data: any }> = ({ data }) => {
+const RewardsOfferedCard: React.FC<{ data: any; }> = ({ data }) => {
   const network = useNetwork();
   return (
     <div className="flex flex-col bg-white rounded-[10px] p-4 justify-between w-full h-full items-center cursor-pointer ">
@@ -164,7 +164,7 @@ const RewardsOfferedCard: React.FC<{ data: any }> = ({ data }) => {
             width={27}
             className="w-[45px] h-[45px] mr-[7px] p-1 text-2 cursor-pointer"
             icon={faSackDollar}
-            onClick={() => {}}
+            onClick={() => { }}
           />
           {/* demographics */}
           <span className="flex flex-col w-full">
@@ -195,6 +195,6 @@ const RewardsOfferedCard: React.FC<{ data: any }> = ({ data }) => {
   );
 };
 
-const RewardsClaimedCard: React.FC<{ data: any }> = ({ data }) => {
+const RewardsClaimedCard: React.FC<{ data: any; }> = ({ data }) => {
   return <div className="">{JSON.stringify(data)}</div>;
 };

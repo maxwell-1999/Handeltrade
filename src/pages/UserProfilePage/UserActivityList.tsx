@@ -112,7 +112,7 @@ const MarketActivityCard: React.FC<{
           }
         >
           {nonPrice ? null : (
-            <div className="flex font-[500] items-center justify-between   mt-3">
+            <div className="flex font-[500] items-center justify-between mt-3">
               <div className="flex items-center gap-2 text-f10 !whitespace-nowrap">
                 <MemoTImerIcon />
                 <TimeAgo date={toJSEpoch(activityData.blockTimestamp)} />

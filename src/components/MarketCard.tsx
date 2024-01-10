@@ -45,16 +45,13 @@ const MarketCard: React.FC<{
       </div>
       <div className="flex flex-col items-center w-full ">
         <div
-          className={`flex justify-between w-full mb-[2px] mt-${
-            nonPrice ? '1' : '2'
-          } `}
+          className={`flex justify-between w-full mb-[2px] mt-${nonPrice ? '1' : '2'
+            } `}
         >
           <span className="font-semibold text-f14">{market.name}</span>
           {nonPrice ? null : (
             <span
-              data-tooltip-id="tooltip"
-              data-tooltip-content={'Total shares supply of the market'}
-              className="font-[500] text-f10 text-2 cursor-pointer"
+              className="text-f10 text-2 cursor-pointer"
             >
               {showShares(market?.shares)}
             </span>
@@ -67,7 +64,7 @@ const MarketCard: React.FC<{
           }
         >
           <div className={'mb-1 ' + (!preview ? 'text-overflow-2-lines' : '')}>
-            {preview ? market.social_handle : market.description}
+            {preview ? "@" + market.social_handle : market.description}
             {/* @{market?.social_handle} */}
           </div>
           {nonPrice ? null : (
