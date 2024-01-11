@@ -9,6 +9,7 @@ import { SecondaryBtn } from './Buttons';
 import { view, viewDec } from '../Helpers/bigintUtils';
 import { twMerge } from 'tailwind-merge';
 import { showShares } from '../pages/UserProfilePage/UserCardSm';
+import MemoYoutubeLogo, { MemoYoutubeLogoSm } from '../SVG/YoutubeLogo';
 
 export const toJSEpoch = (e: string | number) => +e * 1000;
 
@@ -26,7 +27,9 @@ const MarketCard: React.FC<{
     <div
       role={preview ? 'cell' : 'button'}
       className={twMerge(
-        `p-[10px] rounded-[10px] justify-between flex gap-[15px] w-full ${preview ?? "bg-white"} `,
+        `p-[10px] rounded-[10px] justify-between flex gap-[15px] w-full ${
+          preview ?? 'bg-white'
+        } `,
         className
       )}
       onClick={() => !preview && navigate('/markets/' + market.market_id)}
@@ -40,7 +43,7 @@ const MarketCard: React.FC<{
             e.currentTarget.classList.remove('img-loading');
           }}
           loading="lazy"
-          className="w-[40px] h-[40px] rounded-[5px] img-loading"
+          className="max-w-[40px] min-w-[40px] min-h-[40px] max-h-[40px] rounded-[5px] img-loading object-cover"
         />
         {nonPrice ? null : (
           <span className="font-semibold text-f14">
@@ -50,34 +53,42 @@ const MarketCard: React.FC<{
       </div>
       <div className="flex flex-col items-center w-full ">
         <div
-          className={`flex justify-between w-full mb-[2px] mt-${nonPrice ? '1' : '2'
-            } `}
+          className={`flex justify-between w-full mb-[2px] mt-${
+            nonPrice ? '1' : '2'
+          } `}
         >
-          <span className="font-semibold text-f14">{market.name}</span>
+          <div className="flex items-center gap-1">
+            <span className="font-semibold text-f14">{market.name}</span>
+            <a href="https://youtube.com" target="_blank">
+              <MemoYoutubeLogoSm className="mb-[2px]" />
+            </a>
+          </div>
           {nonPrice ? null : (
-            <span
-              className="text-f10 text-2 cursor-pointer"
-            >
+            <span className="flex items-center text-center cursor-pointer text-f10 text-2">
               {showShares(market?.shares)}
             </span>
           )}{' '}
         </div>
         <div
           className={
-            'w-full font-semibold text-2 text-f9 ' +
+            'w-full  text-2 text-f10 ' +
             (nonPrice ? 'flex justify-between items-center' : '')
           }
         >
-          <div className={'mb-1 ' + (!preview ? 'text-overflow-2-lines' : '')}>
-            {preview ? "@" + market.social_handle : market.description}
+          <div
+            className={
+              'mb-1 !font-[400] ' + (!preview ? 'text-overflow-2-lines' : '')
+            }
+          >
+            {preview ? '@' + market.social_handle : market.description}
             {/* @{market?.social_handle} */}
           </div>
           {nonPrice ? null : (
-            <div className="flex font-[500] items-center justify-between">
+            <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-f10">
-                <MemoTImerIcon />
-                <TimeAgo date={toJSEpoch(market.lastUpdated)} />
-                <div>
+                {/* <MemoTImerIcon /> */}
+                {/* <TimeAgo date={toJSEpoch(market.lastUpdated)} /> */}
+                <div title="2222">
                   Price{' '}
                   {market?.buyPrice
                     ? viewDec(BigInt(market.buyPrice))

@@ -20,6 +20,10 @@ export default {
         '1b': '#fff',
         '2b': '#F6F7FC',
         '3b': '#f3f3f3',
+        'grey2': '#eaebf0',
+        'grey1': "#f6f7fc",
+
+
       },
       fontSize: {
         f9: '9px',

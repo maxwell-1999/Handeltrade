@@ -11,6 +11,26 @@ function YoutubeLogo(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+function YoutubeLogoSm(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="16"
+      height="11"
+      viewBox="0 0 16 11"
+      fill="none"
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M15.6407 9.13045C15.4809 9.90007 14.8027 10.4869 13.9646 10.5966C12.6484 10.78 10.4538 11 7.97986 11C5.97841 10.9954 3.97927 10.8606 1.99447 10.5966C1.15772 10.4869 0.479465 9.90007 0.318983 9.13045C0.159161 8.28706 0 7.04024 0 5.50034C0 3.96043 0.159161 2.71362 0.318983 1.8709C0.478805 1.10061 1.15706 0.513753 1.99513 0.403421C3.97942 0.136312 5.97853 0.00155437 7.97986 0C10.4538 0 12.6081 0.219986 13.9652 0.403421C14.8027 0.513076 15.4809 1.09993 15.6407 1.87022C15.8006 2.71294 16 3.95976 16 5.49966C15.9604 7.03957 15.8006 8.28638 15.6407 9.12978V9.13045Z"
+        fill="#FF3D00"
+      />
+      <path d="M6.5 7.292V3.5L10.75 5.396L6.5 7.292Z" fill="white" />
+    </svg>
+  );
+}
 
+const MemoYoutubeLogoSm = React.memo(YoutubeLogoSm);
+export { MemoYoutubeLogoSm };
 const MemoYoutubeLogo = React.memo(YoutubeLogo);
 export default MemoYoutubeLogo;

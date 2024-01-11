@@ -6,8 +6,8 @@ const MarketSearchBar: React.FC<any> = ({}) => {
   const [value, setValue] = useState('');
   const searchManager = useSearchMarket();
   return (
-    <div className="bg-3b px-[10px] w-full h-[50px] rounded-[10px] flex items-center relative overflow-hidden justify-between pr-6">
-      <MemoSearchIcon />
+    <div className="bg-white px-[10px] w-full h-[50px] rounded-[10px] flex items-center relative overflow-hidden justify-between pr-6">
+      <MemoSearchIcon className="ml-3" />
       <input
         value={searchManager.keyword}
         placeholder="Search by Channel Name"

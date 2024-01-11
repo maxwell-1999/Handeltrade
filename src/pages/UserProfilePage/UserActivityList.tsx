@@ -9,7 +9,7 @@ import { SecondaryBtn } from '../../components/Buttons';
 import { toJSEpoch } from '../../components/MarketCard';
 import { showShares } from './UserCardSm';
 
-const UserActivityList: React.FC<{ marketMap: MarketIdMap; data: any[]; }> = ({
+const UserActivityList: React.FC<{ marketMap: MarketIdMap; data: any[] }> = ({
   marketMap,
   data,
 }) => {
@@ -31,7 +31,6 @@ const UserActivityList: React.FC<{ marketMap: MarketIdMap; data: any[]; }> = ({
           return (
             <ClaimRewardActivityCard
               key={i}
-
               activityData={activity}
               market={marketMap[activity.marketId]}
             />
@@ -63,8 +62,8 @@ const MarketActivityCard: React.FC<{
   const nonPrice = activityData?.pricePaid
     ? !activityData.pricePaid
     : activityData?.priceReceived
-      ? !activityData.priceReceived
-      : true;
+    ? !activityData.priceReceived
+    : true;
   const network = useNetwork();
   const navigate = useNavigate();
 
@@ -90,8 +89,9 @@ const MarketActivityCard: React.FC<{
       </div>
       <div className="flex flex-col items-center w-full ">
         <div
-          className={`flex justify-between w-full mb-[2px] mt-${nonPrice ? '1' : '2'
-            } `}
+          className={`flex justify-between w-full mb-[2px] mt-${
+            nonPrice ? '1' : '2'
+          } `}
         >
           <span className="font-semibold text-f14">{market.name}</span>
           {nonPrice ? null : (
@@ -105,12 +105,12 @@ const MarketActivityCard: React.FC<{
             </span>
           )}{' '}
         </div>
-        {/* <div className={'mb-1 text-overflow-2-lines w-full font-semibold text-2 text-f9 '}>
+        {/* <div className={'mb-1 text-overflow-2-lines w-full font-semibold text-2 text-f10 '}>
             @{market?.social_handle}
           </div> */}
         <div
           className={
-            'w-full font-semibold text-2 text-f9  ' +
+            'w-full font-semibold text-2 text-f10  ' +
             (!nonPrice ? 'flex justify-between items-center' : '')
           }
         >
@@ -123,8 +123,8 @@ const MarketActivityCard: React.FC<{
                   {activityData?.pricePaid
                     ? 'Bought for ' + viewDec(BigInt(activityData.pricePaid))
                     : activityData?.priceReceived
-                      ? 'Sold for ' + viewDec(BigInt(activityData.priceReceived))
-                      : ''}
+                    ? 'Sold for ' + viewDec(BigInt(activityData.priceReceived))
+                    : ''}
                   {' ' + 'ETH'}
                 </div>
               </div>
@@ -169,21 +169,21 @@ const ClaimRewardActivityCard: React.FC<{
         <div className={`flex justify-between w-full mb-[2px] mt-1`}>
           <span className="font-semibold text-f14">{market.name}</span>
         </div>
-        {/* <div className={'mb-1 text-overflow-2-lines w-full font-semibold text-2 text-f9 '}>
+        {/* <div className={'mb-1 text-overflow-2-lines w-full font-semibold text-2 text-f10 '}>
           @{market?.social_handle}
         </div> */}
         <div
           className={
-            'mb-1 text-overflow-2-lines w-full font-semibold text-2 text-f9 '
+            'mb-1 text-overflow-2-lines w-full font-semibold text-2 text-f10 '
           }
         >
           Claimed Amount {viewDec(activityData?.claimedRewards)}{' '}
-          {network.chain?.nativeCurrency.symbol ?? ""}
+          {network.chain?.nativeCurrency.symbol ?? ''}
         </div>
 
         <div
           className={
-            'w-full font-semibold text-2 text-f9 flex justify-between items-center'
+            'w-full font-semibold text-2 text-f10 flex justify-between items-center'
           }
         >
           <div className="flex font-[500] items-center justify-between">
@@ -231,21 +231,21 @@ const ClaimReflectionActivityCard: React.FC<{
         <div className={`flex justify-between w-full mb-[2px] mt-1`}>
           <span className="font-semibold text-f14">{market.name}</span>
         </div>
-        {/* <div className={'mb-1 text-overflow-2-lines w-full font-semibold text-2 text-f9 '}>
+        {/* <div className={'mb-1 text-overflow-2-lines w-full font-semibold text-2 text-f10 '}>
           @{market?.social_handle}
         </div> */}
         <div
           className={
-            'mb-1 text-overflow-2-lines w-full font-semibold text-2 text-f9 '
+            'mb-1 text-overflow-2-lines w-full font-semibold text-2 text-f10 '
           }
         >
           Claimed Amount {viewDec(activityData?.claimedFees)}{' '}
-          {network.chain?.nativeCurrency.symbol ?? ""}
+          {network.chain?.nativeCurrency.symbol ?? ''}
         </div>
 
         <div
           className={
-            'w-full font-semibold text-2 text-f9 flex justify-between items-center'
+            'w-full font-semibold text-2 text-f10 flex justify-between items-center'
           }
         >
           <div className="flex font-[500] items-center justify-between">

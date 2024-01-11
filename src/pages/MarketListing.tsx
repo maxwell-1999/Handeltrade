@@ -42,7 +42,7 @@ const MarketListing: React.FC<any> = ({}) => {
   console.log(`MarketListing-network: `, net);
   return (
     <div className="px-[15px] bg-brandGrey min-h-full pb-10 flex flex-col gap-[10px]">
-      <div className="sticky top-0 flex flex-col bg-brandGrey w-full pt-4 pb-2 gap-y-2">
+      <div className="sticky top-0 flex flex-col w-full pt-4 pb-2 bg-brandGrey gap-y-2">
         <MarketSearchBar />
         <div className="flex">
           {searchManager.keyword ? (
