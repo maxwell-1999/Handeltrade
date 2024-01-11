@@ -25,6 +25,7 @@ const MarketActivityList: React.FC<{
         if (activity.type == 'buy') {
           return (
             <UserActivityCard
+              key={i}
               user={userAddrMap[activity.buyer]}
               activityData={activity}
             />
@@ -33,6 +34,7 @@ const MarketActivityList: React.FC<{
         if (activity.type == 'sell') {
           return (
             <UserActivityCard
+              key={i}
               user={userAddrMap[activity.seller]}
               activityData={activity}
             />
@@ -43,7 +45,7 @@ const MarketActivityList: React.FC<{
         }
         if (activity.type == 'rewardsOffereds') {
           activity.type2 = 'Rewards Offered';
-          return <RewardsOfferedCard data={activity} />;
+          return <RewardsOfferedCard key={i} data={activity} />;
         }
       })}
     </div>

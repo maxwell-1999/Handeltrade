@@ -20,6 +20,7 @@ const UserActivityList: React.FC<{ marketMap: MarketIdMap; data: any[]; }> = ({
         if (activity.type == 'buy' || activity.type == 'sell') {
           return (
             <MarketActivityCard
+              key={i}
               activityData={activity}
               market={marketMap[activity.marketId]}
             />
@@ -29,6 +30,8 @@ const UserActivityList: React.FC<{ marketMap: MarketIdMap; data: any[]; }> = ({
           activity.type2 = 'Claimed Rewards';
           return (
             <ClaimRewardActivityCard
+              key={i}
+
               activityData={activity}
               market={marketMap[activity.marketId]}
             />
@@ -38,6 +41,7 @@ const UserActivityList: React.FC<{ marketMap: MarketIdMap; data: any[]; }> = ({
           activity.type2 = 'Claimed Reflection';
           return (
             <ClaimReflectionActivityCard
+              key={i}
               activityData={activity}
               market={marketMap[activity.marketIds]}
             />

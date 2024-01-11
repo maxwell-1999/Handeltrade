@@ -32,30 +32,42 @@ const UserCardSm: React.FC<any> = ({ user }) => {
               />
             ) : (
               <FontAwesomeIcon
-                height={27}
-                width={27}
-                className="w-[45px] h-[45px] mr-[7px] p-1 text-2 cursor-pointer"
+                height={20}
+                width={20}
+                className="w-[30px] h-[30px] mr-[7px] p-1 text-2 cursor-pointer"
                 icon={faCircleQuestion}
                 onClick={() => { }}
               />
             )}
             {/* demographics */}
             <span className="flex flex-col w-full">
-              <span className="flex items-center font-semibold text-f14 pt-1">
-                {user?.first_name ? (
-                  user.first_name
-                ) : 'No Name'}
-                <div className="ml-auto text-2 text-f10">
-                  {showShares(user?.shares)}
-                </div>
-              </span>
-              <span className="flex justify-between w-full text-2 ">
-                <span className="mt-1 font-semibold text-f12">
-                  <span className=" max-w-[70px] rounded-lg ">
-                    {formatAddress(user?.public_address)}{' '}
+              {user?.is_active ? <>
+                <span className="flex items-center font-semibold text-f14 pt-1">
+                  {user?.first_name ? (
+                    user.first_name
+                  ) : ''}
+                  <div className="ml-auto text-2 text-f10">
+                    {showShares(user?.shares)}
+                  </div>
+                </span>
+                <span className="flex justify-between w-full text-2 ">
+                  <span className="mt-1 font-semibold text-f12">
+                    <span className=" max-w-[70px] rounded-lg ">
+                      {formatAddress(user?.public_address)}{' '}
+                    </span>
                   </span>
                 </span>
-              </span>
+              </> : <>
+                <span className="flex justify-between w-full text-2 pt-2 ">
+                  <span className="mt-1 font-semibold text-f12 max-w-[70px] rounded-lg ">
+                    {formatAddress(user?.public_address)}{' '}
+                  </span>
+                  <span>
+                    {showShares(user?.shares)}
+                  </span>
+                </span>
+              </>
+              }
             </span>
           </span>
           {/* finance */}

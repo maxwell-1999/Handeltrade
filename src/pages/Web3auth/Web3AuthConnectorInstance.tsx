@@ -7,7 +7,7 @@ import { CHAIN_NAMESPACES } from '@web3auth/base';
 import { Chain } from 'wagmi';
 
 export default function Web3AuthConnectorInstance(chains: Chain[]) {
-  const name = 'FFrei';
+  const name = 'Handel.Network';
   const chainConfig = {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: '0x' + chains[0].id.toString(16),
@@ -20,13 +20,16 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
   const web3AuthInstance = new Web3Auth({
     clientId:
       'BFFvxj2A_-e4pLRvk-5D-ApuvOcPgwblDHFvViApGZst_QwQXvZQGB_BC6hiniwGQHCwK0GTT5RTWCNa2sSMzZo',
+      // 'BER2IPJpbBvpJSNy1ci79ranyQNfS3a4kYKK9-Ebl0uGKHFWToZhEVu0e72RnXXGwNo6WbUJOJ5Fn86L_utcsFE',
     chainConfig,
     web3AuthNetwork: 'sapphire_devnet',
+    // web3AuthNetwork: 'testnet',
     uiConfig: {
       appName: name,
       loginMethodsOrder: ['google'],
       defaultLanguage: 'en',
       // appLogo: 'https://web3auth.o/images/w3a-L-Favicon-1.svg', // Your App Logo Here
+      appLogo: "/Logo.png",
       modalZIndex: '2147483647',
     },
   });
