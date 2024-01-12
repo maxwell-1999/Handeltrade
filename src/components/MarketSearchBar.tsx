@@ -1,12 +1,43 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import MemoSearchIcon from '../SVG/SearchIcon';
 import useSearchMarket from '../atoms/marketSearch';
 
 const MarketSearchBar: React.FC<any> = ({}) => {
-  const [value, setValue] = useState('');
+  const [isDivVisible, setIsVisible] = useState(true); // Initial visibility
+  useEffect(() => {
+    console.log(`isDivVisible-c${isDivVisible}`);
+  }, [isDivVisible]);
+  console.log(`MarketSearchBar-isDivVisible: `, isDivVisible);
+  const prevPositions = useRef(0);
+  useEffect(() => {
+    const handleScroll = (e) => {
+      const scrollPos = e.target.scrollTop;
+      console.log(
+        `MarketSearchBar-scrollPosd: `,
+        scrollPos - prevPositions.current,
+        prevPositions.current
+      );
+
+      if (prevPositions.current <= scrollPos) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
+      }
+      // e.stopPropagation();
+      prevPositions.current = scrollPos;
+    };
+
+    window.addEventListener('scroll', handleScroll, true);
+
+    // return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
   const searchManager = useSearchMarket();
   return (
-    <div className="bg-white px-[10px] w-full h-[50px] rounded-[10px] flex items-center relative overflow-hidden justify-between pr-6">
+    <div
+      className={`bg-white px-[10px]  transition-all w-full h-[50px] rounded-[10px] flex items-center relative overflow-hidden justify-between pr-6 ${
+        isDivVisible ? ' height-pop-up ' : 'height-pop-down'
+      }`}
+    >
       <MemoSearchIcon className="ml-3" />
       <input
         value={searchManager.keyword}

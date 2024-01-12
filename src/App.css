@@ -21,6 +21,12 @@ body {
   height: 100vh;
 }
 
+.height-pop-up{
+ max-height: 1000px;
+}
+.height-pop-down{
+ max-height: 0px ;
+}
 
 .custom-bg-image {
   background-image: url('/BGPattern.png');
