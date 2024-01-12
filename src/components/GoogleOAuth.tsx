@@ -8,7 +8,7 @@ const clientId = '784619188209-a1cmllig1omc0amcudtb69o5ro0njv86.apps.googleuserc
 
 function GoogleOAuth() {
   // State to manage the user's login status
-  const oAuthUrl = `https://accounts.google.com/o/oauth2/auth?scope=https://www.googleapis.com/auth/youtube.readonly&response_type=code&access_type=offline&redirect_uri=https://8d5c-103-44-107-173.ngrok-free.app&client_id=${clientId}`;
+  const oAuthUrl = `https://accounts.google.com/o/oauth2/auth?scope=https://www.googleapis.com/auth/youtube.readonly&response_type=code&access_type=offline&redirect_uri=https://handel.network&client_id=${clientId}`;
 
   // https://8d5c-103-44-107-173.ngrok-free.app/?code=4/0AfJohXklbjTCNwetujb8OOtyzIpsHrwb4tHtJTBVb9fwtKrf7Dt7orwEbOu3S01CHjJXMw&scope=https://www.googleapis.com/auth/youtube.readonly
 
