@@ -10,7 +10,7 @@ import { SellDrawer } from './SellDrawer';
 import { InitMarketDrawer } from './InitMarketDrawer';
 import { DrawerLoader } from './DrawerLoader';
 let oldData = undefined;
-const ShareManagementDrawer: React.FC<any> = ({ }) => {
+const ShareManagementDrawer: React.FC<any> = ({}) => {
   const { address } = useAccount();
   const network = useNetwork();
   const [value, setValue] = useState(2);
@@ -82,8 +82,8 @@ const ShareManagementDrawer: React.FC<any> = ({ }) => {
     return oldData;
   }, [mergedData]);
   return (
-    <div className='flex align-middle items-center justify-center'>
-      <div className="flex flex-col responsive-layout gap-4 pb-4">
+    <div className="flex items-center justify-center align-middle">
+      <div className="flex flex-col gap-2 pb-4 responsive-layout">
         {data?.supply == undefined ? (
           <DrawerLoader />
         ) : drawerManager.drawerState.screen == 'handel-buy' ? (

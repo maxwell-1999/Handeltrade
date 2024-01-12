@@ -94,7 +94,10 @@ const MarketCard: React.FC<{
               <div className="flex items-center gap-2 text-f10">
                 {/* <MemoTImerIcon /> */}
                 {/* <TimeAgo date={toJSEpoch(market.lastUpdated)} /> */}
-                <DisplayPrice price={BigInt(market.buyPrice)} />
+                <DisplayPrice
+                  active={Boolean(preview)}
+                  price={BigInt(market.buyPrice)}
+                />
               </div>
               {preview ? null : (
                 <div className="flex gap-2">

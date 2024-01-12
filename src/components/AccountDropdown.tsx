@@ -26,7 +26,7 @@ const AccountDropdown: React.FC<any> = ({}) => {
   if (!account.address)
     return (
       <button
-        className="relative text-[#8F95A4] bg-[white] flex items-center gap-3 rounded-[6px] px-[7px] py-[5px]"
+        className="relative text-[#8F95A4] bg-[white] flex items-center gap-3 rounded-[6px]  p-[5px]"
         onClick={() => drawerManager.openLoginDrawer()}
       >
         <WalletIcon /> Login
@@ -35,7 +35,7 @@ const AccountDropdown: React.FC<any> = ({}) => {
   return (
     <ClickAwayListener onClickAway={() => setShow(false)}>
       <div
-        className="relative  text-[#8F95A4] bg-[white] rounded-[6px] px-[7px] py-[5px]"
+        className="relative  text-[#8F95A4] text-f12 bg-[white] rounded-lg  p-[4px] pl-[6px]"
         role="button"
         onClick={() => {
           setShow((s) => !s);
@@ -51,21 +51,22 @@ const AccountDropdown: React.FC<any> = ({}) => {
             icon={faEthereum}
             onClick={() => {}}
           />
-          <span className="p-2 bg-gray-200 rounded-lg ">
+          <span className="p-2 py-[4px]  bg-[#EAEBF0] rounded-lg flex items-center">
             {formatAddress(account.address)}{' '}
+            <svg
+              width="7"
+              height="5"
+              viewBox="0 0 7 5"
+              fill="none"
+              className="ml-1"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6.04069 0.297363L3.62163 2.90334L1.20258 0.297363L0.459473 1.09964L3.62163 4.51358L5.20272 2.80661L6.7838 1.09964L6.04069 0.297363Z"
+                fill="#8F95A4"
+              />
+            </svg>
           </span>
-          <svg
-            width="7"
-            height="5"
-            viewBox="0 0 7 5"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M6.04069 0.297363L3.62163 2.90334L1.20258 0.297363L0.459473 1.09964L3.62163 4.51358L5.20272 2.80661L6.7838 1.09964L6.04069 0.297363Z"
-              fill="#8F95A4"
-            />
-          </svg>
         </div>
         {show ? (
           <div className="absolute z-50 flex flex-col bg-[#EAEBF0] py-6 top-[110%] w-full gap-2 left-0 rounded-[4px]">

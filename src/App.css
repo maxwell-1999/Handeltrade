@@ -29,6 +29,13 @@ body {
   background-position: 0px 0px;
   z-index: -1;
 }
+.triangle-right {
+  width: 0; 
+  height: 0; 
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-left: 8px solid white;
+}
 
 .tab-gap {
   gap: min(150px, 20vw);

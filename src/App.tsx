@@ -36,7 +36,6 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
   [baseGoerli],
   [publicProvider()]
 );
-
 // Set up client
 export const config = createConfig({
   autoConnect: true,
@@ -47,13 +46,12 @@ export const config = createConfig({
 
 // Pass client to React Context Provider
 function Web3AuthWithWagmi() {
-  useEthPrice()
+  useEthPrice();
   return (
     <WagmiConfig config={config}>
       <RecoilRoot>
         <SWRConfig>
           <BrowserRouter>
-        
             <Routes>
               <Route path="/markets" element={<Onboarding />}>
                 <Route
