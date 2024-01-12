@@ -27,7 +27,7 @@ const SearchTab: React.FC<{ keyword: string; onClose?: () => void }> = ({
   return (
     <button
       className={
-        ' flex gap-4 text-f12 font-[500] px-2 py-1 rounded-[5px]  text-brand bg-lightBrand'
+        ' flex gap-4 text-f12 font-[600] px-3 py-1 rounded-[5px]  text-brand bg-lightBrand'
       }
     >
       {keyword}

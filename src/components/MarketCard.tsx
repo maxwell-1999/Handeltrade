@@ -10,6 +10,7 @@ import { view, viewDec } from '../Helpers/bigintUtils';
 import { twMerge } from 'tailwind-merge';
 import { showShares } from '../pages/UserProfilePage/UserCardSm';
 import MemoYoutubeLogo, { MemoYoutubeLogoSm } from '../SVG/YoutubeLogo';
+import { DisplayPrice } from './DisplayPrice';
 
 export const toJSEpoch = (e: string | number) => +e * 1000;
 
@@ -59,7 +60,10 @@ const MarketCard: React.FC<{
         >
           <div className="flex items-center gap-1">
             <span className="font-semibold text-f14">{market.name}</span>
-            <a href="https://youtube.com" target="_blank">
+            <a
+              href={`https://youtube.com/@${market.social_handle}`}
+              target="_blank"
+            >
               <MemoYoutubeLogoSm className="mb-[2px]" />
             </a>
           </div>
@@ -80,7 +84,9 @@ const MarketCard: React.FC<{
               'mb-1 !font-[400] ' + (!preview ? 'text-overflow-2-lines' : '')
             }
           >
-            {preview ? '@' + market.social_handle : market.description}
+            {preview
+              ? '@' + market.social_handle
+              : market.description || '@' + market.social_handle}
             {/* @{market?.social_handle} */}
           </div>
           {nonPrice ? null : (
@@ -88,13 +94,7 @@ const MarketCard: React.FC<{
               <div className="flex items-center gap-2 text-f10">
                 {/* <MemoTImerIcon /> */}
                 {/* <TimeAgo date={toJSEpoch(market.lastUpdated)} /> */}
-                <div title="2222">
-                  Price{' '}
-                  {market?.buyPrice
-                    ? viewDec(BigInt(market.buyPrice))
-                    : 'No Price'}{' '}
-                  {'ETH'}
-                </div>
+                <DisplayPrice price={BigInt(market.buyPrice)} />
               </div>
               {preview ? null : (
                 <div className="flex gap-2">

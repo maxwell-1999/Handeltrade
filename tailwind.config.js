@@ -11,7 +11,7 @@ export default {
       },
       colors: {
         brand: '#3C32A3',
-        lightBrand: '#ecf2fe',
+        lightBrand: '#DBE7FF',
         white: '#fff',
         brandGrey: "#f6f7fc",
         // brandGrey: "pink",
