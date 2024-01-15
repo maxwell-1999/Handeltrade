@@ -1,0 +1,28 @@
+{
+  "message": "Market page found",
+  "data": {
+    "id": 62,
+    "rank": 5,
+    "market_id": "59505095757614236916991811845044959958742645496879701893391445174609797199759",
+    "social_platform": "youtube",
+    "social_handle": "worldaffairsunacademy",
+    "creator_addr": "0x241023ebbcb2eb945e467b38506ea41450cdc7b7",
+    "img_url": "https://yt3.ggpht.com/k5Lj-iJQyPZDtqO1yJJCgTWP8V8O6Rd3ktM5OkFEz7fDm0aTgsy7PJs7AUUSPMflxlTz9G92=s88-c-k-c0x00ffffff-no-rj",
+    "name": "World Affairs by Unacademy",
+    "description": "2.4 Billion+ Views with 142M+ watch hours in just 3 years!\n\nWelcome to the World Affairs YouTube channel from Unacademy.\nThis platform is the one-stop solution that gives you the best insight on how to prepare various topics on Current Affairs for competitive exams.\n\nEvery day we provide insightful knowledge on International Affairs to keep our learners transcending traditional boundaries of education through critical thinking to prepare for Civil Service Examinations.\n\nUnacademy platform has the best educators from all over the country, who take live classes daily.\nSubscribe to our channel to push your limits!\n\n",
+    "on_chain": true,
+    "claimed": false,
+    "created_at": "1704293552",
+    "updated_at": "1704463802",
+    "buyPrice": "618750000000000",
+    "lastUpdated": "1704472004",
+    "sellPrice": "225000000000000",
+    "shares": "3000000000000000000",
+    "statistics": {
+      "viewCount": "2420990721",
+      "subscriberCount": "3760000",
+      "hiddenSubscriberCount": false,
+      "videoCount": "3945"
+    }
+  }
+}

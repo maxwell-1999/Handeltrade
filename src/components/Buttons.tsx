@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import toast from 'react-hot-toast';
-import { twMerge } from 'tailwind-merge';
+import { twJoin, twMerge } from 'tailwind-merge';
 
 interface ButtonProps
   extends React.DetailedHTMLProps<
@@ -23,13 +23,38 @@ const PrimaryBtn: React.FC<ButtonProps> = ({
   return (
     <button
       className={twMerge(
-        `${!disable ? 'bg-brand' : 'bg-[grey]  cursor-not-allowed'
+        `${
+          !disable ? 'bg-brand' : 'bg-[grey]  cursor-not-allowed'
         } text-md font-bold text-white min-w-full py-[10px] rounded-[10px] shrink-0`,
         className
       )}
       {...props}
       onClick={disable ? () => toast(disable) : props.onClick}
-    // disabled={disable ? true : false}
+      // disabled={disable ? true : false}
+    >
+      {children}
+    </button>
+  );
+};
+const PrimaryButton: React.FC<ButtonProps> = ({
+  children,
+  className,
+  disable,
+  ...props
+}) => {
+  console.log(`Buttons-disable: `, disable);
+
+  return (
+    <button
+      className={twJoin(
+        `${
+          !disable ? 'bg-brand' : 'bg-[grey]  cursor-not-allowed'
+        } text-f10 px-2 py-1 font-bold text-white  rounded-[5px] `,
+        className
+      )}
+      {...props}
+      onClick={disable ? () => toast(disable) : props.onClick}
+      // disabled={disable ? true : false}
     >
       {children}
     </button>
@@ -53,4 +78,4 @@ const SecondaryBtn: React.FC<ButtonProps> = ({
   );
 };
 
-export { PrimaryBtn, SecondaryBtn };
+export { PrimaryBtn, SecondaryBtn, PrimaryButton };

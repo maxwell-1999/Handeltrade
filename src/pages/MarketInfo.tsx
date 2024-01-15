@@ -29,9 +29,46 @@ import HandleTradeAbi from '../ABI/HandelTrade.json';
 import { appConfig } from '../config';
 import { bigIntToStringWithDecimal, viewDec } from '../Helpers/bigintUtils';
 import MemoButtonLoader from '../components/ButtonLoader';
-
+import { MarketInfoCard } from './MarketInfoCard';
+import { RewardCard } from './RewardCard';
+const rew = {
+  minFeesClaimThreshold: BigInt(2e12),
+  dividends: BigInt(1e14),
+  rewards: BigInt(1e13),
+  balanceOf: BigInt(3e18),
+};
 const tabs = ['Holders', 'Watchlisted By', 'Activity', 'Claimable'];
-
+const offlineData = {
+  message: 'Market page found',
+  data: {
+    id: 62,
+    rank: 5,
+    market_id:
+      '59505095757614236916991811845044959958742645496879701893391445174609797199759',
+    social_platform: 'youtube',
+    social_handle: 'worldaffairsunacademy',
+    creator_addr: '0x241023ebbcb2eb945e467b38506ea41450cdc7b7',
+    img_url:
+      'https://yt3.ggpht.com/k5Lj-iJQyPZDtqO1yJJCgTWP8V8O6Rd3ktM5OkFEz7fDm0aTgsy7PJs7AUUSPMflxlTz9G92=s88-c-k-c0x00ffffff-no-rj',
+    name: 'World Affairs by Unacademy',
+    description:
+      '2.4 Billion+ Views with 142M+ watch hours in just 3 years!\n\nWelcome to the World Affairs YouTube channel from Unacademy.\nThis platform is the one-stop solution that gives you the best insight on how to prepare various topics on Current Affairs for competitive exams.\n\nEvery day we provide insightful knowledge on International Affairs to keep our learners transcending traditional boundaries of education through critical thinking to prepare for Civil Service Examinations.\n\nUnacademy platform has the best educators from all over the country, who take live classes daily.\nSubscribe to our channel to push your limits!\n\n',
+    on_chain: true,
+    claimed: false,
+    created_at: '1704293552',
+    updated_at: '1704463802',
+    buyPrice: '618750000000000',
+    lastUpdated: '1704472004',
+    sellPrice: '225000000000000',
+    shares: '3000000000000000000',
+    statistics: {
+      viewCount: '2420990721',
+      subscriberCount: '3760000',
+      hiddenSubscriberCount: false,
+      videoCount: '3945',
+    },
+  },
+};
 const MarketInfo: React.FC<any> = ({}) => {
   const account = useAccount();
   const [userState] = useUserState();
@@ -47,8 +84,49 @@ const MarketInfo: React.FC<any> = ({}) => {
       );
       return res.data.data;
     },
-    refreshInterval: 2000,
+    refreshInterval: 100000000,
   });
+
+  const { data: revisedData } = useContractReads({
+    contracts: [
+      {
+        address: appConfig.handelTradeAddress,
+        abi: HandleTradeAbi,
+        functionName: 'checkEarnedRewards',
+        args: [params?.marketid, account?.address],
+      },
+      {
+        address: appConfig.handelTradeAddress,
+        abi: HandleTradeAbi,
+        functionName: 'dividendsOf',
+        args: [params?.marketid, account?.address],
+      },
+      {
+        address: appConfig.handelTradeAddress,
+        abi: HandleTradeAbi,
+        functionName: 'minFeesClaimThreshold',
+        args: [],
+      },
+      {
+        address: appConfig.handelTradeAddress,
+        abi: HandleTradeAbi,
+        functionName: 'sharesBalance',
+        args: [params?.marketid, account?.address],
+      },
+    ],
+    watch: true,
+    select: (data) => {
+      console.log(`MarketInfo-data[2]: `, data[3].result);
+      return {
+        minFeesClaimThreshold: data[2].result,
+        dividends: data[1].result,
+        rewards: data[0].result,
+        balanceOf: data[3].result,
+      };
+    },
+  });
+  console.log(`MarketInfo-revisedData: `, revisedData);
+
   const drawerManager = useDrawerState();
   if (isLoading) return <ListLoader />;
 
@@ -85,16 +163,18 @@ const MarketInfo: React.FC<any> = ({}) => {
       console.log('Removed from watchlist');
     }
   };
+  console.log(`MarketInfo-revisedData: `, revisedData);
 
   return (
-    <div className="relative flex flex-col items-center justify-center w-full h-full overflow-hidden ">
-      <div className="absolute top-0 left-0 w-full h-full custom-bg-image" />
-      <div className="flex flex-col items-center w-full min-h-[75px] h-[12%] z-10 px-horizontalSm">
+    <div className="relative flex flex-col items-center w-full h-full overflow-hidden bg-2b ">
+      {/* <div className="absolute top-0 left-0 w-full h-full bg-2b" /> */}
+      <div className="sticky top-0 flex flex-col items-center w-full px-horizontalSm">
         {/* Market Card Goes here */}
-        {data && <MarketCard market={data} preview />}
+        {data && <MarketInfoCard market={data} preview />}
+        {data && revisedData && <RewardCard rewards={rew} market={data} />}
       </div>
 
-      <div className="flex flex-col w-full h-[88%] ">
+      <div className="flex flex-col w-full ">
         {data?.on_chain || data?.shares ? (
           <div className="flex justify-between w-full px-4 ">
             <div className="flex gap-3">
@@ -148,7 +228,7 @@ const MarketInfo: React.FC<any> = ({}) => {
             activeTab={activeTab}
           />
         </div>
-        <div className="w-full min-h-full pb-40 overflow-x-hidden  bg-brandGrey">
+        <div className="w-full min-h-full pb-40 overflow-x-hidden bg-brandGrey">
           <div className="flex flex-col gap-[10px]">
             {/* all tabs data goes here   */}
             {activeTab == 'Holders' ? (

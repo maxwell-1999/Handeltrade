@@ -60,9 +60,20 @@ body {
   transition: filter 300ms;
 }
 
+.transparent-gradient::before{
+  background: linear-gradient(180deg,rgba(255,255,255,0.7) 0%, rgba(246,247,252,0.7) 30%, rgba(246,247,252,0.874237508018695) 100%);
+}
 .text-overflow-2-lines {
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  /* Clamp to two lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.text-overflow-6-lines {
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
   /* Clamp to two lines */
   -webkit-box-orient: vertical;
   overflow: hidden;

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import MemoAddMarkets from '../SVG/AddMarkets';
 import MemoMarketListIcon from '../SVG/MarketListIcon';
 import { NavLink, useNavigate } from 'react-router-dom';
@@ -34,7 +34,33 @@ const isNestedRouteActive = (page: string) => {
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [activeTab, setActiveTab] = useState(Icons[0].name);
   const navigate = useNavigate();
+  const [isVisible, setIsVisible] = useState(true);
+  console.log(`Layout-isVisible: `, isVisible);
   const drawerManager = useDrawerState();
+  // const ref = useCallback((node) => {
+  //   let prev = 0;
+  //   const handleScroll = () => {
+  //     const scrollPos = e.target.scrollTop;
+  //     console.log(`MarketSearchBar-e.target: `, e.target);
+  //     console.log(`MarketSearchBar-scrollPosd: `, scrollPos - prev);
+  //     console.log(`MarketSearchBar-scrollPosd: `, scrollPos, prev);
+
+  //     if (prev <= scrollPos) {
+  //       setIsVisible(false);
+  //     } else {
+  //       setIsVisible(true);
+  //     }
+  //     // e.stopPropagation();
+  //     prev = scrollPos;
+  //   };
+
+  //   node.addEventListener('scroll', handleScroll);
+  //   console.log(`Layout-node: `, node);
+
+  //   return () => {
+  //     node.removeEventListener('scroll', handleScroll);
+  //   };
+  // }, []);
   return (
     <>
       <div className="flex flex-shrink-0 h-[100vh] align-middle items-center justify-center ">

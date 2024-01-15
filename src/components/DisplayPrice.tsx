@@ -18,11 +18,7 @@ const DisplayPrice: React.FC<{
   return (
     <div className={twJoin('flex items-center text-f10 ', className)}>
       {compact ? null : <span>Price&nbsp;:&nbsp;</span>}
-      <span
-        className={
-          `text-${compact ? 'f12' : 'f10'} ` + (active ? 'text-brand' : '')
-        }
-      >
+      <span className={`text-f12 ` + (active ? 'text-brand' : '')}>
         {view(price)}
       </span>
       &nbsp;

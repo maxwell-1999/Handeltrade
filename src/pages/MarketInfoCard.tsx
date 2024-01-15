@@ -1,21 +1,16 @@
-import TimeAgo from 'react-timeago';
-import MemoTImerIcon from '../SVG/TImerIcon';
-import { E18, E8 } from '../Helpers/constants';
 import { useNetwork } from 'wagmi';
-import useDrawerState from '../atoms/drawerState';
 import MemoMoreIcon from '../SVG/MoreIcon';
 import { useNavigate } from 'react-router-dom';
-import { SecondaryBtn } from './Buttons';
-import { view, viewDec } from '../Helpers/bigintUtils';
+import { SecondaryBtn } from '../components/Buttons';
 import { twMerge } from 'tailwind-merge';
-import { showShares } from '../pages/UserProfilePage/UserCardSm';
-import MemoYoutubeLogo, { MemoYoutubeLogoSm } from '../SVG/YoutubeLogo';
-import { DisplayPrice } from './DisplayPrice';
+import { MemoYoutubeLogoSm } from '../SVG/YoutubeLogo';
+import { DisplayPrice } from '../components/DisplayPrice';
+import { useEffect, useRef, useState } from 'react';
 import ShowMoreText from 'react-show-more-text';
 
 export const toJSEpoch = (e: string | number) => +e * 1000;
 
-const MarketCard: React.FC<{
+const MarketInfoCard: React.FC<{
   market: Market;
   preview?: boolean;
   className?: string;
@@ -25,6 +20,11 @@ const MarketCard: React.FC<{
   const nonPrice = !market?.buyPrice;
   const network = useNetwork();
   const navigate = useNavigate();
+  const descDivRef = useRef<HTMLDivElement | null>(null);
+  const [expanded, setExpanded] = useState(false);
+  useEffect(() => {
+    console.log(`expanded-c${expanded}`);
+  }, [expanded]);
   return (
     <div
       role={preview ? 'cell' : 'button'}
@@ -68,11 +68,6 @@ const MarketCard: React.FC<{
               <MemoYoutubeLogoSm className="mb-[2px]" />
             </a>
           </div>
-          {nonPrice ? null : (
-            <span className="flex items-center text-center cursor-pointer text-f10 text-2">
-              {showShares(market?.shares)}
-            </span>
-          )}{' '}
         </div>
         <div
           className={
@@ -81,14 +76,32 @@ const MarketCard: React.FC<{
           }
         >
           <div
+            ref={descDivRef}
             className={
-              'mb-1 !font-[400] ' + (!preview ? 'text-overflow-2-lines' : '')
+              'mb-1 !font-[400] max-h-[220px]   relative overflow-auto'
             }
           >
-            {preview
-              ? '@' + market.social_handle
-              : market.description || '@' + market.social_handle}
-            {/* @{market?.social_handle} */}
+            <ShowMoreText
+              /* Default options */
+              lines={5}
+              more={
+                <span className=" text-transparent before:block before:w-full before:h-[40px] before:absolute transparent-gradient before:bottom-0  before:-z-1  z-[1000] ">
+                  Show more
+                </span>
+              }
+              less="Show less"
+              className="content-css"
+              anchorClass="show-more-less-clickable"
+              onClick={(ex) => {
+                setExpanded(ex);
+              }}
+              expanded={expanded}
+              // width={280}
+              truncatedEndingComponent={'... '}
+            >
+              {/* safasdfadssdfsadf sdafasdfasd fasd fasd fas dfsd */}
+              {market.description}
+            </ShowMoreText>
           </div>
           {nonPrice ? null : (
             <div className="flex items-center justify-between">
@@ -123,4 +136,4 @@ const MarketCard: React.FC<{
   );
 };
 
-export { MarketCard };
+export { MarketInfoCard };

@@ -4,33 +4,32 @@ import useSearchMarket from '../atoms/marketSearch';
 
 const MarketSearchBar: React.FC<any> = ({}) => {
   const [isDivVisible, setIsVisible] = useState(true); // Initial visibility
-  useEffect(() => {
-    console.log(`isDivVisible-c${isDivVisible}`);
-  }, [isDivVisible]);
+  // useEffect(() => {
+  //   console.log(`isDivVisible-c${isDivVisible}`);
+  // }, [isDivVisible]);
   console.log(`MarketSearchBar-isDivVisible: `, isDivVisible);
   const prevPositions = useRef(0);
-  useEffect(() => {
-    const handleScroll = (e) => {
-      const scrollPos = e.target.scrollTop;
-      console.log(
-        `MarketSearchBar-scrollPosd: `,
-        scrollPos - prevPositions.current,
-        prevPositions.current
-      );
+  // useEffect(() => {
+  //   let prev = 0;
+  //   const handleScroll = (e) => {
+  //     const scrollPos = e.target.scrollTop;
+  //     console.log(`MarketSearchBar-e.target: `, e.target);
+  //     console.log(`MarketSearchBar-scrollPosd: `, scrollPos - prev);
+  //     console.log(`MarketSearchBar-scrollPosd: `, scrollPos, prev);
 
-      if (prevPositions.current <= scrollPos) {
-        setIsVisible(false);
-      } else {
-        setIsVisible(true);
-      }
-      // e.stopPropagation();
-      prevPositions.current = scrollPos;
-    };
+  //     if (prev <= scrollPos) {
+  //       setIsVisible(false);
+  //     } else {
+  //       setIsVisible(true);
+  //     }
+  //     // e.stopPropagation();
+  //     prev = scrollPos;
+  //   };
 
-    window.addEventListener('scroll', handleScroll, true);
+  //   window.addEventListener('scroll', handleScroll, true);
 
-    // return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  //   // return () => window.removeEventListener('scroll', handleScroll);
+  // }, []);
   const searchManager = useSearchMarket();
   return (
     <div
