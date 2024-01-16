@@ -9,5 +9,7 @@ export const formatError = (e) => {
   const shortMessage = (
     e as ContractFunctionExecutionError
   )?.shortMessage.split('the following reason:')?.[1];
-  return shortMessage || e.shortMessage || e.message;
+  const message =
+    shortMessage || e.shortMessage || e.message || 'Error Occured!';
+  return message.replace(/(\r\n|\n|\r)/gm, '');
 };

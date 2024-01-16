@@ -69,7 +69,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <img className="w-[35px] h-[25px] " src="/Logo.svg" />
             <AccountDropdown />
           </div>
-          <div className="flex-1 w-full container-height-fr">{children}</div>
+          <div className="flex-1 w-full container-height-fr bg-[#f6f7fc]">
+            {children}
+          </div>
           {drawerManager.drawerState?.screen ? <MobileDrawer /> : null}
 
           <div className="h-[50px] w-full bg-white flex justify-center tab-gap items-center  fixed bottom-0 left-0 text-2 ">

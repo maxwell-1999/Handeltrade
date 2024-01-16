@@ -1,9 +1,14 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { view } from '../Helpers/bigintUtils';
 import { E18 } from '../Helpers/constants';
 import { PrimaryBtn, PrimaryButton } from '../components/Buttons';
 import { DisplayPrice } from '../components/DisplayPrice';
-
+import { appConfig } from '../config';
+import HandleTradeAbi from '../ABI/HandelTrade.json';
+import { useAccount, useContractReads, useContractWrite } from 'wagmi';
+import MemoButtonLoader from '../components/ButtonLoader';
+import toast from 'react-hot-toast';
+import { formatError } from '../Helpers/web3utils';
 const RewardCard: React.FC<{
   rewards: {
     dividends: bigint;
@@ -12,14 +17,47 @@ const RewardCard: React.FC<{
     balanceOf: bigint;
   };
   market: Market;
-}> = ({ rewards, market }) => {
-  /*
-  
-  550 balance
-
-  
-  
-  */
+  compact?: boolean;
+}> = ({ rewards, market, compact }) => {
+  const account = useAccount();
+  const { data: revisedData } = useContractReads({
+    contracts: [
+      {
+        address: appConfig.handelTradeAddress,
+        abi: HandleTradeAbi,
+        functionName: 'checkEarnedRewards',
+        args: [market?.market_id, account?.address],
+      },
+      {
+        address: appConfig.handelTradeAddress,
+        abi: HandleTradeAbi,
+        functionName: 'dividendsOf',
+        args: [market?.market_id, account?.address],
+      },
+      {
+        address: appConfig.handelTradeAddress,
+        abi: HandleTradeAbi,
+        functionName: 'minFeesClaimThreshold',
+        args: [],
+      },
+      {
+        address: appConfig.handelTradeAddress,
+        abi: HandleTradeAbi,
+        functionName: 'sharesBalance',
+        args: [market?.market_id, account?.address],
+      },
+    ],
+    watch: true,
+    select: (data) => {
+      console.log(`MarketInfo-data[2]: `, data[3].result);
+      return {
+        minFeesClaimThreshold: data[2].result,
+        dividends: data[1].result,
+        rewards: data[0].result,
+        balanceOf: data[3].result,
+      };
+    },
+  });
 
   const cards = useMemo(() => {
     let REWARD: { type: rewardType; reward: bigint }[] = [];
@@ -48,14 +86,21 @@ const RewardCard: React.FC<{
     (BigInt(rewards.balanceOf) / E18) * BigInt(market.buyPrice)
   );
   return (
-    <div className="bg-white text-2 text-f12 p-[16px] rounded-[8px] w-full  mr-auto  ">
-      <div className="flex items-center">
-        You own {view(rewards.balanceOf)} shares worth&nbsp;
-        <DisplayPrice
-          compact
-          price={(BigInt(rewards.balanceOf) / E18) * BigInt(market.buyPrice)}
-        />
-      </div>
+    <div
+      className={
+        'bg-white text-2 text-f12  rounded-[8px] w-full  mr-auto  ' +
+        (compact ? '' : 'p-[16px]')
+      }
+    >
+      {compact ? null : (
+        <div className="flex items-center">
+          You own {view(rewards.balanceOf)} shares worth&nbsp;
+          <DisplayPrice
+            compact
+            price={(BigInt(rewards.balanceOf) / E18) * BigInt(market.buyPrice)}
+          />
+        </div>
+      )}
       {rewards.rewards ? null : (
         <div className="w-full mt-3">
           <div>Rewards:</div>
@@ -69,7 +114,7 @@ const RewardCard: React.FC<{
         return (
           <>
             {' '}
-            <RewardRow key={r.reward} data={r} />
+            <RewardRow key={r.reward} data={r} marketId={market.market_id} />
             {idx < cards.length - 1 ? (
               <div className="bg-[#a5aab64c]  my-3 w-full h-[1px] rounded-full"></div>
             ) : null}
@@ -80,29 +125,70 @@ const RewardCard: React.FC<{
   );
 };
 type rewardType = 'REWARD' | 'DIVIDEND';
-const RewardRow: React.FC<{ data: { type: rewardType; reward: bigint } }> = ({
-  data,
-}) => {
-  const claimHandler = () => {
-    if (data.type == 'DIVIDEND') {
-      console.log('dividend-earned');
-    } else {
-      console.log('else-earned');
+const RewardRow: React.FC<{
+  data: { type: rewardType; reward: bigint };
+  marketId: string;
+}> = ({ data, marketId }) => {
+  const account = useAccount();
+  const { writeAsync: claimRewardAsync } = useContractWrite({
+    address: appConfig.handelTradeAddress,
+    abi: HandleTradeAbi,
+    functionName: 'claimRewards',
+  });
+  const { writeAsync: claimReflectionAsync } = useContractWrite({
+    address: appConfig.handelTradeAddress,
+    abi: HandleTradeAbi,
+    functionName: 'claimReflectionFees',
+  });
+  const [loading, setLoading] = useState<rewardType | null>(null);
+  const claimHandler = async () => {
+    const argPack = {
+      args: [marketId, account?.address],
+    };
+    let hash;
+    setLoading(data.type);
+    try {
+      if (data.type == 'DIVIDEND') {
+        const res = await claimReflectionAsync(argPack);
+        hash = res.hash;
+      } else {
+        const res = await claimRewardAsync(argPack);
+        hash = res.hash;
+      }
+      const { status: completionStatus } = await waitForTransactionReceipt({
+        hash,
+      });
+
+      toast.success(completionStatus);
+    } catch (e) {
+      console.log(`RewardCard-formatError(e): `, formatError(e));
+      toast.error(formatError(e));
     }
+    setLoading(null);
   };
   return (
-    <div className="w-full mt-3">
+    <div className="flex items-end justify-between w-full mt-">
       <div>
         {data.type == 'DIVIDEND' ? 'Dividends Earned' : 'Reflection Fee Earned'}
         :
-      </div>
-      <div className="flex justify-between w-full">
         <DisplayPrice compact price={data.reward} />{' '}
-        <PrimaryButton onClick={claimHandler} className="text-f10">
-          Claim
-        </PrimaryButton>
       </div>
+      <PrimaryButton
+        onClick={claimHandler}
+        className="flex  gap-2 mb-2 text-f10 w-[40px] h-[20px] items-center justify-center"
+      >
+        {loading == data.type ? (
+          <MemoButtonLoader className="scale-[0.8] ml-1" loading />
+        ) : (
+          'Claim'
+        )}
+      </PrimaryButton>
     </div>
   );
 };
 export { RewardCard };
+function waitForTransactionReceipt(arg0: {
+  hash: `0x${string}`;
+}): { status: any } | PromiseLike<{ status: any }> {
+  throw new Error('Function not implemented.');
+}

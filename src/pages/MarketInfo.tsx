@@ -22,7 +22,6 @@ import toast from 'react-hot-toast';
 import MarketActivityList from './MarketActivityList';
 import PrimeFadeText from '../components/PrimeFadeText';
 import PrimeText from '../components/PrimeText';
-import HandleTradeAbi from '../ABI/HandelTrade.json';
 import { appConfig } from '../config';
 import { viewDec } from '../Helpers/bigintUtils';
 import MemoButtonLoader from '../components/ButtonLoader';
@@ -84,46 +83,6 @@ const MarketInfo: React.FC<any> = ({}) => {
     refreshInterval: 100000000,
   });
 
-  const { data: revisedData } = useContractReads({
-    contracts: [
-      {
-        address: appConfig.handelTradeAddress,
-        abi: HandleTradeAbi,
-        functionName: 'checkEarnedRewards',
-        args: [params?.marketid, account?.address],
-      },
-      {
-        address: appConfig.handelTradeAddress,
-        abi: HandleTradeAbi,
-        functionName: 'dividendsOf',
-        args: [params?.marketid, account?.address],
-      },
-      {
-        address: appConfig.handelTradeAddress,
-        abi: HandleTradeAbi,
-        functionName: 'minFeesClaimThreshold',
-        args: [],
-      },
-      {
-        address: appConfig.handelTradeAddress,
-        abi: HandleTradeAbi,
-        functionName: 'sharesBalance',
-        args: [params?.marketid, account?.address],
-      },
-    ],
-    watch: true,
-    select: (data) => {
-      console.log(`MarketInfo-data[2]: `, data[3].result);
-      return {
-        minFeesClaimThreshold: data[2].result,
-        dividends: data[1].result,
-        rewards: data[0].result,
-        balanceOf: data[3].result,
-      };
-    },
-  });
-  console.log(`MarketInfo-revisedData: `, revisedData);
-
   const drawerManager = useDrawerState();
   if (isLoading) return <ListLoader />;
 
@@ -131,15 +90,13 @@ const MarketInfo: React.FC<any> = ({}) => {
 
   console.log(`MarketInfo-userState?.session_id: `, userState?.session_id);
 
-  console.log(`MarketInfo-revisedData: `, revisedData);
-
   return (
     <div className="relative flex flex-col items-center w-full h-full overflow-auto ">
       {/* <div className="absolute top-0 left-0 w-full h-full bg-2b" /> */}
       <div className="sticky top-0 flex flex-col items-start w-full px-horizontalSm bg-2b ">
         {/* Market Card Goes here */}
         {data && <MarketInfoCard market={data} preview />}
-        {data && revisedData && <RewardCard rewards={rew} market={data} />}
+        {data && data?.buyPrice && <RewardCard rewards={rew} market={data} />}
         <Tablist
           className="my-2"
           tablist={tabs}

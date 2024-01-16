@@ -1,7 +1,10 @@
 import * as React from 'react';
-type props = React.SVGProps<SVGSVGElement> & { loading?: boolean };
+type props = React.SVGProps<SVGSVGElement> & {
+  loading?: boolean;
+  else?: React.ReactNode;
+};
 function ButtonLoader({ loading, ...props }: props) {
-  if (!loading) return null;
+  if (!loading) return props.else || null;
   return (
     <svg width={24} height={30} {...props}>
       <path fill="currentColor" opacity={0.2} d="M0 10h4v10H0z">

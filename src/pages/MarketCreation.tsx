@@ -14,7 +14,7 @@ export const Platform = {
   Youtube: 'youtube',
 };
 
-const MarketCreation: React.FC<any> = ({ }) => {
+const MarketCreation: React.FC<any> = ({}) => {
   const [value, setValue] = useState('');
   const [protect] = useProtection();
   const [markets, setMarkets] = useState<Market[] | 'err'>([]);
@@ -33,7 +33,8 @@ const MarketCreation: React.FC<any> = ({ }) => {
         );
         console.log(`MarketCreation-result.data.data: `, result.data.data);
         setMarkets(result.data.data ?? []);
-        if (!result.data.data) {
+        if (!result.data.data.length) {
+          setMarkets('err');
           toast.error(`No channel or market named "${value}"`);
         }
       } catch (e) {
@@ -59,6 +60,8 @@ const MarketCreation: React.FC<any> = ({ }) => {
   };
   useEffect(() => {
     const keyword = searchParams.get('keyword');
+    setMarkets([]);
+
     if (value && keyword) {
       fetchMarketStatus();
       handleDeleteParam('keyword');
@@ -68,8 +71,8 @@ const MarketCreation: React.FC<any> = ({ }) => {
 
   return (
     <Layout>
-      <div className="flex flex-col items-center justify-end h-full relative">
-        <div className="custom-bg-image bg-lightBrand absolute top-0 left-0 h-full w-full" />
+      <div className="relative flex flex-col items-center justify-end h-full">
+        <div className="absolute top-0 left-0 w-full h-full custom-bg-image bg-lightBrand" />
         <div className="flex flex-col items-center h-[70%] gap-[20px] bg-white w-full rounded-t-[20px] p-[30px]">
           <div className="text-lg font-bold">Create new Market</div>
           <div className="w-full text-center text-f12 text-2 ">

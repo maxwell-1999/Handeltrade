@@ -34,7 +34,7 @@ const MarketInfoCard: React.FC<{
   idx?: number;
 }> = ({ market, preview, idx, className }) => {
   console.log(`MarketCard-market: `, market);
-  const nonPrice = !market?.buyPrice;
+  const unInitialisedMarket = !market?.buyPrice;
   const navigate = useNavigate();
   const descDivRef = useRef<HTMLDivElement | null>(null);
   const [expanded, setExpanded] = useState(false);
@@ -122,7 +122,7 @@ const MarketInfoCard: React.FC<{
       <div className="flex flex-col items-start w-full ">
         <div
           className={`flex justify-between w-full mb-[2px] mt-${
-            nonPrice ? '1' : '2'
+            unInitialisedMarket ? '1' : '2'
           } `}
         >
           <div className="flex items-center gap-1">
@@ -135,12 +135,14 @@ const MarketInfoCard: React.FC<{
             </a>
           </div>
         </div>
-        <DisplayPrice
-          className="text-2"
-          compact
-          active
-          price={BigInt(market.buyPrice)}
-        />
+        {unInitialisedMarket ? null : (
+          <DisplayPrice
+            className="text-2"
+            compact
+            active
+            price={BigInt(market.buyPrice)}
+          />
+        )}
         {market?.on_chain || market?.shares ? (
           <div className="flex justify-between w-full my-2 mb-3 ">
             <div className="flex gap-2">
@@ -184,7 +186,7 @@ const MarketInfoCard: React.FC<{
         ) : (
           <PrimaryBtn
             onClick={() => protect(() => drawerManager.openBuyDrwer(market))}
-            className="p-1 text-[white] text-[12px] w-[70px] h-fit min-w-fit font-semibold rounded-[4px] px-2"
+            className="p-1 text-[white] text-[12px] w-[70px] h-fit min-w-fit font-semibold rounded-[4px] px-2 my-2 mb-3"
           >
             Buy 1st Share
           </PrimaryBtn>
@@ -192,13 +194,13 @@ const MarketInfoCard: React.FC<{
         <div
           className={
             'w-full  text-2 text-f10 ' +
-            (nonPrice ? 'flex justify-between items-center' : '')
+            (unInitialisedMarket ? 'flex justify-between items-center' : '')
           }
         >
           <div
             ref={descDivRef}
             className={
-              'mb-1 !font-[400] max-h-[212px]   relative overflow-auto'
+              'mb-1 !font-[400] max-h-[212px]   relative overflow-auto w-full'
             }
           >
             <ShowMoreText
@@ -216,11 +218,13 @@ const MarketInfoCard: React.FC<{
                 setExpanded(ex);
               }}
               expanded={expanded}
-              // width={280}
+              width={0}
               truncatedEndingComponent={'... '}
             >
-              {/* safasdfadssdfsadf sdafasdfasd fasd fasd fas dfsd */}
-              {market.description}
+              <div>
+                {market.description}
+                {/* https://youtube.com/asdf/234324/fsa/f23432/{' '} */}
+              </div>
             </ShowMoreText>
           </div>
         </div>
