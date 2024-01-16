@@ -15,7 +15,7 @@ type UserState =
   | undefined
   | null;
 
-const UserStateAtom = atom<UserState>({ default: null, key: 'UserState' });
+const UserStateAtom = atom<UserState>({ default: null, key: 'UserState3' });
 const OtherUserStateAtom = atom<UserState>({
   default: null,
   key: 'UserState2',

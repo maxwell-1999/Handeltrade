@@ -60,6 +60,30 @@ const PrimaryButton: React.FC<ButtonProps> = ({
     </button>
   );
 };
+const SecondaryButton: React.FC<ButtonProps> = ({
+  children,
+  className,
+  disable,
+  ...props
+}) => {
+  console.log(`Buttons-disable: `, disable);
+
+  return (
+    <button
+      className={twJoin(
+        `${
+          !disable ? ' bg-lightBrand' : 'bg-[grey]  cursor-not-allowed'
+        } text-f10 px-2 py-1 font-bold    text-brand  rounded-[5px] `,
+        className
+      )}
+      {...props}
+      onClick={disable ? () => toast(disable) : props.onClick}
+      // disabled={disable ? true : false}
+    >
+      {children}
+    </button>
+  );
+};
 const SecondaryBtn: React.FC<ButtonProps> = ({
   children,
   className,
@@ -78,4 +102,4 @@ const SecondaryBtn: React.FC<ButtonProps> = ({
   );
 };
 
-export { PrimaryBtn, SecondaryBtn, PrimaryButton };
+export { PrimaryBtn, SecondaryBtn, PrimaryButton, SecondaryButton };

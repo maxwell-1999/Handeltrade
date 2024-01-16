@@ -61,8 +61,7 @@ body {
 }
 
 .transparent-gradient::before{
-  background: linear-gradient(180deg,rgba(255,255,255,0.7) 0%, rgba(246,247,252,0.7) 30%, rgba(246,247,252,0.874237508018695) 100%);
-}
+  background: linear-gradient(180deg,rgb(255 255 255 / 16%) 0%, rgb(246 247 252 / 86%) 100%);}
 .text-overflow-2-lines {
   display: -webkit-box;
   -webkit-line-clamp: 2;

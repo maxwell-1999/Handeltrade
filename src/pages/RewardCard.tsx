@@ -48,7 +48,7 @@ const RewardCard: React.FC<{
     (BigInt(rewards.balanceOf) / E18) * BigInt(market.buyPrice)
   );
   return (
-    <div className="bg-white text-2 text-f12 p-[16px] rounded-[8px] w-full  mr-auto ml-horizontalSm ">
+    <div className="bg-white text-2 text-f12 p-[16px] rounded-[8px] w-full  mr-auto  ">
       <div className="flex items-center">
         You own {view(rewards.balanceOf)} shares worth&nbsp;
         <DisplayPrice

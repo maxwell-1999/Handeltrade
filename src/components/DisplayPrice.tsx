@@ -25,9 +25,7 @@ const DisplayPrice: React.FC<{
       <FontAwesomeIcon
         height={8}
         width={8}
-        className={`h-[8px] mb-[2px] rounded-full p-1  bg-${
-          active ? 'brand' : '2'
-        } text-white cursor-pointer`}
+        className={`h-[8px] mb-[2px] rounded-full p-1  bg-2 text-white cursor-pointer`}
         icon={faEthereum}
         onClick={() => {}}
       />

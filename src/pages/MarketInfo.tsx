@@ -18,16 +18,13 @@ import {
   usePublicClient,
 } from 'wagmi';
 import useUserState from '../atoms/userState';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBookmark as solidBookmark } from '@fortawesome/free-solid-svg-icons';
-import { faBookmark as emptyBookmark } from '@fortawesome/free-regular-svg-icons';
 import toast from 'react-hot-toast';
 import MarketActivityList from './MarketActivityList';
 import PrimeFadeText from '../components/PrimeFadeText';
 import PrimeText from '../components/PrimeText';
 import HandleTradeAbi from '../ABI/HandelTrade.json';
 import { appConfig } from '../config';
-import { bigIntToStringWithDecimal, viewDec } from '../Helpers/bigintUtils';
+import { viewDec } from '../Helpers/bigintUtils';
 import MemoButtonLoader from '../components/ButtonLoader';
 import { MarketInfoCard } from './MarketInfoCard';
 import { RewardCard } from './RewardCard';
@@ -37,7 +34,7 @@ const rew = {
   rewards: BigInt(1e13),
   balanceOf: BigInt(3e18),
 };
-const tabs = ['Holders', 'Watchlisted By', 'Activity', 'Claimable'];
+const tabs = ['Holders', 'Watchlisted By', 'Activity'];
 const offlineData = {
   message: 'Market page found',
   data: {
@@ -132,103 +129,27 @@ const MarketInfo: React.FC<any> = ({}) => {
 
   console.log(`MarketInfo-data: `, data);
 
-  const handleAddToWatchlist = async () => {
-    console.log('Add to watchlist');
-    const res = await axios.post(
-      `${import.meta.env.VITE_API_ENDPOINT}/user/watchlist/add`,
-      { ids: [data.id] },
-      {
-        headers: { 'session-id': userState?.session_id ?? '' },
-      }
-    );
-    // console.log(`MarketInfo-res: `, res);
-    if (!('error' in res.data)) {
-      data.watchlisted = true;
-      toast('Market added to watchlist');
-      console.log('Added to watchlist');
-    }
-  };
-  const handleRemoveFromWatchlist = async () => {
-    console.log('Remove from watchlist');
-    const res = await axios.post(
-      `${import.meta.env.VITE_API_ENDPOINT}/user/watchlist/remove`,
-      { ids: [data.id] },
-      {
-        headers: { 'session-id': userState?.session_id ?? '' },
-      }
-    );
-    if (!('error' in res.data)) {
-      data.watchlisted = false;
-      toast('Removed from watchlist');
-      console.log('Removed from watchlist');
-    }
-  };
+  console.log(`MarketInfo-userState?.session_id: `, userState?.session_id);
+
   console.log(`MarketInfo-revisedData: `, revisedData);
 
   return (
-    <div className="relative flex flex-col items-center w-full h-full overflow-hidden bg-2b ">
+    <div className="relative flex flex-col items-center w-full h-full overflow-auto ">
       {/* <div className="absolute top-0 left-0 w-full h-full bg-2b" /> */}
-      <div className="sticky top-0 flex flex-col items-center w-full px-horizontalSm">
+      <div className="sticky top-0 flex flex-col items-start w-full px-horizontalSm bg-2b ">
         {/* Market Card Goes here */}
         {data && <MarketInfoCard market={data} preview />}
         {data && revisedData && <RewardCard rewards={rew} market={data} />}
+        <Tablist
+          className="my-2"
+          tablist={tabs}
+          onTabSelect={seActiveTab}
+          activeTab={activeTab}
+        />
       </div>
 
       <div className="flex flex-col w-full ">
-        {data?.on_chain || data?.shares ? (
-          <div className="flex justify-between w-full px-4 ">
-            <div className="flex gap-3">
-              <PrimaryBtn
-                onClick={() => protect(() => drawerManager.openBuyDrwer(data))}
-                className="p-1 text-[white] text-[12px] w-[70px] h-fit min-w-fit font-semibold rounded-[4px] px-2"
-              >
-                Buy
-              </PrimaryBtn>
-              <SecondaryBtn
-                onClick={() =>
-                  protect(() => drawerManager.openSellDrawer(data))
-                }
-                className="p-1 text-[12px] w-[70px] font-semibold rounded-[4px] px-2 "
-              >
-                Sell
-              </SecondaryBtn>
-            </div>
-            <div className="flex">
-              {data && 'watchlisted' in data ? (
-                data?.watchlisted ? (
-                  <FontAwesomeIcon
-                    height={30}
-                    className="h-8 mr-4 cursor-pointer text-brand"
-                    icon={solidBookmark}
-                    onClick={() => handleRemoveFromWatchlist()}
-                  />
-                ) : (
-                  <FontAwesomeIcon
-                    height={30}
-                    className="h-8 mr-4 cursor-pointer text-brand"
-                    icon={emptyBookmark}
-                    onClick={() => handleAddToWatchlist()}
-                  />
-                )
-              ) : null}
-            </div>
-          </div>
-        ) : (
-          <PrimaryBtn
-            onClick={() => protect(() => drawerManager.openBuyDrwer(data))}
-            className="p-1 text-[white] text-[12px] w-[70px] h-fit min-w-fit font-semibold rounded-[4px] px-2"
-          >
-            Buy 1st Share
-          </PrimaryBtn>
-        )}
-        <div className="w-full px-4 my-2 mt-4 ">
-          <Tablist
-            tablist={tabs}
-            onTabSelect={seActiveTab}
-            activeTab={activeTab}
-          />
-        </div>
-        <div className="w-full min-h-full pb-40 overflow-x-hidden bg-brandGrey">
+        <div className="w-full min-h-full pb-3 bg-brandGrey">
           <div className="flex flex-col gap-[10px]">
             {/* all tabs data goes here   */}
             {activeTab == 'Holders' ? (

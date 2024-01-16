@@ -36,7 +36,7 @@ const MarketCard: React.FC<{
       )}
       onClick={() => !preview && navigate('/markets/' + market.market_id)}
     >
-      <div className="flex flex-col gap-[3px] items-center justify-center ">
+      <div className="flex flex-col gap-[3px] items-center mt-5 justify-start ">
         <img
           src={market?.img_url}
           onError={(e) => {

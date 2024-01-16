@@ -15,6 +15,7 @@ type Market = {
   lastUpdated: string;
   sellPrice: string;
   shares: string;
+  watchlisted?: boolean;
 };
 
 type MarketIdMap = {
