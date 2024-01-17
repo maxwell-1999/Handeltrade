@@ -65,21 +65,22 @@ const MarketCard: React.FC<{
         </div>
         <div className="flex flex-col items-center w-full ">
           <div
-            className={`flex justify-between w-full mb-[2px] mt-${
+            className={`flex items-start justify-between w-full mb-[2px] mt-${
               nonPrice ? '1' : '2'
             } `}
           >
-            <div className="flex items-center gap-1">
-              <span className="font-semibold text-f14">{market.name}</span>
+            <span className="font-semibold text-f14">
+              {market.name}
               <a
+                className="inline-flex ml-[4px]"
                 href={`https://youtube.com/@${market.social_handle}`}
                 target="_blank"
               >
                 <MemoYoutubeLogoSm className="mb-[2px]" />
               </a>
-            </div>
+            </span>
             {nonPrice ? null : (
-              <span className="flex items-center text-center cursor-pointer text-f10 text-2">
+              <span className="flex items-center text-center cursor-pointer text-f10 text-2 whitespace-nowrap">
                 {showShares(market?.shares)}
               </span>
             )}{' '}

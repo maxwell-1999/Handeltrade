@@ -79,11 +79,11 @@ const MarketInfo: React.FC<any> = ({}) => {
       );
       return res.data.data;
     },
-    refreshInterval: 100000000,
+    refreshInterval: 1000,
   });
 
   const drawerManager = useDrawerState();
-  if (isLoading) return <ListLoader className="px-7" />;
+  if (isLoading) return <ListLoader className="mt-7 px-7" />;
 
   console.log(`MarketInfo-data: `, data);
 
