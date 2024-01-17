@@ -26,7 +26,7 @@ const AccountDropdown: React.FC<any> = ({}) => {
   if (!account.address)
     return (
       <button
-        className="relative text-[#8F95A4] bg-[white] flex items-center gap-3 rounded-[6px]  p-[5px]"
+        className="relative text-[#8F95A4] text-f14 bg-[white] flex items-center gap-3 rounded-[6px]  p-[5px] pr-4"
         onClick={() => drawerManager.openLoginDrawer()}
       >
         <WalletIcon /> Login

@@ -1,5 +1,7 @@
+import { useAccount } from 'wagmi';
 import { RewardCard } from '../pages/RewardCard';
 import { MarketCard } from './MarketCard';
+import { areAdsEqual } from '@/Helpers/web3utils';
 const rew = {
   minFeesClaimThreshold: BigInt(2e12),
   dividends: BigInt(1e14),
@@ -12,10 +14,15 @@ const HoldingsCard: React.FC<{
   className?: string;
   idx?: number;
 }> = (props) => {
+  const account = useAccount();
   return (
     <MarketCard
       {...props}
-      bottom={<RewardCard rewards={rew} market={props.market} compact />}
+      bottom={
+        areAdsEqual(account.address, props.market.creator_addr) ? (
+          <RewardCard rewards={rew} market={props.market} compact />
+        ) : null
+      }
     />
   );
 };

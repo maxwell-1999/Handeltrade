@@ -2,7 +2,6 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import useSWR from 'swr';
 import useDrawerState from '../atoms/drawerState';
-import { MarketCard } from '../components/MarketCard';
 import { useEffect, useMemo, useState } from 'react';
 import { Tablist } from '../components/Tablist';
 import { PrimaryBtn, SecondaryBtn } from '../components/Buttons';
@@ -21,7 +20,6 @@ import useUserState from '../atoms/userState';
 import toast from 'react-hot-toast';
 import MarketActivityList from './MarketActivityList';
 import PrimeFadeText from '../components/PrimeFadeText';
-import PrimeText from '../components/PrimeText';
 import { appConfig } from '../config';
 import { viewDec } from '../Helpers/bigintUtils';
 import MemoButtonLoader from '../components/ButtonLoader';
@@ -68,6 +66,7 @@ const offlineData = {
 const MarketInfo: React.FC<any> = ({}) => {
   const account = useAccount();
   const [userState] = useUserState();
+  console.log(`MarketInfo-userState: `, userState);
   const params = useParams();
   const [protect] = useProtection();
 
@@ -84,7 +83,7 @@ const MarketInfo: React.FC<any> = ({}) => {
   });
 
   const drawerManager = useDrawerState();
-  if (isLoading) return <ListLoader />;
+  if (isLoading) return <ListLoader className="px-7" />;
 
   console.log(`MarketInfo-data: `, data);
 
@@ -98,7 +97,7 @@ const MarketInfo: React.FC<any> = ({}) => {
         {data && <MarketInfoCard market={data} preview />}
         {data && data?.buyPrice && <RewardCard rewards={rew} market={data} />}
         <Tablist
-          className="my-2"
+          className="my-3"
           tablist={tabs}
           onTabSelect={seActiveTab}
           activeTab={activeTab}
@@ -139,7 +138,7 @@ const HoldersTab: React.FC<{ market: Market }> = ({ market }) => {
     },
     refreshInterval: marketsRefreshInterval,
   });
-  if (isLoading) return <ListLoader />;
+  if (isLoading) return <ListLoader className="px-7" />;
   console.log(`MarketInfo-data: `, data);
 
   return (
@@ -161,7 +160,7 @@ const WatchListedByTab: React.FC<{ market: Market }> = ({ market }) => {
     },
     refreshInterval: marketsRefreshInterval,
   });
-  if (isLoading) return <ListLoader />;
+  if (isLoading) return <ListLoader className="px-7" />;
   console.log(`MarketWatchlistedBy-data: `, data);
 
   return (
@@ -183,7 +182,7 @@ const MarketActivityTab: React.FC<{ market: Market }> = ({ market }) => {
     },
     refreshInterval: marketsRefreshInterval,
   });
-  if (isLoading) return <ListLoader />;
+  if (isLoading) return <ListLoader className="px-7" />;
   console.log(`MarketActivity-data: `, data);
   const userAddrMap = data.refData;
 
@@ -286,7 +285,7 @@ const ClaimMarketRewards: React.FC<{ market: Market }> = ({ market }) => {
 
   return (
     <div>
-      <div className="flex flex-col gap-[10px] pt-[20px] pr-6 pl-6">
+      <div className="flex flex-col gap-[10px]  pr-6 pl-6">
         <div className="flex flex-col bg-white p-4 rounded-[10px] ">
           <span className="font-semibold text-f14">
             Collected Weekly Rewards

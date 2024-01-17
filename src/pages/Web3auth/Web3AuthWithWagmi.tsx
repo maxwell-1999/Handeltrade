@@ -90,7 +90,7 @@ const LoginPage: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
             </a>
           </>
         ) : (
-          'Buy and sell social profiles on chain'
+          'Buy and Sell social profiles on chain'
         )}
       </div>
       {userState ? (
@@ -102,7 +102,7 @@ const LoginPage: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
         </PrimaryBtn>
       ) : (
         <PrimaryBtn
-          className="mt-[20px] active:translate-y-2 transition-transform"
+          className="mt-[20px] active:translate-y-2 min-w-[70%] w-[70%] max-w-[70%] transition-transform"
           onClick={login}
         >
           Login
@@ -115,3 +115,32 @@ const LoginPage: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
 // Pass client to React Context Provider
 
 export { LoginPage };
+
+export const useUserStateSync = () => {
+  const { address, connector, isConnected } = useAccount();
+  const [loginLoading, setLoginLoading] = useState<null | string>('');
+  const [userState, setUserState] = useUserState();
+  useEffect(() => {
+    if (loginLoading == 'registering' && isConnected && connector && address) {
+      const getUserInfo = async () => {
+        try {
+          console.log('user-state-deb flow-deb-settinguser');
+          const userInfo = await registerUser(connector, address);
+          console.log(`user-state-deb  res: `, userInfo);
+          setUserState(userInfo?.data);
+        } catch (e) {
+          console.log(`Web3AuthWithWagmi-e: `, e);
+        }
+      };
+      getUserInfo();
+    }
+  }, [loginLoading, connector, address]);
+
+  useEffect(() => {
+    console.log(`user-state-deb  low-deb-getting-user-data: `);
+
+    if (address && !userState) {
+      setLoginLoading('registering');
+    }
+  }, [address]);
+};

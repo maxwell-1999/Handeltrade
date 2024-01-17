@@ -1,8 +1,8 @@
 import { UserCardSm } from '../pages/UserProfilePage/UserCardSm';
 
-const UserCardList: React.FC<{ users: User[]; }> = ({ users }) => {
+const UserCardList: React.FC<{ users: User[] }> = ({ users }) => {
   return (
-    <div className='flex flex-col gap-[10px] pt-[20px] px-6'>
+    <div className="flex flex-col gap-[10px] px-6">
       {users?.length ? (
         users.map((user) => <UserCardSm key={user.id} user={user} />)
       ) : (

@@ -20,7 +20,7 @@ const MarketActivityList: React.FC<{
   data: BuySellActivityForMarket[];
 }> = ({ userAddrMap, data }) => {
   return (
-    <div className="flex flex-col gap-[10px] pt-8 px-6 ">
+    <div className="flex flex-col gap-[10px]  px-6 ">
       {data.map((activity: BuySellActivityForMarket, i) => {
         if (activity.type == 'buy') {
           return (
@@ -69,23 +69,14 @@ const UserActivityCard: React.FC<{
       <div className="flex w-full">
         {/* profile img section */}
         <span className="flex flex-grow">
-          {user?.img_url ? (
-            <img
-              className="w-[45px] h-[45px] rounded-[5px] mr-[10px] img-loading"
-              // height={30}
-              // width={30}
-              src={user.img_url}
-              alt="user profile"
-            />
-          ) : (
-            <FontAwesomeIcon
-              height={27}
-              width={27}
-              className="w-[45px] h-[45px] mr-[7px] p-1 text-2 cursor-pointer"
-              icon={faCircleQuestion}
-              onClick={() => { }}
-            />
-          )}
+          <img
+            className="w-[45px] h-[45px] rounded-[5px] mr-[10px] img-loading"
+            // height={30}
+            // width={30}
+            src={user.img_url || '/dplaceholder.jpg'}
+            alt="user profile"
+          />
+
           {/* demographics */}
           <span className="flex flex-col w-full">
             <span className="flex justify-between w-full pt-1 ">
@@ -94,9 +85,9 @@ const UserActivityCard: React.FC<{
                   user.first_name
                 ) : (
                   <span
-                    className="text-[grey]"
+                    // className="text-[grey]"
                     data-tooltip-id="tooltip"
-                    data-tooltip-content="User not registered!"
+                    data-tooltip-content={user.public_address}
                   >
                     {user?.public_address
                       ? formatAddress(user.public_address)
@@ -122,9 +113,9 @@ const UserActivityCard: React.FC<{
                     {activityData?.pricePaid
                       ? 'Bought for ' + viewDec(BigInt(activityData.pricePaid))
                       : activityData?.priceReceived
-                        ? 'Sold for ' +
+                      ? 'Sold for ' +
                         viewDec(BigInt(activityData.priceReceived))
-                        : ''}
+                      : ''}
                     {' ' + 'ETH'}
                   </div>
                 </div>
@@ -151,7 +142,7 @@ const UserActivityCard: React.FC<{
   );
 };
 
-const RewardsOfferedCard: React.FC<{ data: any; }> = ({ data }) => {
+const RewardsOfferedCard: React.FC<{ data: any }> = ({ data }) => {
   const network = useNetwork();
   return (
     <div className="flex flex-col bg-white rounded-[10px] p-4 justify-between w-full h-full items-center cursor-pointer ">
@@ -163,13 +154,14 @@ const RewardsOfferedCard: React.FC<{ data: any; }> = ({ data }) => {
             width={27}
             className="w-[45px] h-[45px] mr-[7px] p-1 text-2 cursor-pointer"
             icon={faSackDollar}
-            onClick={() => { }}
+            onClick={() => {}}
           />
           {/* demographics */}
           <span className="flex flex-col w-full mt-2">
             <span className="flex justify-between w-full ">
               <span className="font-semibold text-f14">
-                {viewDec(data?.amount)} {network.chain?.nativeCurrency.symbol ?? ""}
+                {viewDec(data?.amount)}{' '}
+                {network.chain?.nativeCurrency.symbol ?? ''}
               </span>
             </span>
             {/* <PrimeText>{user.last_name}</PrimeText> */}
@@ -194,6 +186,6 @@ const RewardsOfferedCard: React.FC<{ data: any; }> = ({ data }) => {
   );
 };
 
-const RewardsClaimedCard: React.FC<{ data: any; }> = ({ data }) => {
+const RewardsClaimedCard: React.FC<{ data: any }> = ({ data }) => {
   return <div className="">{JSON.stringify(data)}</div>;
 };

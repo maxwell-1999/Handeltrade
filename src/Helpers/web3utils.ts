@@ -13,3 +13,9 @@ export const formatError = (e) => {
     shortMessage || e.shortMessage || e.message || 'Error Occured!';
   return message.replace(/(\r\n|\n|\r)/gm, '');
 };
+
+export const areAdsEqual = (ad1?: string, ad2?: string) => {
+  if (!ad1 || !ad2) return false;
+  if (ad1.toLowerCase() === ad2.toLowerCase()) return true;
+  return false;
+};

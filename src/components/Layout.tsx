@@ -8,6 +8,8 @@ import { MobileDrawer } from './MobileDrawer';
 import MemoProfileIcon from '../SVG/ProfileIcon';
 import { AccountDropdown } from './AccountDropdown';
 import { Tooltip } from 'react-tooltip';
+import { useUserStateSync } from '../pages/Web3auth/Web3AuthWithWagmi';
+import useEthPrice from '../atoms/ETHPrice';
 
 const Icons = [
   {
@@ -33,6 +35,8 @@ const isNestedRouteActive = (page: string) => {
 };
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [activeTab, setActiveTab] = useState(Icons[0].name);
+  useUserStateSync();
+  useEthPrice();
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(true);
   console.log(`Layout-isVisible: `, isVisible);

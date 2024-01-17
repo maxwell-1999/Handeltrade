@@ -23,7 +23,12 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import useUserState from '../atoms/userState';
 import InfoIcon from '../SVG/InfoIcon';
-import { Popover } from 'react-tiny-popover';
+import { Popover, ArrowContainer } from 'react-tiny-popover';
+import MemoViewCount from '../SVG/ViewCount';
+import MemoSubscribersIcon from '../SVG/SubscribersIcon';
+import { compactFormatter } from '../Helpers/bigintUtils';
+import MemoVideoCount from '../SVG/VideoCount';
+import MemoWebLink from '../SVG/WebLink';
 
 export const toJSEpoch = (e: string | number) => +e * 1000;
 
@@ -80,7 +85,7 @@ const MarketInfoCard: React.FC<{
     <div
       role={preview ? 'cell' : 'button'}
       className={twMerge(
-        `p-[10px] rounded-[10px] justify-between flex gap-[15px] w-full ${
+        `p-[10px] pb-1 rounded-[10px] justify-between flex gap-[15px] w-full ${
           preview ?? 'bg-white'
         } `,
         className
@@ -98,7 +103,7 @@ const MarketInfoCard: React.FC<{
           loading="lazy"
           className="max-w-[60px] min-w-[60px] min-h-[60px] max-h-[60px] rounded-[5px] img-loading object-cover"
         />
-        <div className="flex items-center">
+        <div className="flex items-center gap-1">
           <span className="font-semibold text-f14">
             #{market?.rank || 'New'}
           </span>
@@ -107,7 +112,20 @@ const MarketInfoCard: React.FC<{
             isOpen={isPopoverOpen}
             positions={['bottom']} // preferred positions by priority
             containerStyle={{ zIndex: '1000', marginRight: '5px' }}
-            content={<ChannelDetails />}
+            content={({ position, childRect, popoverRect }) => (
+              <ArrowContainer // if you'd like an arrow, you can import the ArrowContainer!
+                position={position}
+                childRect={childRect}
+                popoverRect={popoverRect}
+                arrowColor={'white'}
+                arrowSize={10}
+                // arrowStyle={{ opacity: 1 }}
+                // className=" shadown"
+                arrowClassName=" popover-arrow "
+              >
+                <ChannelDetails market={market} />
+              </ArrowContainer>
+            )}
             padding={10}
           >
             <button
@@ -200,18 +218,18 @@ const MarketInfoCard: React.FC<{
           <div
             ref={descDivRef}
             className={
-              'mb-1 !font-[400] max-h-[212px]   relative overflow-auto w-full'
+              'mb-1 !font-[400] max-h-[212px] pr-3 relative overflow-auto w-full'
             }
           >
             <ShowMoreText
               /* Default options */
               lines={5}
               more={
-                <span className=" text-transparent before:block before:w-full before:h-[34px] before:absolute transparent-gradient before:bottom-0  before:-z-1  z-[1000] ">
+                <span className="text-transparent before:cursor-pointer before:block before:w-full before:h-[34px] before:absolute transparent-gradient before:bottom-0  before:-z-1  z-[1000] ">
                   S
                 </span>
               }
-              less="Show less"
+              less={<div className="cursor-pointer text-brand ">Show less</div>}
               className="content-css"
               anchorClass="show-more-less-clickable"
               onClick={(ex) => {
@@ -219,12 +237,9 @@ const MarketInfoCard: React.FC<{
               }}
               expanded={expanded}
               width={0}
-              truncatedEndingComponent={'... '}
+              truncatedEndingComponent={'...'}
             >
-              <div>
-                {market.description}
-                {/* https://youtube.com/asdf/234324/fsa/f23432/{' '} */}
-              </div>
+              <div>{market.description}</div>
             </ShowMoreText>
           </div>
         </div>
@@ -235,6 +250,30 @@ const MarketInfoCard: React.FC<{
 
 export { MarketInfoCard };
 
-const ChannelDetails = () => {
-  return <div>fsasdff</div>;
+const ChannelDetails: React.FC<{ market: Market }> = ({ market }) => {
+  return (
+    <div className="flex flex-col gap-3 p-4 pr-6 bg-white rounded-md shadow-sm text-2 text-f12">
+      <div className="flex items-center gap-3 ">
+        <MemoWebLink />
+        <a
+          target="_blank"
+          href={`https://youtube.com/@${market.social_handle}`}
+        >
+          www.youtube.com/@{market.social_handle}
+        </a>
+      </div>
+      <div className="flex items-center gap-3 ">
+        <MemoSubscribersIcon />
+        {compactFormatter.format(123312312312)} subscribers
+      </div>
+      <div className="flex items-center gap-3 ">
+        <MemoVideoCount />
+        {(12321).toLocaleString()} videos
+      </div>
+      <div className="flex items-center gap-3 ">
+        <MemoViewCount />
+        {(23132131).toLocaleString()} views
+      </div>
+    </div>
+  );
 };

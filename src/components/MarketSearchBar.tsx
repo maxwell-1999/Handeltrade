@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import MemoSearchIcon from '../SVG/SearchIcon';
 import useSearchMarket from '../atoms/marketSearch';
+import MemoSearchIconCompressed from '@/SVG/SearchIconCompressed';
 
 const MarketSearchBar: React.FC<any> = ({}) => {
   const [isDivVisible, setIsVisible] = useState(true); // Initial visibility
@@ -37,12 +38,14 @@ const MarketSearchBar: React.FC<any> = ({}) => {
         isDivVisible ? ' height-pop-up ' : 'height-pop-down'
       }`}
     >
-      <MemoSearchIcon className="ml-3" />
+      <div className=" z-[100]">
+        <MemoSearchIcon className="z-10 ml-3" />
+      </div>
       <input
         value={searchManager.keyword}
         placeholder="Search by Channel Name"
         onChange={(e) => searchManager.onSearch(e.target.value)}
-        className="bg-transparent  z-[10] placeholder:text-2 text-f14 font-[500]  rounded-[10px]  outline-blue-600 absolute w-full h-full px-[50px] top-0 left-0"
+        className="bg-white  z-[10] placeholder:font-[500] placeholder:text-2 text-f14 font-[500]  rounded-[10px]  outline-blue-600 absolute w-full h-full px-[50px] top-0 left-0"
       />
       {searchManager.keyword ? (
         <div

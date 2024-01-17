@@ -72,7 +72,7 @@ const MarketCreation: React.FC<any> = ({}) => {
   return (
     <Layout>
       <div className="relative flex flex-col items-center justify-end h-full">
-        <div className="absolute top-0 left-0 w-full h-full custom-bg-image bg-lightBrand" />
+        <div className="absolute top-0 left-0 w-full h-full custom-bg-image bg-purpleBrand" />
         <div className="flex flex-col items-center h-[70%] gap-[20px] bg-white w-full rounded-t-[20px] p-[30px]">
           <div className="text-lg font-bold">Create new Market</div>
           <div className="w-full text-center text-f12 text-2 ">

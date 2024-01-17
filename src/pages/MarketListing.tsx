@@ -84,7 +84,7 @@ const New = () => {
     },
     refreshInterval: marketsRefreshInterval,
   });
-  if (isLoading) return <ListLoader />;
+  return <ListLoader />;
   console.log(`MarketListing-data: `, data);
   if (!data?.length) return <ListLoader />;
   return <MarketList markets={data} />;

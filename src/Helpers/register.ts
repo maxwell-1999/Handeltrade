@@ -16,7 +16,7 @@ const registerUser = async (connector: any, address: `0x${string}`) => {
   if (!connector) return null;
 
   const userInfo = await connector.web3AuthInstance.getUserInfo();
-  console.log(`create-deb userInfo: `, userInfo);
+  console.log(`user-state-deb userInfo: `, userInfo);
   const registerPayload = {
     first_name: userInfo.name,
     last_name: '',

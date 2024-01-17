@@ -14,7 +14,7 @@ const UserCard: React.FC<any> = () => {
   const { address } = params?.user_addr
     ? { address: params.user_addr }
     : account;
-    
+
   const [userState, setUserState] = params?.user_addr
     ? useOtherUserState()
     : useUserState();
@@ -34,7 +34,6 @@ const UserCard: React.FC<any> = () => {
       });
   }
 
-
   return (
     <div className="flex flex-col items-center justify-center w-full min-h-full">
       <div className="flex w-full">
@@ -46,15 +45,17 @@ const UserCard: React.FC<any> = () => {
               e.currentTarget.src = '/img_placeholder.svg';
               e.currentTarget.classList.remove('img-loading');
             }}
-            className=" rounded-[10px] mr-4  w-[60px] h-[60px] img-loading"
+            className=" rounded-[10px] mr-4 object-cover  w-[60px] h-[60px] img-loading"
             src={userState?.img_url}
             alt="user profile"
           />
           {/* demographics */}
-          <span className="flex flex-col">
+          <span className="flex flex-col justify-between py-3">
             <PrimeText>{userState?.first_name}</PrimeText>
             <PrimeText>{userState?.last_name}</PrimeText>
-            {!params?.user_addr && <PrimeFadeText>{userState?.email}</PrimeFadeText>}
+            {!params?.user_addr && (
+              <PrimeFadeText>{userState?.email}</PrimeFadeText>
+            )}
             {params.user_addr && (
               <span className=" mt-[-4px] pl-0 max-w-[70px] text-2 rounded-lg p-2">
                 {formatAddress(userState?.public_address)}{' '}
@@ -63,7 +64,7 @@ const UserCard: React.FC<any> = () => {
           </span>
         </span>
         {/* finance */}
-        <span className="flex flex-col min-w-4">
+        <span className="flex flex-col py-3 min-w-4 jstify-between">
           <PrimeText style={{ 'align-self': 'flex-end' }}>
             {isLoading ? 'Fetching..' : view(data?.value)}
             &nbsp;ETH

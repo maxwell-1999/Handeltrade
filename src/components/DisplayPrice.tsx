@@ -4,6 +4,7 @@ import { E18 } from '../Helpers/constants';
 import EthIcon from '../SVG/EthIcon';
 import { faEthereum } from '@fortawesome/free-brands-svg-icons';
 import { twJoin } from 'tailwind-merge';
+import useEthPrice from '../atoms/ETHPrice';
 
 const DisplayPrice: React.FC<{
   price: bigint;
@@ -11,6 +12,8 @@ const DisplayPrice: React.FC<{
   compact?: boolean;
   className?: string;
 }> = ({ price, active, compact, className }) => {
+  const ethPrice = useEthPrice();
+  console.log(`DisplayPrice-ethPrice: `, ethPrice, typeof ethPrice);
   const dollarValue = 2596n;
   console.log(`deb-dollar value: `, dollarValue);
   console.log(`deb-dollar value: `, price);

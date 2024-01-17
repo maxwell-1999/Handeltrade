@@ -1,6 +1,8 @@
 import './App.css';
 import { Toaster } from 'react-hot-toast';
 import { Layout } from './components/Layout';
+import { Skeleton } from '@/components/ui/skeleton';
+
 // WAGMI Libraries
 import {
   WagmiConfig,
@@ -29,7 +31,6 @@ import { LoginPage } from './pages/Web3auth/Web3AuthWithWagmi';
 import UserProfilePage from './pages/UserProfilePage';
 import { TestComponent } from './pages/TestComponent';
 import 'react-tooltip/dist/react-tooltip.css';
-import useEthPrice from './Helpers/useEthPrice';
 
 // Configure chains & providers with the Public provider.
 const { chains, publicClient, webSocketPublicClient } = configureChains(
@@ -46,7 +47,6 @@ export const config = createConfig({
 
 // Pass client to React Context Provider
 function Web3AuthWithWagmi() {
-  useEthPrice();
   return (
     <WagmiConfig config={config}>
       <RecoilRoot>

@@ -88,12 +88,12 @@ const RewardCard: React.FC<{
   return (
     <div
       className={
-        'bg-white text-2 text-f12  rounded-[8px] w-full  mr-auto  ' +
-        (compact ? '' : 'p-[16px]')
+        'bg-white text-2 text-f12  rounded-[8px] w-full py-[12px]   mr-auto  ' +
+        (compact ? '!py-[6px]' : 'px-[16px]')
       }
     >
       {compact ? null : (
-        <div className="flex items-center">
+        <div className="flex items-center mb-3">
           You own {view(rewards.balanceOf)} shares worth&nbsp;
           <DisplayPrice
             compact

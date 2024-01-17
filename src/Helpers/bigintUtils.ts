@@ -25,6 +25,13 @@ const viewDec = (a: bigint, decimals = 10) => {
     Number((BigInt(a) * BigInt(10 ** decimals)) / E18) / 10 ** decimals;
   return number.toFixed(10).replace(/\.?0+$/, '');
 };
+const absoluteInt = (a: bigint, factor = 8) => {
+  const exponent = BigInt(10 ** factor);
+  const decimals = 3;
+  const number =
+    Number((BigInt(a) * BigInt(10 ** decimals)) / exponent) / 10 ** decimals;
+  return +number.toFixed(10).replace(/\.?0+$/, '');
+};
 const renderShares = (a: bigint | string) => {
   if (a == undefined) return 'Fetching...';
   const shares = view(a, 0);
@@ -64,4 +71,8 @@ export {
   renderShares,
   viewDec,
   bigIntToStringWithDecimal,
+  absoluteInt,
 };
+export const compactFormatter = new Intl.NumberFormat('en-US', {
+  notation: 'compact',
+});

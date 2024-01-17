@@ -19,55 +19,28 @@ const UserCardSm: React.FC<any> = ({ user }) => {
         <div className="flex w-full ">
           {/* profile img section */}
           <span className="flex flex-grow">
-            {user.img_url ? (
-              <img
-                onError={(e) => {
-                  e.currentTarget.onerror = null;
-                  e.currentTarget.src = '/img_placeholder.svg';
-                  e.currentTarget.classList.remove('img-loading');
-                }}
-                className="w-[45px] h-[45px] rounded-[5px] mr-[10px] img-loading"
-                src={user?.img_url}
-                alt="user profile"
-              />
-            ) : (
-              <FontAwesomeIcon
-                height={20}
-                width={20}
-                className="w-[30px] h-[30px] mr-[7px] p-1 text-2 cursor-pointer"
-                icon={faCircleQuestion}
-                onClick={() => { }}
-              />
-            )}
+            <img
+              className="w-[45px] h-[45px] rounded-[5px] mr-[10px] img-loading"
+              // height={30}
+              // width={30}
+              src={user.img_url || '/dplaceholder.jpg'}
+              alt="user profile"
+            />
             {/* demographics */}
             <span className="flex flex-col w-full">
-              {user?.is_active ? <>
-                <span className="flex items-center font-semibold text-f14 pt-1">
-                  {user?.first_name ? (
-                    user.first_name
-                  ) : ''}
-                  <div className="ml-auto text-2 text-f10">
-                    {showShares(user?.shares)}
-                  </div>
-                </span>
-                <span className="flex justify-between w-full text-2 ">
-                  <span className="mt-1 font-semibold text-f12">
-                    <span className=" max-w-[70px] rounded-lg ">
-                      {formatAddress(user?.public_address)}{' '}
-                    </span>
-                  </span>
-                </span>
-              </> : <>
-                <span className="flex justify-between w-full text-2 pt-2 ">
-                  <span className="mt-1 font-semibold text-f12 max-w-[70px] rounded-lg ">
+              <span className="flex items-center pt-1 font-semibold text-f14">
+                {user?.first_name ? user.first_name : 'Anonymous'}
+                <div className="ml-auto text-2 text-f10">
+                  {showShares(user?.shares)}
+                </div>
+              </span>
+              <span className="flex justify-between w-full text-2 ">
+                <span className="mt-1 font-semibold text-f12">
+                  <span className=" max-w-[70px] rounded-lg ">
                     {formatAddress(user?.public_address)}{' '}
                   </span>
-                  <span>
-                    {showShares(user?.shares)}
-                  </span>
                 </span>
-              </>
-              }
+              </span>
             </span>
           </span>
           {/* finance */}
