@@ -1,11 +1,16 @@
-import { useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { view } from '../Helpers/bigintUtils';
 import { E18 } from '../Helpers/constants';
 import { PrimaryBtn, PrimaryButton } from '../components/Buttons';
 import { DisplayPrice } from '../components/DisplayPrice';
 import { appConfig } from '../config';
 import HandleTradeAbi from '../ABI/HandelTrade.json';
-import { useAccount, useContractReads, useContractWrite } from 'wagmi';
+import {
+  useAccount,
+  useContractReads,
+  useContractWrite,
+  usePublicClient,
+} from 'wagmi';
 import MemoButtonLoader from '../components/ButtonLoader';
 import toast from 'react-hot-toast';
 import { formatError } from '../Helpers/web3utils';
@@ -20,6 +25,7 @@ const RewardCard: React.FC<{
   compact?: boolean;
 }> = ({ market, compact }) => {
   const account = useAccount();
+
   const { data: rewards } = useContractReads({
     contracts: [
       {
@@ -62,7 +68,12 @@ const RewardCard: React.FC<{
   const cards = useMemo(() => {
     let REWARD: { type: rewardType; reward: bigint }[] = [];
     let DIVIDEND: { type: rewardType; reward: bigint }[] = [];
-    console.log(`RewardCard-rewards.rewards: `, rewards.minFeesClaimThreshold);
+    console.log(
+      `RewardCard-rewards.rewards: `,
+      rewards.minFeesClaimThreshold,
+      rewards.dividends,
+      rewards.rewards
+    );
 
     if (rewards.rewards >= rewards.minFeesClaimThreshold) {
       REWARD = [
@@ -75,7 +86,7 @@ const RewardCard: React.FC<{
     if (rewards.dividends >= rewards.minFeesClaimThreshold) {
       DIVIDEND = [
         {
-          reward: rewards.rewards,
+          reward: rewards.dividends,
           type: 'DIVIDEND',
         },
       ];
@@ -84,6 +95,12 @@ const RewardCard: React.FC<{
     return arr;
   }, [market, rewards]);
   if (!cards.length) return null;
+  console.log(
+    `RewardCard-market.buyPrice: `
+    // typeof rewards.balanceOf,
+    // typeof market.buyPrice
+  );
+
   return (
     <div
       className={
@@ -96,7 +113,7 @@ const RewardCard: React.FC<{
           You own {view(rewards.balanceOf)} shares worth&nbsp;
           <DisplayPrice
             compact
-            price={(BigInt(rewards.balanceOf) / E18) * BigInt(market.buyPrice)}
+            price={BigInt((rewards.balanceOf * BigInt(market.buyPrice)) / E18)}
           />
         </div>
       )}
@@ -128,6 +145,8 @@ const RewardRow: React.FC<{
   data: { type: rewardType; reward: bigint };
   marketId: string;
 }> = ({ data, marketId }) => {
+  const { waitForTransactionReceipt } = usePublicClient();
+
   const account = useAccount();
   const { writeAsync: claimRewardAsync } = useContractWrite({
     address: appConfig.handelTradeAddress,
@@ -140,10 +159,13 @@ const RewardRow: React.FC<{
     functionName: 'claimReflectionFees',
   });
   const [loading, setLoading] = useState<rewardType | null>(null);
-  const claimHandler = async () => {
+  const claimHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     const argPack = {
       args: [marketId, account?.address],
     };
+    console.log(`RewardCard-argPack: `, argPack);
+    console.log(`RewardCard-data.type: `, data.type);
     let hash;
     setLoading(data.type);
     try {
@@ -158,7 +180,7 @@ const RewardRow: React.FC<{
         hash,
       });
 
-      toast.success(completionStatus);
+      toast.success('Rewards claimed successfully!');
     } catch (e) {
       console.log(`RewardCard-formatError(e): `, formatError(e));
       toast.error(formatError(e));
@@ -186,8 +208,3 @@ const RewardRow: React.FC<{
   );
 };
 export { RewardCard };
-function waitForTransactionReceipt(arg0: {
-  hash: `0x${string}`;
-}): { status: any } | PromiseLike<{ status: any }> {
-  throw new Error('Function not implemented.');
-}

@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { view } from '../Helpers/bigintUtils';
-import { E18 } from '../Helpers/constants';
+import { E18, E8 } from '../Helpers/constants';
 import EthIcon from '../SVG/EthIcon';
 import { faEthereum } from '@fortawesome/free-brands-svg-icons';
 import { twJoin } from 'tailwind-merge';
@@ -12,9 +12,7 @@ const DisplayPrice: React.FC<{
   compact?: boolean;
   className?: string;
 }> = ({ price, active, compact, className }) => {
-  const ethPrice = useEthPrice();
-  console.log(`DisplayPrice-ethPrice: `, ethPrice, typeof ethPrice);
-  const dollarValue = 2596n;
+  const dollarValue = 200010000000n;
   console.log(`deb-dollar value: `, dollarValue);
   console.log(`deb-dollar value: `, price);
 
@@ -32,7 +30,7 @@ const DisplayPrice: React.FC<{
         icon={faEthereum}
         onClick={() => {}}
       />
-      &nbsp;|&nbsp;<span>${view(price * dollarValue)}</span>
+      &nbsp;|&nbsp;<span>${view((price * dollarValue) / E8)}</span>
     </div>
   );
 };

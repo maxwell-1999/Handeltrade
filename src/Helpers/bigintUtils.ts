@@ -14,11 +14,12 @@ const bigIntMinAndMax = (...args: bigint[]) => {
 // fetch latest eth price
 
 const toe18 = (a: number | string) => BigInt(a) * BigInt(10 ** 18);
-const view = (a: bigint | string, decimals = 5) => {
+const view = (a: bigint | string, decimals = 10) => {
   if (a == undefined) return 0;
   if (a == null) return 0;
-
-  return Number((BigInt(a) * BigInt(10 ** decimals)) / E18) / 10 ** decimals;
+  const result =
+    Number((BigInt(a) * BigInt(10 ** decimals)) / E18) / 10 ** decimals;
+  return result.toFixed(5);
 };
 const viewDec = (a: bigint, decimals = 10) => {
   const number =
