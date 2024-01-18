@@ -19,27 +19,18 @@ import { SlippageSetting } from './SlippageSetting';
 import { getSharesFromPrice } from '@/lib/PriceToQuantity';
 import { getSanitizedInput } from '@/utils/getSanitizeInput';
 import { showShares } from '@/pages/UserProfilePage/UserCardSm';
+import { useSlippage } from '@/atoms/SlipageState';
 let defaultQty = 1;
 const addSlippageBigint = (amount: bigint, slippage: number) => {
   slippage = slippage / 100;
   const num = BigInt(slippage * 1e4);
-  const mul = num * amount;
   return amount + (num * amount) / 10000n;
 };
 const addSlippageInt = (amount: number, slippage: number) => {
   slippage = slippage / 100;
   return amount + amount * slippage;
 };
-const subtractSlippageBigint = (amount: bigint, slippage: number) => {
-  slippage = slippage / 100;
-  const num = BigInt(slippage * 1e4);
-  const mul = num * amount;
-  return amount - (num * amount) / 10000n;
-};
-const subtractSlippageInt = (amount: number, slippage: number) => {
-  slippage = slippage / 100;
-  return amount + amount * slippage;
-};
+
 const EXPO = BigInt(1e18);
 function getPrice(supply: bigint, qty: bigint) {
   console.log('Supply: ', supply, 'Qty: ', qty);
@@ -67,6 +58,8 @@ const BuyDrawer: React.FC<{
 }> = ({ data, selectedMarket, value, setValue }) => {
   const { waitForTransactionReceipt } = usePublicClient();
   const [loading, setLoading] = useState(false);
+  const slipage = useSlippage();
+  console.log(`BuyDrawer-slipage: `, slipage);
   const { writeAsync } = useContractWrite({
     address: appConfig.handelTradeAddress,
     abi: HandleTradeAbi,
@@ -103,7 +96,7 @@ const BuyDrawer: React.FC<{
     console.log('deb-buydrawer-r', viewDec(data.nextBuyPrice));
     setTrade((s) => {
       console.log(`BuyDrawer-s: `, s);
-      return { ...s, price: addSlippageBigint(data.nextBuyPrice, 0.5) };
+      return { ...s, price: addSlippageBigint(data.nextBuyPrice, slipage) };
     });
   }, [data.nextBuyPrice]);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -118,6 +111,9 @@ const BuyDrawer: React.FC<{
     else setErrors({});
     setTrade({ shares: +value, price: -1n });
   };
+  // useEffect(()=>{
+
+  // },[])
   console.log(`BuyDrawer-errors: `, errors);
   return (
     <>

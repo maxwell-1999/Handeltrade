@@ -18,9 +18,9 @@ const UserCardSm: React.FC<any> = ({ user }) => {
       <div className="flex flex-col items-center justify-center w-full h-full bg-[white] p-4 rounded-[10px]">
         <div className="flex w-full ">
           {/* profile img section */}
-          <span className="flex flex-grow">
+          <span className="flex items-center flex-grow">
             <img
-              className="w-[40px] h-[40px] rounded-[5px] mr-[10px] img-loading"
+              className="w-[28px] h-[28px] rounded-[5px] mr-[10px] img-loading"
               // height={30}
               // width={30}
               src={user.img_url || '/dplaceholder.png'}
@@ -62,7 +62,7 @@ export { UserCardSm };
 export const showShares = (shares: string | bigint) => {
   if (shares == '' || shares == null || shares == undefined) return '';
   console.log(`UserCardSm-shares: `, shares);
-  const shareStr = BigInt(shares) > 1000000000000000000n ? 'Shares' : 'Share';
+  const shareStr = BigInt(shares) == 1000000000000000000n ? 'Share' : 'Shares';
   return view(shares) + ' ' + shareStr;
   // return view(shareStr) + ' ' + shareStr;
 };

@@ -77,9 +77,9 @@ const UserActivityCard: React.FC<{
     >
       <div className="flex w-full">
         {/* profile img section */}
-        <span className="flex flex-grow">
+        <span className="flex items-center flex-grow">
           <img
-            className="w-[40px] h-[40px] rounded-[5px] mr-[10px] img-loading"
+            className="w-[30px] h-[30px] rounded-[5px] mr-[10px] img-loading"
             // height={30}
             // width={30}
             src={user.img_url || '/dplaceholder.png'}
@@ -119,13 +119,13 @@ const UserActivityCard: React.FC<{
                   <MemoTImerIcon />
                   <TimeAgo date={toJSEpoch(activityData?.blockTimestamp)} />
                   <div className=" overflow-ellipsis">
-                    {activityData?.pricePaid
+                    {/* {activityData?.pricePaid
                       ? 'Bought for ' + viewDec(BigInt(activityData.pricePaid))
                       : activityData?.priceReceived
                       ? 'Sold for ' +
                         viewDec(BigInt(activityData.priceReceived))
                       : ''}
-                    {' ' + 'ETH'}
+                    {' ' + 'ETH'} */}
                   </div>
                 </div>
               </div>

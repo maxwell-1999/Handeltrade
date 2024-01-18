@@ -18,9 +18,9 @@ const RewardCard: React.FC<{
   };
   market: Market;
   compact?: boolean;
-}> = ({ rewards, market, compact }) => {
+}> = ({ market, compact }) => {
   const account = useAccount();
-  const { data: revisedData } = useContractReads({
+  const { data: rewards } = useContractReads({
     contracts: [
       {
         address: appConfig.handelTradeAddress,
@@ -62,6 +62,8 @@ const RewardCard: React.FC<{
   const cards = useMemo(() => {
     let REWARD: { type: rewardType; reward: bigint }[] = [];
     let DIVIDEND: { type: rewardType; reward: bigint }[] = [];
+    console.log(`RewardCard-rewards.rewards: `, rewards.minFeesClaimThreshold);
+
     if (rewards.rewards >= rewards.minFeesClaimThreshold) {
       REWARD = [
         {
@@ -81,10 +83,7 @@ const RewardCard: React.FC<{
     const arr = [...REWARD, ...DIVIDEND];
     return arr;
   }, [market, rewards]);
-  console.log(
-    `RewardCard-props.dividends: `,
-    (BigInt(rewards.balanceOf) / E18) * BigInt(market.buyPrice)
-  );
+  if (!cards.length) return null;
   return (
     <div
       className={
@@ -101,7 +100,7 @@ const RewardCard: React.FC<{
           />
         </div>
       )}
-      {rewards.rewards ? null : (
+      {/* {rewards.rewards ? null : (
         <div className="w-full mt-3">
           <div>Rewards:</div>
           <div className="flex justify-between w-full">
@@ -109,7 +108,7 @@ const RewardCard: React.FC<{
             <PrimaryButton className="text-f10">Claim</PrimaryButton>
           </div>
         </div>
-      )}
+      )} */}
       {cards.map((r, idx) => {
         return (
           <>
@@ -169,7 +168,7 @@ const RewardRow: React.FC<{
   return (
     <div className="flex items-end justify-between w-full mt-">
       <div>
-        {data.type == 'DIVIDEND' ? 'Dividends Earned' : 'Reflection Fee Earned'}
+        {data.type == 'DIVIDEND' ? 'Dividends Earned' : 'Weekly Rewards Earned'}
         :
         <DisplayPrice compact price={data.reward} />{' '}
       </div>

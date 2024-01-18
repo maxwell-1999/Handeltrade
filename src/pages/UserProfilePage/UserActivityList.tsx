@@ -79,7 +79,7 @@ const MarketActivityCard: React.FC<{
       <div className="flex flex-col gap-[3px] items-center justify-center ">
         <img
           src={market.img_url}
-          className="w-[40px] h-[40px] rounded-[5px]  img-loading"
+          className="w-[30px] h-[30px] rounded-[5px]  img-loading"
         />
         {nonPrice ? null : (
           <span className="font-semibold text-f14">
@@ -119,14 +119,14 @@ const MarketActivityCard: React.FC<{
               <div className="flex items-center gap-2 text-f10 !whitespace-nowrap">
                 <MemoTImerIcon />
                 <TimeAgo date={toJSEpoch(activityData.blockTimestamp)} />
-                <div>
+                {/* <div>
                   {activityData?.pricePaid
                     ? 'Bought for ' + viewDec(BigInt(activityData.pricePaid))
                     : activityData?.priceReceived
                     ? 'Sold for ' + viewDec(BigInt(activityData.priceReceived))
                     : ''}
                   {' ' + 'ETH'}
-                </div>
+                </div> */}
               </div>
             </div>
           )}

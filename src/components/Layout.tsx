@@ -73,7 +73,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <img className="w-[35px] h-[25px] " src="/Logo.svg" />
             <AccountDropdown />
           </div>
-          <div className="flex-1 w-full container-height-fr bg-[#f6f7fc]">
+          <div className="flex-1 w-full container-height-fr bg-[#f6f7fc] overflow-x-hidden">
             {children}
           </div>
           {drawerManager.drawerState?.screen ? <MobileDrawer /> : null}

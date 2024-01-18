@@ -1,15 +1,26 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import InfoIcon from '../SVG/InfoIcon';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { defaultSlippage, slippageAtom } from '@/atoms/SlipageState';
+import { getSanitizedInput } from '@/utils/getSanitizeInput';
 export const MAX_SLIPPAGE = 5;
 export const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`);
 export function escapeRegExp(string: string): string {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
-const defaultSlippage = 0.75;
 
 const SlippageSetting: React.FC<any> = ({}) => {
   const defaults = [0.5, 1, 1.5];
-  const [currentSlippage, setcurrentSlippage] = useState('');
+  const [slipage, setSlippage] = useRecoilState(slippageAtom);
+  console.log(`SlippageSetting-slipage: `, slipage);
+  const [currentSlippage, setcurrentSlippage] = useState(slipage + '');
+  useEffect(() => {
+    if (currentSlippage) {
+      setSlippage(+currentSlippage);
+    } else {
+      setSlippage(defaultSlippage);
+    }
+  }, [currentSlippage]);
   return (
     <div className="relative p-3 py-5 bg-white rounded-md shadow-lg">
       <div className="absolute bg-transperent shadow-lg triangle-right -right-[8px] top-1/2 -translate-y-1/2">
@@ -37,23 +48,22 @@ const SlippageSetting: React.FC<any> = ({}) => {
             value={currentSlippage}
             type="number"
             max={MAX_SLIPPAGE}
-            className={`relative  bg-[#F6F7FC]   px-5 py-3 rounded-[5px] outline-none focus:border-brand w-[150px] text-f10 ${
+            min={'0.01'}
+            step={'0.01'}
+            className={`  bg-[#F6F7FC]   px-5 py-3 rounded-[5px] outline-none focus:border-brand w-[150px] text-f10 ${
               defaults.includes(currentSlippage) ? 'text-2' : 'text-1'
             }`}
             onChange={(e) => {
-              console.log(`SlippageSetting-e: `, e.target.value);
-              if (
-                e.target.value.includes('.') &&
-                e.target.value.split('.')[1].length > 4
-              )
+              const value = getSanitizedInput(e.target.value, 2);
+              if (+value > 5) {
                 return;
-              // if (inputRegex.test(escapeRegExp(e.target.value))) {
-              setcurrentSlippage(e.target.value);
-              // }
+              }
+              setcurrentSlippage(value);
             }}
             placeholder="Enter value"
           />{' '}
-          {currentSlippage != '' ? null : (
+          <div className="absolute -translate-y-1/2 right-2 top-1/2">%</div>
+          {currentSlippage ? null : (
             <div className="flex items-center mt-1">
               <InfoIcon />
               <div className="ml-1 text-2">

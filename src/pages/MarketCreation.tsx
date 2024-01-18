@@ -10,6 +10,7 @@ import MemoSearchIconCompressed from '../SVG/SearchIconCompressed';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Layout } from '../components/Layout';
 import toast from 'react-hot-toast';
+import { NoDataFound } from '@/components/NoDataFound';
 export const Platform = {
   Youtube: 'youtube',
 };
@@ -71,7 +72,7 @@ const MarketCreation: React.FC<any> = ({}) => {
 
   return (
     <Layout>
-      <div className="relative flex flex-col items-center justify-end h-full">
+      <div className="relative flex flex-col items-center justify-end h-full bg-lightblue">
         <div className="absolute top-0 left-0 w-full h-full custom-bg-image bg-purpleBrand" />
         <div className="flex flex-col items-center h-[70%] gap-[20px] bg-white w-full rounded-t-[20px] p-[30px]">
           <div className="text-lg font-bold">Create new Market</div>
@@ -98,7 +99,7 @@ const MarketCreation: React.FC<any> = ({}) => {
                 onSubmit={fetchMarketStatus}
                 onChange={(e) => setValue(e.target.value)}
                 placeholder="Channel Name"
-                className="bg-transparent px-3 z-[10]   outline-[transperent] outline-[0px] border-[0px] text-md border-[transperent]  placeholder:text-2 font-[500]  rounded-[10px]   w-full h-full"
+                className="bg-transparent min-h-[50px] px-3 z-[10]   outline-[transperent] outline-[0px] border-[0px] text-md border-[transperent]  placeholder:text-2 font-[500]  rounded-[10px]   w-full h-full"
               ></input>
             </form>
             {value ? (
@@ -116,7 +117,9 @@ const MarketCreation: React.FC<any> = ({}) => {
             {loading ? (
               <ListLoader />
             ) : markets == 'err' ? (
-              `No markets named "${value}"`
+              <NoDataFound className="bg-[#f4f4f475]">
+                No markets found with name "{value}"
+              </NoDataFound>
             ) : markets.length ? (
               <MarketList markets={markets} />
             ) : null}
