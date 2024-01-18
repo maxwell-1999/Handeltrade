@@ -14,40 +14,49 @@ import { useNetwork } from 'wagmi';
 import { formatAddress } from '../Helpers/web3utils';
 import toast from 'react-hot-toast';
 import { showShares } from './UserProfilePage/UserCardSm';
+import { NoDataFound } from '@/components/NoDataFound';
 
 const MarketActivityList: React.FC<{
   userAddrMap: UserAddrMap;
   data: BuySellActivityForMarket[];
 }> = ({ userAddrMap, data }) => {
+  if (!data.filter((d) => d.type == 'buy' || d.type == 'sell').length)
+    return (
+      <NoDataFound className="w-[90%] mt-3 mx-auto">No data found</NoDataFound>
+    );
+  console.log(`MarketActivityList-data: `, data);
+
   return (
     <div className="flex flex-col gap-[10px]  px-6 ">
-      {data.map((activity: BuySellActivityForMarket, i) => {
-        if (activity.type == 'buy') {
-          return (
-            <UserActivityCard
-              key={i}
-              user={userAddrMap[activity.buyer]}
-              activityData={activity}
-            />
-          );
-        }
-        if (activity.type == 'sell') {
-          return (
-            <UserActivityCard
-              key={i}
-              user={userAddrMap[activity.seller]}
-              activityData={activity}
-            />
-          );
-        }
-        if (activity.type == 'claimedRewards') {
-          // return <RewardsOfferedCard data={activity} />;
-        }
-        if (activity.type == 'rewardsOffereds') {
-          activity.type2 = 'Rewards Offered';
-          return <RewardsOfferedCard key={i} data={activity} />;
-        }
-      })}
+      {data
+        .filter((d) => d.type == 'buy' || d.type == 'sell')
+        .map((activity: BuySellActivityForMarket, i) => {
+          if (activity.type == 'buy') {
+            return (
+              <UserActivityCard
+                key={i}
+                user={userAddrMap[activity.buyer]}
+                activityData={activity}
+              />
+            );
+          }
+          if (activity.type == 'sell') {
+            return (
+              <UserActivityCard
+                key={i}
+                user={userAddrMap[activity.seller]}
+                activityData={activity}
+              />
+            );
+          }
+          if (activity.type == 'claimedRewards') {
+            return <RewardsOfferedCard key={i} data={activity} />;
+          }
+          if (activity.type == 'rewardsOffereds') {
+            activity.type2 = 'Rewards Offered';
+            return <RewardsOfferedCard key={i} data={activity} />;
+          }
+        })}
     </div>
   );
 };
@@ -70,10 +79,10 @@ const UserActivityCard: React.FC<{
         {/* profile img section */}
         <span className="flex flex-grow">
           <img
-            className="w-[45px] h-[45px] rounded-[5px] mr-[10px] img-loading"
+            className="w-[40px] h-[40px] rounded-[5px] mr-[10px] img-loading"
             // height={30}
             // width={30}
-            src={user.img_url || '/dplaceholder.jpg'}
+            src={user.img_url || '/dplaceholder.png'}
             alt="user profile"
           />
 

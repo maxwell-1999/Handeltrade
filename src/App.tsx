@@ -31,6 +31,7 @@ import { LoginPage } from './pages/Web3auth/Web3AuthWithWagmi';
 import UserProfilePage from './pages/UserProfilePage';
 import { TestComponent } from './pages/TestComponent';
 import 'react-tooltip/dist/react-tooltip.css';
+import { getSharesFromPrice } from './lib/PriceToQuantity';
 
 // Configure chains & providers with the Public provider.
 const { chains, publicClient, webSocketPublicClient } = configureChains(
@@ -91,7 +92,6 @@ function Web3AuthWithWagmi() {
                   }
                 ></Route>
               </Route>
-              {/* <Redirect from="/#/users/:id" to="/users/:id" /> */}
             </Routes>
           </BrowserRouter>
         </SWRConfig>
@@ -101,8 +101,10 @@ function Web3AuthWithWagmi() {
 }
 
 export { Web3AuthWithWagmi };
-
+// solveForQ(1 * M, 0.000625 * M, M);
+const M = 1e18;
 function App() {
+  console.log('qty', getSharesFromPrice(M, 0.0006 * M, M));
   return (
     <>
       <Web3AuthWithWagmi />

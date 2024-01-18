@@ -25,7 +25,7 @@ const debouncedSearchMarkets = debounce(async function (
     const { data } = await axios.get(
       `${import.meta.env.VITE_API_ENDPOINT}/search/market/${queryString}`
     );
-    cb(data.data, queryString);
+    cb(data.data ?? [], queryString);
   } catch (e) {
     return null;
   }

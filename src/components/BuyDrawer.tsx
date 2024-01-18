@@ -1,4 +1,4 @@
-import { ReactNode, useLayoutEffect, useRef, useState } from 'react';
+import { ReactNode, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { PrimaryBtn } from './Buttons';
 import { MarketCard } from './MarketCard';
 import { useContractWrite, usePublicClient } from 'wagmi';
@@ -6,7 +6,7 @@ import { appConfig } from '../config';
 import HandleTradeAbi from '../ABI/HandelTrade.json';
 import toast from 'react-hot-toast';
 import MemoButtonLoader from './ButtonLoader';
-import { renderShares, toe18 } from '../Helpers/bigintUtils';
+import { renderShares, toe18, viewDec } from '../Helpers/bigintUtils';
 import { Popover } from 'react-tiny-popover';
 import { formatError } from '../Helpers/web3utils';
 import { twJoin } from 'tailwind-merge';
@@ -16,6 +16,46 @@ import { DisplayPrice } from './DisplayPrice';
 import { E18 } from '../Helpers/constants';
 import MemoSettings from '../SVG/Settings';
 import { SlippageSetting } from './SlippageSetting';
+import { getSharesFromPrice } from '@/lib/PriceToQuantity';
+let defaultQty = 1;
+const addSlippageBigint = (amount: bigint, slippage: number) => {
+  slippage = slippage / 100;
+  const num = BigInt(slippage * 1e4);
+  const mul = num * amount;
+  return amount + (num * amount) / 10000n;
+};
+const addSlippageInt = (amount: number, slippage: number) => {
+  slippage = slippage / 100;
+  return amount + amount * slippage;
+};
+const subtractSlippageBigint = (amount: bigint, slippage: number) => {
+  slippage = slippage / 100;
+  const num = BigInt(slippage * 1e4);
+  const mul = num * amount;
+  return amount - (num * amount) / 10000n;
+};
+const subtractSlippageInt = (amount: number, slippage: number) => {
+  slippage = slippage / 100;
+  return amount + amount * slippage;
+};
+const EXPO = BigInt(1e18);
+function getPrice(supply: bigint, qty: bigint) {
+  console.log('Supply: ', supply, 'Qty: ', qty);
+  const sum1 =
+    supply === BigInt(0)
+      ? BigInt(0)
+      : ((supply - EXPO) * supply * (BigInt(2) * (supply - EXPO) + EXPO)) /
+        (BigInt(6) * EXPO);
+  const sum2 =
+    supply === BigInt(0) && qty === EXPO
+      ? BigInt(0)
+      : ((supply - EXPO + qty) *
+          (supply + qty) *
+          (BigInt(2) * (supply - EXPO + qty) + EXPO)) /
+        (BigInt(6) * EXPO);
+  const summation = (sum2 - sum1) / EXPO;
+  return summation / BigInt(1600);
+}
 
 const BuyDrawer: React.FC<{
   data: UserMarketHoldings;
@@ -24,20 +64,23 @@ const BuyDrawer: React.FC<{
   selectedMarket: Market;
 }> = ({ data, selectedMarket, value, setValue }) => {
   const { waitForTransactionReceipt } = usePublicClient();
-  console.log(`BuyDrawer-data: `, data);
   const [loading, setLoading] = useState(false);
   const { writeAsync } = useContractWrite({
     address: appConfig.handelTradeAddress,
     abi: HandleTradeAbi,
     functionName: 'buyShares',
   });
+  const [trade, setTrade] = useState({
+    shares: +value,
+    price: -1n,
+  });
   const handelTrade = async () => {
     if (!data.nextBuyPrice) {
       throw new Error('Pre-fetching failed!');
     }
     const argPack = {
-      args: [selectedMarket.market_id, toe18(value)],
-      value: data.nextBuyPrice,
+      args: [selectedMarket.market_id, toe18(trade.shares)],
+      value: trade.price,
     };
     console.log(`handel-deb:argPack: `, argPack);
 
@@ -49,16 +92,24 @@ const BuyDrawer: React.FC<{
     console.log(`handel-deb:completionStatus: `, completionStatus);
     toast('Shares transferred to your Account');
   };
-  const ref = useRef();
-  useLayoutEffect(() => {
-    // ref.current?.focus();
-  }, []);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  useEffect(() => {
+    console.log('deb-buydrawer-r', viewDec(data.nextBuyPrice));
+    setTrade((s) => {
+      console.log(`BuyDrawer-s: `, s);
+      return { ...s, price: addSlippageBigint(data.nextBuyPrice, 0.5) };
+    });
+  }, [data.nextBuyPrice]);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/[^0-9]/g, '');
+    setTrade({ shares: +value, price: -1n });
+    setValue(value);
+  };
+
   return (
     <>
       <MarketCard market={selectedMarket} preview className="bg-transparent " />
       <div className="flex items-end justify-between">
-        <IpLabel htmlFor="Enter Amount">Enter Amount</IpLabel>
         <Popover
           onClickOutside={() => setIsPopoverOpen(false)}
           isOpen={isPopoverOpen}
@@ -75,31 +126,6 @@ const BuyDrawer: React.FC<{
           </button>
         </Popover>
       </div>
-      <div className="relative flex flex-col  rounded-[5px] bg-1b gap-2 ">
-        <input
-          id="Enter Amount"
-          name="Enter Amount"
-          placeholder="Amount to buy Shares"
-          value={value}
-          type="number"
-          pattern="[0-9]"
-          title="Numbers only"
-          onChange={(e) => setValue(e.target.value.replace(/[^0-9]/g, ''))}
-          className="p-4 py-3 font-bold text-f14 text-1 outline-brand"
-        />
-        <FontAwesomeIcon
-          height={16}
-          width={16}
-          className={`absolute   right-3 top-1/2 -translate-y-1/2 h-[16px] mb-1 rounded-full p-1  bg-2 text-white cursor-pointer`}
-          icon={faEthereum}
-          onClick={() => {}}
-        />
-      </div>
-      <DisplayPrice
-        className="ml-1 text-2"
-        compact
-        price={BigInt(value) * E18}
-      />
       <div className="flex items-end justify-between">
         <IpLabel htmlFor="Shares ip">Number of shares</IpLabel>
         <div className="text-2">Makret Supply: {renderShares(data.supply)}</div>
@@ -107,13 +133,13 @@ const BuyDrawer: React.FC<{
       <div className=" flex flex-col rounded-[5px] bg-1b gap-2 ">
         <input
           id="Shares ip"
-          name="Shares ip"
+          name="Quantity"
           placeholder="Enter quantity of shares to buy"
           value={value}
           type="number"
           pattern="[0-9]"
           title="Numbers only"
-          onChange={(e) => setValue(e.target.value.replace(/[^0-9]/g, ''))}
+          onChange={handleChange}
           className="p-4 py-3 pr-12 font-bold text-f14 text-1 outline-brand"
         />
       </div>

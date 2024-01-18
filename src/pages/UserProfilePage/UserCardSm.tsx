@@ -20,22 +20,22 @@ const UserCardSm: React.FC<any> = ({ user }) => {
           {/* profile img section */}
           <span className="flex flex-grow">
             <img
-              className="w-[45px] h-[45px] rounded-[5px] mr-[10px] img-loading"
+              className="w-[40px] h-[40px] rounded-[5px] mr-[10px] img-loading"
               // height={30}
               // width={30}
-              src={user.img_url || '/dplaceholder.jpg'}
+              src={user.img_url || '/dplaceholder.png'}
               alt="user profile"
             />
             {/* demographics */}
             <span className="flex flex-col w-full">
-              <span className="flex items-center pt-1 font-semibold text-f14">
+              <span className="flex items-center font-semibold text-f14">
                 {user?.first_name ? user.first_name : 'Anonymous'}
                 <div className="ml-auto text-2 text-f10">
                   {showShares(user?.shares)}
                 </div>
               </span>
               <span className="flex justify-between w-full text-2 ">
-                <span className="mt-1 font-semibold text-f12">
+                <span className="font-semibold text-f12">
                   <span className=" max-w-[70px] rounded-lg ">
                     {formatAddress(user?.public_address)}{' '}
                   </span>

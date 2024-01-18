@@ -1,4 +1,5 @@
 import { UserCardSm } from '../pages/UserProfilePage/UserCardSm';
+import { NoDataFound } from './NoDataFound';
 
 const UserCardList: React.FC<{ users: User[] }> = ({ users }) => {
   return (
@@ -6,7 +7,7 @@ const UserCardList: React.FC<{ users: User[] }> = ({ users }) => {
       {users?.length ? (
         users.map((user) => <UserCardSm key={user.id} user={user} />)
       ) : (
-        <div className="text-2">No holders found</div>
+        <NoDataFound>No data found</NoDataFound>
       )}
     </div>
   );
