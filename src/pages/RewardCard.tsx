@@ -66,6 +66,7 @@ const RewardCard: React.FC<{
   });
 
   const cards = useMemo(() => {
+    if (!rewards) return [];
     let REWARD: { type: rewardType; reward: bigint }[] = [];
     let DIVIDEND: { type: rewardType; reward: bigint }[] = [];
     console.log(

@@ -89,7 +89,7 @@ const UserActivityCard: React.FC<{
           {/* demographics */}
           <span className="flex flex-col w-full">
             <span className="flex justify-between w-full pt-1 ">
-              <span className="font-semibold text-f14">
+              <span className="font-semibold leading-tight text-f14">
                 {user?.first_name ? (
                   user.first_name
                 ) : (
