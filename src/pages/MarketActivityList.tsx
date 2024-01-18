@@ -79,7 +79,7 @@ const UserActivityCard: React.FC<{
         {/* profile img section */}
         <span className="flex items-center flex-grow">
           <img
-            className="w-[30px] h-[30px] rounded-[5px] mr-[10px] img-loading"
+            className="w-[30px] h-[30px] rounded-[5px] mr-[10px] mt-1 img-loading"
             // height={30}
             // width={30}
             src={user.img_url || '/dplaceholder.png'}
