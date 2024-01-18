@@ -19,7 +19,7 @@ const view = (a: bigint | string, decimals = 10) => {
   if (a == null) return 0;
   const result =
     Number((BigInt(a) * BigInt(10 ** decimals)) / E18) / 10 ** decimals;
-  return result.toFixed(5);
+  return parseFloat(result.toFixed(5));
 };
 const viewDec = (a: bigint, decimals = 10) => {
   const number =
