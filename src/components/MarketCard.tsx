@@ -98,7 +98,8 @@ const MarketCard: React.FC<{
           >
             <div
               className={
-                'mb-1 !font-[400] ' + (!preview ? 'text-overflow-2-lines' : '')
+                'mb-1 !font-[400]   overflow-anywhere ' +
+                (!preview ? ' text-overflow-2-lines ' : '')
               }
             >
               {preview

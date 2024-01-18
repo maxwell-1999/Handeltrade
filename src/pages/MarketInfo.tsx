@@ -97,7 +97,7 @@ const MarketInfo: React.FC<any> = ({}) => {
         {data && <MarketInfoCard market={data} preview />}
         {data && data?.buyPrice && <RewardCard rewards={rew} market={data} />}
         <Tablist
-          className="my-3"
+          className="mb-3"
           tablist={tabs}
           onTabSelect={seActiveTab}
           activeTab={activeTab}

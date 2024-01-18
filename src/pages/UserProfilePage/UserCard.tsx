@@ -51,8 +51,10 @@ const UserCard: React.FC<any> = () => {
           />
           {/* demographics */}
           <span className="flex flex-col justify-between py-3">
-            <PrimeText>{userState?.first_name}</PrimeText>
-            <PrimeText>{userState?.last_name}</PrimeText>
+            <PrimeText>
+              {userState?.first_name + ' ' + userState?.last_name}
+            </PrimeText>
+            {/* <PrimeText>{}</PrimeText> */}
             {!params?.user_addr && (
               <PrimeFadeText>{userState?.email}</PrimeFadeText>
             )}

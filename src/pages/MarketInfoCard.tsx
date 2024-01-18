@@ -230,7 +230,7 @@ const MarketInfoCard: React.FC<{
                 </span>
               }
               less={<div className="cursor-pointer text-brand ">Show less</div>}
-              className="content-css"
+              className="content-css overflow-anywhere"
               anchorClass="show-more-less-clickable"
               onClick={(ex) => {
                 setExpanded(ex);
