@@ -20,7 +20,7 @@ const ShareManagementDrawer: React.FC<any> = ({}) => {
   }, [drawerManager.drawerState]);
 
   const marketid_value_arg_pack = useMemo(
-    () => [selectedMarket.market_id, BigInt(value) * E18],
+    () => [selectedMarket.market_id, BigInt(value * 1e18)],
     [value]
   );
   const marketid_holder_arg_pack = useMemo(

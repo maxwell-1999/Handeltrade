@@ -15,6 +15,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DisplayPrice } from './DisplayPrice';
 import { faEthereum } from '@fortawesome/free-brands-svg-icons';
 import { SlippageSetting } from './SlippageSetting';
+import { getSanitizedInput } from '@/utils/getSanitizeInput';
 
 const SellDrawer: React.FC<{
   data: UserMarketHoldings;
@@ -29,13 +30,20 @@ const SellDrawer: React.FC<{
     abi: HandleTradeAbi,
     functionName: 'sellShares',
   });
+  const [trade, setTrade] = useState({
+    shares: +value,
+    price: -1n,
+  });
   const handelTrade = async () => {
     if (!data.nextBuyPrice) {
       throw new Error('Pre-fetching failed!');
     }
     const argPack = {
-      args: [selectedMarket.market_id, toe18(value)],
-      // value: data.nextSellPrice,
+      args: [
+        selectedMarket.market_id,
+        BigInt(trade.shares * 1e18),
+        trade.price,
+      ],
     };
     console.log(`handel-deb:argPack: `, argPack);
 
@@ -55,12 +63,24 @@ const SellDrawer: React.FC<{
   }, []);
   const [errors, setErrors] = useState({});
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.value) return setValue('');
+    const value = getSanitizedInput(e.target.value);
+    if (!value) return;
+    const ip = e.target;
+    // const value = parseFloat(e.target.value).toFixed(2);
+    setValue(value);
+    if (ip.validationMessage)
+      return setErrors((e) => ({ ...e, [ip.name]: ip.validationMessage }));
+    else setErrors({});
+    setTrade({ shares: +value, price: -1n });
+  };
   return (
     <>
       <MarketCard market={selectedMarket} preview className="bg-transperent" />
+
       <div className="flex items-end justify-between">
-        <IpLabel htmlFor="Enter Amount">Enter Amount</IpLabel>
+        <IpLabel htmlFor="Shares ip">Number of shares</IpLabel>
         <Popover
           onClickOutside={() => setIsPopoverOpen(false)}
           isOpen={isPopoverOpen}
@@ -77,35 +97,6 @@ const SellDrawer: React.FC<{
           </button>
         </Popover>
       </div>
-      <div className="relative flex flex-col  rounded-[5px] bg-1b gap-2 ">
-        <input
-          id="Enter Amount"
-          name="Enter Amount"
-          placeholder="Amount to buy Shares"
-          value={value}
-          type="number"
-          pattern="[0-9]"
-          title="Numbers only"
-          onChange={(e) => setValue(e.target.value.replace(/[^0-9]/g, ''))}
-          className="p-4 py-3 font-bold text-f14 text-1 outline-brand"
-        />
-        <FontAwesomeIcon
-          height={16}
-          width={16}
-          className={`absolute   right-3 top-1/2 -translate-y-1/2 h-[16px] mb-1 rounded-full p-1  bg-2 text-white cursor-pointer`}
-          icon={faEthereum}
-          onClick={() => {}}
-        />
-      </div>
-      <DisplayPrice
-        className="ml-1 text-2"
-        compact
-        price={BigInt(value) * E18}
-      />
-      <div className="flex items-end justify-between">
-        <IpLabel htmlFor="Shares ip">Number of shares</IpLabel>
-        <div className="text-2">Balance: {renderShares(data.userBalance)}</div>
-      </div>
       <div className=" flex flex-col rounded-[5px] bg-1b gap-2 ">
         <input
           id="Shares ip"
@@ -114,7 +105,8 @@ const SellDrawer: React.FC<{
           value={value}
           max={(data.maxSell / E18).toString()}
           type="number"
-          pattern="[0-9]"
+          min={'0.001'}
+          step={'0.001'}
           title="Numbers only"
           onChange={(e) => {
             const ip = e.target;
@@ -130,6 +122,7 @@ const SellDrawer: React.FC<{
         <div className="text-red-500 ">
           {Object.entries(errors).filter(([k]) => k == 'sell-input')?.[0]?.[1]}
         </div>
+        <div className="text-2">Balance: {renderShares(data.userBalance)}</div>
       </div>
 
       <PrimaryBtn

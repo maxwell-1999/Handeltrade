@@ -19,6 +19,7 @@ const AccountDropdown: React.FC<any> = ({}) => {
   const [protect] = useProtection();
   const { data, isError, isLoading } = useBalance({
     address: account.address,
+    watch: true,
   });
   const drawerManager = useDrawerState();
   const { disconnect } = useDisconnect();

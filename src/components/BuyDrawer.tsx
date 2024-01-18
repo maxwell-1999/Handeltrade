@@ -17,6 +17,8 @@ import { E18 } from '../Helpers/constants';
 import MemoSettings from '../SVG/Settings';
 import { SlippageSetting } from './SlippageSetting';
 import { getSharesFromPrice } from '@/lib/PriceToQuantity';
+import { getSanitizedInput } from '@/utils/getSanitizeInput';
+import { showShares } from '@/pages/UserProfilePage/UserCardSm';
 let defaultQty = 1;
 const addSlippageBigint = (amount: bigint, slippage: number) => {
   slippage = slippage / 100;
@@ -74,12 +76,17 @@ const BuyDrawer: React.FC<{
     shares: +value,
     price: -1n,
   });
+  const [errors, setErrors] = useState({});
+
+  const error = errors?.['Quantity'];
+
   const handelTrade = async () => {
     if (!data.nextBuyPrice) {
       throw new Error('Pre-fetching failed!');
     }
+    if (error) throw new Error(error);
     const argPack = {
-      args: [selectedMarket.market_id, toe18(trade.shares)],
+      args: [selectedMarket.market_id, BigInt(trade.shares * 1e18)],
       value: trade.price,
     };
     console.log(`handel-deb:argPack: `, argPack);
@@ -89,8 +96,7 @@ const BuyDrawer: React.FC<{
       hash,
     });
 
-    console.log(`handel-deb:completionStatus: `, completionStatus);
-    toast('Shares transferred to your Account');
+    toast.success('Shares transferred to your Account');
   };
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   useEffect(() => {
@@ -101,15 +107,23 @@ const BuyDrawer: React.FC<{
     });
   }, [data.nextBuyPrice]);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/[^0-9]/g, '');
-    setTrade({ shares: +value, price: -1n });
+    if (!e.target.value) return setValue('');
+    const value = getSanitizedInput(e.target.value);
+    if (!value) return;
+    const ip = e.target;
+    // const value = parseFloat(e.target.value).toFixed(2);
     setValue(value);
+    if (ip.validationMessage)
+      return setErrors((e) => ({ ...e, [ip.name]: ip.validationMessage }));
+    else setErrors({});
+    setTrade({ shares: +value, price: -1n });
   };
-
+  console.log(`BuyDrawer-errors: `, errors);
   return (
     <>
       <MarketCard market={selectedMarket} preview className="bg-transparent " />
       <div className="flex items-end justify-between">
+        <IpLabel htmlFor="Shares ip">Number of shares</IpLabel>
         <Popover
           onClickOutside={() => setIsPopoverOpen(false)}
           isOpen={isPopoverOpen}
@@ -126,10 +140,6 @@ const BuyDrawer: React.FC<{
           </button>
         </Popover>
       </div>
-      <div className="flex items-end justify-between">
-        <IpLabel htmlFor="Shares ip">Number of shares</IpLabel>
-        <div className="text-2">Makret Supply: {renderShares(data.supply)}</div>
-      </div>
       <div className=" flex flex-col rounded-[5px] bg-1b gap-2 ">
         <input
           id="Shares ip"
@@ -137,11 +147,19 @@ const BuyDrawer: React.FC<{
           placeholder="Enter quantity of shares to buy"
           value={value}
           type="number"
-          pattern="[0-9]"
+          max={'200'}
+          min={'0.001'}
+          step={'0.001'}
+          // pattern="[0-9]"
           title="Numbers only"
           onChange={handleChange}
-          className="p-4 py-3 pr-12 font-bold text-f14 text-1 outline-brand"
+          className={
+            'p-4 py-3 pr-12 font-bold text-f14 text-1  ' +
+            (error ? 'outline-red-500 border-red-500' : 'outline-brand')
+          }
         />
+        <div className="text-red-500">{error}</div>
+        <div className="text-2">Makret Supply: {showShares(data.supply)}</div>
       </div>
       <PrimaryBtn
         onClick={() => {
@@ -153,7 +171,7 @@ const BuyDrawer: React.FC<{
             })
             .finally(() => setLoading(false));
         }}
-        className="flex items-center justify-center gap-5 h-[40px] text-white"
+        className="flex items-center mt-2 justify-center gap-5 h-[40px] text-white"
       >
         <MemoButtonLoader className="scale-110 " loading={loading} /> Buy
       </PrimaryBtn>

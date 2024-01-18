@@ -92,7 +92,7 @@ const MarketInfo: React.FC<any> = ({}) => {
   return (
     <div className="relative flex flex-col items-center w-full h-full overflow-auto ">
       {/* <div className="absolute top-0 left-0 w-full h-full bg-2b" /> */}
-      <div className="sticky top-0 flex flex-col items-start w-full px-horizontalSm bg-2b ">
+      <div className="sticky top-0 flex flex-col items-start w-full gap-1 px-horizontalSm bg-2b ">
         {/* Market Card Goes here */}
         {data && <MarketInfoCard market={data} preview />}
         {data && data?.buyPrice && <RewardCard rewards={rew} market={data} />}

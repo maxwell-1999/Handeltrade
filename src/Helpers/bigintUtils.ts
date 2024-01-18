@@ -34,9 +34,10 @@ const absoluteInt = (a: bigint, factor = 8) => {
 };
 const renderShares = (a: bigint | string) => {
   if (a == undefined) return 'Fetching...';
-  const shares = view(a, 0);
-  if (shares == 0) return 'No Shares';
-  return shares > 1 ? shares + ' Shares' : shares + ' Share';
+  const shares = viewDec(a, 0);
+  console.log(`deb-shares: `, shares);
+  if (shares == '0') return 'No Shares';
+  return shares > '1' ? shares + ' Shares' : shares + ' Share';
 };
 
 const bigIntToStringWithDecimal = (

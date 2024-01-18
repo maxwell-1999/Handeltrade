@@ -59,11 +59,10 @@ const UserCardSm: React.FC<any> = ({ user }) => {
 
 export { UserCardSm };
 
-export const showShares = (shares) => {
+export const showShares = (shares: string | bigint) => {
   if (shares == '' || shares == null || shares == undefined) return '';
   console.log(`UserCardSm-shares: `, shares);
-  const shareStr = +shares > 1000000000000000000n ? 'Shares' : 'Share';
-  console.log(`UserCardSm-+shares: `, +shares);
+  const shareStr = BigInt(shares) > 1000000000000000000n ? 'Shares' : 'Share';
   return view(shares) + ' ' + shareStr;
   // return view(shareStr) + ' ' + shareStr;
 };
