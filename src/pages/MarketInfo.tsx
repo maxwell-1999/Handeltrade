@@ -104,22 +104,24 @@ const MarketInfo: React.FC<any> = ({}) => {
         />
       </div>
 
-      <div className="flex flex-col w-full ">
-        <div className="w-full min-h-full pb-3 bg-brandGrey">
-          <div className="flex flex-col gap-[10px]">
-            {/* all tabs data goes here   */}
-            {activeTab == 'Holders' ? (
-              <HoldersTab market={data} />
-            ) : activeTab == 'Watchlisted By' ? (
-              <WatchListedByTab market={data} />
-            ) : activeTab == 'Activity' ? (
-              <MarketActivityTab market={data} />
-            ) : (
-              <ClaimMarketRewards market={data} />
-            )}
+      {data.id ? (
+        <div className="flex flex-col w-full ">
+          <div className="w-full min-h-full pb-3 bg-brandGrey">
+            <div className="flex flex-col gap-[10px]">
+              {/* all tabs data goes here   */}
+              {activeTab == 'Holders' ? (
+                <HoldersTab market={data} />
+              ) : activeTab == 'Watchlisted By' ? (
+                <WatchListedByTab market={data} />
+              ) : activeTab == 'Activity' ? (
+                <MarketActivityTab market={data} />
+              ) : (
+                <ClaimMarketRewards market={data} />
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      ) : null}
     </div>
   );
 };

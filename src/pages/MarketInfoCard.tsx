@@ -252,7 +252,7 @@ export { MarketInfoCard };
 
 const ChannelDetails: React.FC<{ market: Market }> = ({ market }) => {
   return (
-    <div className="flex flex-col gap-3 p-4 pr-6 bg-white rounded-md shadow-sm text-2 text-f12">
+    <div className="flex flex-col gap-3 bg-white rounded-md shadow-sm p-7 text-2 text-f12">
       <div className="flex items-center gap-3 ">
         <MemoWebLink />
         <a
