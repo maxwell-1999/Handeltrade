@@ -2,10 +2,18 @@ import * as React from 'react';
 
 function AddMarkets(props: React.SVGProps<SVGSVGElement>) {
   return (
-    <svg width={18} height={18} fill="none" {...props}>
+    <svg width={30} height={30} fill="none" {...props}>
+      <rect
+        width={29.994}
+        height={29.994}
+        rx={5}
+        fill={props.active ? '#DBE7FF' : 'transperent'}
+      />
       <path
-        d="M10.125 7.875V0h-2.25v7.875H0v2.25h7.875V18h2.25v-7.875H18v-2.25h-7.875z"
+        d="M16 14V7h-2v7H7v2h7v7h2v-7h7v-2h-7z"
         fill="currentColor"
+        stroke="currentColor"
+        strokeWidth={0.6}
       />
     </svg>
   );

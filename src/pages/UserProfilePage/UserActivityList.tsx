@@ -119,24 +119,15 @@ const MarketActivityCard: React.FC<{
               <div className="flex items-center gap-2 text-f10 !whitespace-nowrap">
                 <MemoTImerIcon />
                 <TimeAgo date={toJSEpoch(activityData.blockTimestamp)} />
-                {/* <div>
-                  {activityData?.pricePaid
-                    ? 'Bought for ' + viewDec(BigInt(activityData.pricePaid))
-                    : activityData?.priceReceived
-                    ? 'Sold for ' + viewDec(BigInt(activityData.priceReceived))
-                    : ''}
-                  {' ' + 'ETH'}
-                </div> */}
+                <SecondaryBtn
+                  className="p-1 text-[10px] font-semibold rounded-[4px] px-2 "
+                  onClick={() => console.log}
+                >
+                  {activityData.type.toUpperCase()}
+                </SecondaryBtn>
               </div>
             </div>
           )}
-
-          <SecondaryBtn
-            className="p-1 text-[10px] font-semibold rounded-[4px] px-2 "
-            onClick={() => console.log}
-          >
-            {activityData.type.toUpperCase()}
-          </SecondaryBtn>
         </div>
       </div>
     </div>
@@ -162,7 +153,7 @@ const ClaimRewardActivityCard: React.FC<{
       onClick={() => navigate('/markets/' + market.market_id)}
     >
       <div className="flex flex-col gap-[3px] items-center justify-center ">
-        <img src={market.img_url} className="w-[40px] h-[40px] rounded-[5px]" />
+        <img src={market.img_url} className="w-[28px] h-[28px] rounded-[5px]" />
         <span className="font-semibold text-f14">#{market?.rank || 'New'}</span>
       </div>
       <div className="flex flex-col items-center w-full ">
@@ -172,14 +163,14 @@ const ClaimRewardActivityCard: React.FC<{
         {/* <div className={'mb-1 text-overflow-2-lines w-full font-semibold text-2 text-f10 '}>
           @{market?.social_handle}
         </div> */}
-        <div
+        {/* <div
           className={
             'mb-1 text-overflow-2-lines w-full font-semibold text-2 text-f10 '
           }
         >
           Claimed Amount {viewDec(activityData?.claimedRewards)}{' '}
           {network.chain?.nativeCurrency.symbol ?? ''}
-        </div>
+        </div> */}
 
         <div
           className={
@@ -190,15 +181,14 @@ const ClaimRewardActivityCard: React.FC<{
             <div className="flex items-center gap-2 text-f10">
               <MemoTImerIcon />
               <TimeAgo date={toJSEpoch(activityData.blockTimestamp)} />
+              <SecondaryBtn
+                className="p-1 text-[10px] font-semibold rounded-[4px] px-2 "
+                onClick={() => console.log}
+              >
+                {activityData.type2.toUpperCase()}
+              </SecondaryBtn>
             </div>
           </div>
-
-          <SecondaryBtn
-            className="p-1 text-[10px] font-semibold rounded-[4px] px-2 "
-            onClick={() => console.log}
-          >
-            {activityData.type2.toUpperCase()}
-          </SecondaryBtn>
         </div>
       </div>
     </div>
@@ -223,8 +213,8 @@ const ClaimReflectionActivityCard: React.FC<{
       )}
       onClick={() => navigate('/markets/' + market.market_id)}
     >
-      <div className="flex flex-col gap-[3px] items-center justify-center ">
-        <img src={market.img_url} className="w-[40px] h-[40px] rounded-[5px]" />
+      <div className="flex flex-col gap-[3px] items-center justify-around ">
+        <img src={market.img_url} className="w-[28px] h-[28px] rounded-[5px]" />
         <span className="font-semibold text-f14">#{market?.rank || 'New'}</span>
       </div>
       <div className="flex flex-col items-center w-full ">
@@ -234,14 +224,14 @@ const ClaimReflectionActivityCard: React.FC<{
         {/* <div className={'mb-1 text-overflow-2-lines w-full font-semibold text-2 text-f10 '}>
           @{market?.social_handle}
         </div> */}
-        <div
+        {/* <div
           className={
             'mb-1 text-overflow-2-lines w-full font-semibold text-2 text-f10 '
           }
         >
           Claimed Amount {viewDec(activityData?.claimedFees)}{' '}
           {network.chain?.nativeCurrency.symbol ?? ''}
-        </div>
+        </div> */}
 
         <div
           className={
@@ -252,15 +242,15 @@ const ClaimReflectionActivityCard: React.FC<{
             <div className="flex items-center gap-2 text-f10">
               <MemoTImerIcon />
               <TimeAgo date={toJSEpoch(activityData.blockTimestamp)} />
+
+              <SecondaryBtn
+                className="p-1 text-[10px] font-semibold rounded-[4px] px-2 "
+                onClick={() => console.log}
+              >
+                {activityData.type2.toUpperCase()}
+              </SecondaryBtn>
             </div>
           </div>
-
-          <SecondaryBtn
-            className="p-1 text-[10px] font-semibold rounded-[4px] px-2 "
-            onClick={() => console.log}
-          >
-            {activityData.type2.toUpperCase()}
-          </SecondaryBtn>
         </div>
       </div>
     </div>

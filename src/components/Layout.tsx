@@ -15,26 +15,32 @@ const Icons = [
   {
     page: 'markets',
     name: 'MarketList',
-    icon: <MemoMarketListIcon />,
+    Icon: MemoMarketListIcon,
   },
   {
     page: 'add',
     name: 'AddMarkets',
-    icon: <MemoAddMarkets />,
+    Icon: MemoAddMarkets,
   },
   {
     page: 'profile',
     name: 'profile',
-    icon: <MemoProfileIcon />,
+    Icon: MemoProfileIcon,
   },
 ];
 const isNestedRouteActive = (page: string) => {
+  if (
+    Icons.every(
+      (d) => !window.location.href.toLowerCase().includes(d.page.toLowerCase())
+    )
+  ) {
+    return page == Icons[0].page;
+  }
   if (window.location.href.toLowerCase().includes(page.toLowerCase()))
     return true;
   return false;
 };
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [activeTab, setActiveTab] = useState(Icons[0].name);
   useUserStateSync();
   useEthPrice();
   const navigate = useNavigate();
@@ -94,7 +100,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                           : ''
                       }
                     >
-                      {icon.icon}
+                      <icon.Icon
+                        active={isActive || isNestedRouteActive(icon.page)}
+                      />
                     </button>
                   )}
                 </NavLink>

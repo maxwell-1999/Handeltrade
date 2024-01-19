@@ -118,23 +118,14 @@ const UserActivityCard: React.FC<{
                 <div className="flex items-center gap-2 text-f10 !whitespace-nowrap ">
                   <MemoTImerIcon />
                   <TimeAgo date={toJSEpoch(activityData?.blockTimestamp)} />
-                  <div className=" overflow-ellipsis">
-                    {/* {activityData?.pricePaid
-                      ? 'Bought for ' + viewDec(BigInt(activityData.pricePaid))
-                      : activityData?.priceReceived
-                      ? 'Sold for ' +
-                        viewDec(BigInt(activityData.priceReceived))
-                      : ''}
-                    {' ' + 'ETH'} */}
-                  </div>
+                  <SecondaryBtn
+                    className="p-1 text-[10px] font-semibold rounded-[4px] px-2 "
+                    onClick={() => console.log}
+                  >
+                    {activityData?.type.toUpperCase()}
+                  </SecondaryBtn>
                 </div>
               </div>
-              <SecondaryBtn
-                className="p-1 text-[10px] font-semibold rounded-[4px] px-2 "
-                onClick={() => console.log}
-              >
-                {activityData?.type.toUpperCase()}
-              </SecondaryBtn>
             </span>
           </span>
         </span>

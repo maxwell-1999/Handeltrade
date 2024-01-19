@@ -168,7 +168,7 @@ const MarketInfoCard: React.FC<{
                 onClick={() =>
                   protect(() => drawerManager.openBuyDrwer(market))
                 }
-                className="px-3 text-f10"
+                className="px-3 text-f12"
               >
                 Buy
               </PrimaryButton>
@@ -176,7 +176,7 @@ const MarketInfoCard: React.FC<{
                 onClick={() =>
                   protect(() => drawerManager.openSellDrawer(market))
                 }
-                className="px-3 text-f10"
+                className="px-3 text-f12"
               >
                 Sell
               </SecondaryButton>

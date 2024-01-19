@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { formatAddress } from '../../Helpers/web3utils';
 import { useState } from 'react';
+import { DisplayPrice } from '@/components/DisplayPrice';
 
 const UserCard: React.FC<any> = () => {
   const params = useParams();
@@ -38,7 +39,7 @@ const UserCard: React.FC<any> = () => {
     <div className="flex flex-col items-center justify-center w-full min-h-full">
       <div className="flex w-full">
         {/* profile img section */}
-        <span className="flex flex-grow">
+        <span className="flex items-center flex-grow">
           <img
             onError={(e) => {
               e.currentTarget.onerror = null;
@@ -49,24 +50,30 @@ const UserCard: React.FC<any> = () => {
             src={userState?.img_url}
             alt="user profile"
           />
-          {/* demographics */}
           <span className="flex flex-col justify-between py-3">
             <PrimeText>
               {userState?.first_name + ' ' + userState?.last_name}
             </PrimeText>
+
             {/* <PrimeText>{}</PrimeText> */}
-            {!params?.user_addr && (
+            {!params?.user_addr ? (
               <PrimeFadeText>{userState?.email}</PrimeFadeText>
-            )}
-            {params.user_addr && (
+            ) : (
               <span className=" mt-[-4px] pl-0 max-w-[70px] text-2 rounded-lg p-2">
                 {formatAddress(userState?.public_address)}{' '}
               </span>
             )}
+            <div className="flex items-end text-2">
+              <DisplayPrice
+                className="text-2"
+                compact={<>Balance&nbsp;:&nbsp;</>}
+                price={data?.value}
+              />
+            </div>
           </span>
         </span>
         {/* finance */}
-        <span className="flex flex-col py-3 min-w-4 jstify-between">
+        {/* <span className="flex flex-col py-3 min-w-4 jstify-between">
           <PrimeText style={{ 'align-self': 'flex-end' }}>
             {isLoading ? 'Fetching..' : view(data?.value)}
             &nbsp;ETH
@@ -82,7 +89,7 @@ const UserCard: React.FC<any> = () => {
               {userState?.country}
             </PrimeFadeText>
           )}
-        </span>
+        </span> */}
       </div>
     </div>
   );

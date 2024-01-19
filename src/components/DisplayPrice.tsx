@@ -5,20 +5,27 @@ import EthIcon from '../SVG/EthIcon';
 import { faEthereum } from '@fortawesome/free-brands-svg-icons';
 import { twJoin } from 'tailwind-merge';
 import useEthPrice from '../atoms/ETHPrice';
+import { ReactNode } from 'react';
 
 const DisplayPrice: React.FC<{
   price: bigint;
   active?: boolean;
-  compact?: boolean;
+  compact?: boolean | ReactNode;
   className?: string;
 }> = ({ price, active, compact, className }) => {
   const dollarValue = 200010000000n;
   console.log(`deb-dollar value: `, dollarValue);
-  console.log(`deb-dollar value: `, price);
+  console.log(`deb-dollar value: `, typeof compact);
 
   return (
     <div className={twJoin('flex items-center text-f10 ', className)}>
-      {compact ? null : <span>Price&nbsp;:&nbsp;</span>}
+      {compact ? (
+        typeof compact == 'object' ? (
+          compact
+        ) : null
+      ) : (
+        <span>Price&nbsp;:&nbsp;</span>
+      )}
       <span className={`text-f12 ` + (active ? 'text-brand' : '')}>
         {view(price)}
       </span>
