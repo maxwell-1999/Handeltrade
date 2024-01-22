@@ -13,7 +13,7 @@ const DisplayPrice: React.FC<{
   compact?: boolean | ReactNode;
   className?: string;
 }> = ({ price, active, compact, className }) => {
-  const dollarValue = 200010000000n;
+  const dollarValue = 242410000000n;
   console.log(`deb-dollar value: `, dollarValue);
   console.log(`deb-dollar value: `, typeof compact);
 
