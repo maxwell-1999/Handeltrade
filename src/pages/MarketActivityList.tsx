@@ -16,6 +16,10 @@ import toast from 'react-hot-toast';
 import { showShares } from './UserProfilePage/UserCardSm';
 import { NoDataFound } from '@/components/NoDataFound';
 
+export const typeValueMapping = {
+  buy: 'Bought',
+  sell: 'Sold',
+};
 const MarketActivityList: React.FC<{
   userAddrMap: UserAddrMap;
   data: BuySellActivityForMarket[];
@@ -122,7 +126,7 @@ const UserActivityCard: React.FC<{
                     className="p-1 text-[10px] font-semibold rounded-[4px] px-2 "
                     onClick={() => console.log}
                   >
-                    {activityData?.type.toUpperCase()}
+                    {typeValueMapping[activityData?.type] || activityData.type}
                   </SecondaryBtn>
                 </div>
               </div>

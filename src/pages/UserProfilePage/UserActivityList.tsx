@@ -8,6 +8,7 @@ import MemoTImerIcon from '../../SVG/TImerIcon';
 import { SecondaryBtn } from '../../components/Buttons';
 import { toJSEpoch } from '../../components/MarketCard';
 import { showShares } from './UserCardSm';
+import { typeValueMapping } from '../MarketActivityList';
 
 const UserActivityList: React.FC<{ marketMap: MarketIdMap; data: any[] }> = ({
   marketMap,
@@ -123,7 +124,7 @@ const MarketActivityCard: React.FC<{
                   className="p-1 text-[10px] font-semibold rounded-[4px] px-2 "
                   onClick={() => console.log}
                 >
-                  {activityData.type.toUpperCase()}
+                  {typeValueMapping[activityData?.type] || activityData.type}
                 </SecondaryBtn>
               </div>
             </div>
