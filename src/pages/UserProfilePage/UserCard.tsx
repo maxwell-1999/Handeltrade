@@ -60,8 +60,12 @@ const UserCard: React.FC<any> = () => {
             {!params?.user_addr ? (
               <PrimeFadeText>{userState?.email}</PrimeFadeText>
             ) : (
-              <span className=" mt-[-4px] pl-0 max-w-[70px] text-2 rounded-lg p-2">
-                {formatAddress(userState?.public_address)}{' '}
+              <span
+                // data-tooltip-id="tooltip"
+                // data-tooltip-content={userState?.public_address}
+                className=" mt-[-4px] pl-0 max-w-[70px] text-2 text-f12 rounded-lg p-2"
+              >
+                {formatAddress(userState?.public_address)}
               </span>
             )}
             {!isLoading ? (
