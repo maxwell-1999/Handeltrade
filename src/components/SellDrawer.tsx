@@ -101,9 +101,6 @@ const SellDrawer: React.FC<{
         data.nextSellPrice,
         slipage
       );
-      console.log('deb-sell-after', decreasedPrice, viewDec(decreasedPrice));
-
-      console.log(`BuyDrawer-s: `, s);
       return {
         ...s,
         price: decreasedPrice,
