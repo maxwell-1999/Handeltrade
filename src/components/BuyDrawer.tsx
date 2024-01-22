@@ -29,6 +29,8 @@ import { Skeleton } from './ui/skeleton';
 let defaultQty = 1;
 const addSlippageBigint = (amount: bigint, slippage: number) => {
   slippage = slippage / 100;
+  slippage = slippage.toFixed(4);
+  console.log(`BuyDrawer-slippage: `, slippage);
   const num = BigInt(slippage * 1e4);
   return amount + (num * amount) / 10000n;
 };
@@ -123,7 +125,7 @@ const BuyDrawer: React.FC<{
       console.log(`BuyDrawer-s: `, s);
       return { ...s, price: increasedPrice };
     });
-  }, [data.nextBuyPrice, userBalance]);
+  }, [data.nextBuyPrice, userBalance.data?.value, slipage]);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.value) return setValue('');
     const value = getSanitizedInput(e.target.value);
