@@ -46,7 +46,9 @@ const SellDrawer: React.FC<{
     price: -1n,
   });
   const [errors, setErrors] = useState({});
-
+  useEffect(() => {
+    setErrors({});
+  }, [data?.userBalance]);
   const handelTrade = async () => {
     if (!data.nextBuyPrice) {
       throw new Error('Pre-fetching failed!');
@@ -107,6 +109,7 @@ const SellDrawer: React.FC<{
       };
     });
   }, [data.nextSellPrice]);
+
   return (
     <>
       <MarketCard market={selectedMarket} preview className="bg-transperent" />

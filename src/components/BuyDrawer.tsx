@@ -70,7 +70,9 @@ const BuyDrawer: React.FC<{
     price: -1n,
   });
   const [errors, setErrors] = useState({});
-
+  useEffect(() => {
+    setErrors({});
+  }, [data?.userBalance]);
   const error = errors?.['Quantity'];
 
   const handelTrade = async () => {
