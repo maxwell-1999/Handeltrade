@@ -1,9 +1,10 @@
 import { useCallback } from 'react';
 import { MarketCard } from './MarketCard';
 import { HoldingsCard } from './HoldingsCard';
+import { NoDataFound } from './NoDataFound';
 
 const HoldingsList: React.FC<{ markets: Market[] }> = ({ markets }) => {
-  if (!markets.length) return <span className="text-2">No markets found!</span>;
+  if (!markets.length) return <NoDataFound>No holdings yet!</NoDataFound>;
 
   return (
     <div className="flex flex-col gap-[10px] ">

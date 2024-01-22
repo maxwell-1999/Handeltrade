@@ -50,7 +50,7 @@ const MarketInfoCard: React.FC<{
     console.log('Add to watchlist');
     const res = await axios.post(
       `${import.meta.env.VITE_API_ENDPOINT}/user/watchlist/add`,
-      { ids: [market.id] },
+      { ids: [market?.id] },
       {
         headers: { 'session-id': userState?.session_id ?? '' },
       }
@@ -66,7 +66,7 @@ const MarketInfoCard: React.FC<{
     console.log('Remove from watchlist');
     const res = await axios.post(
       `${import.meta.env.VITE_API_ENDPOINT}/user/watchlist/remove`,
-      { ids: [market.id] },
+      { ids: [market?.id] },
       {
         headers: { 'session-id': userState?.session_id ?? '' },
       }

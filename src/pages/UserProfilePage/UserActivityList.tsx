@@ -9,11 +9,13 @@ import { SecondaryBtn } from '../../components/Buttons';
 import { toJSEpoch } from '../../components/MarketCard';
 import { showShares } from './UserCardSm';
 import { typeValueMapping } from '../MarketActivityList';
+import { NoDataFound } from '@/components/NoDataFound';
 
 const UserActivityList: React.FC<{ marketMap: MarketIdMap; data: any[] }> = ({
   marketMap,
   data,
 }) => {
+  if (!data.length) return <NoDataFound>No activities found!</NoDataFound>;
   console.log({ UserActivitys: data });
   return (
     <div className="flex flex-col gap-[10px]">
@@ -116,7 +118,7 @@ const MarketActivityCard: React.FC<{
           }
         >
           {nonPrice ? null : (
-            <div className="flex font-[500] items-center justify-between mt-3">
+            <div className="flex font-[500] items-center justify-between ">
               <div className="flex items-center gap-2 text-f10 !whitespace-nowrap">
                 <MemoTImerIcon />
                 <TimeAgo date={toJSEpoch(activityData.blockTimestamp)} />
