@@ -218,7 +218,7 @@ const MarketInfoCard: React.FC<{
           <div
             ref={descDivRef}
             className={
-              'mb-1 !font-[400] max-h-[212px] pr-3 relative overflow-auto w-full'
+              'mb-1 text-f12 !font-[400] max-h-[212px] pr-3 relative overflow-auto w-full'
             }
           >
             <ShowMoreText

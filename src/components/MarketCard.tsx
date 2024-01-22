@@ -92,13 +92,13 @@ const MarketCard: React.FC<{
           </div>
           <div
             className={
-              'w-full  text-2 text-f10 ' +
+              'w-full  text-2 text-f12 ' +
               (nonPrice ? 'flex justify-between items-center' : '')
             }
           >
             <div
               className={
-                'mb-1 !font-[400]   overflow-anywhere ' +
+                'mb-1 !font-[400]  overflow-anywhere ' +
                 (!preview ? ' text-overflow-2-lines ' : '')
               }
             >
