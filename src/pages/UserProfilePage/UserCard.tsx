@@ -8,6 +8,7 @@ import axios from 'axios';
 import { formatAddress } from '../../Helpers/web3utils';
 import { useState } from 'react';
 import { DisplayPrice } from '@/components/DisplayPrice';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const UserCard: React.FC<any> = () => {
   const params = useParams();
@@ -63,13 +64,17 @@ const UserCard: React.FC<any> = () => {
                 {formatAddress(userState?.public_address)}{' '}
               </span>
             )}
-            <div className="flex items-end text-2">
-              <DisplayPrice
-                className="text-2"
-                compact={<>Balance&nbsp;:&nbsp;</>}
-                price={data?.value}
-              />
-            </div>
+            {!isLoading ? (
+              <div className="flex items-end text-2">
+                <DisplayPrice
+                  className="text-2"
+                  compact={<>Balance&nbsp;:&nbsp;</>}
+                  price={data?.value}
+                />
+              </div>
+            ) : (
+              <Skeleton className="w-[30px] h-3" />
+            )}
           </span>
         </span>
         {/* finance */}
