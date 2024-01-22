@@ -9,6 +9,7 @@ export const formatError = (e) => {
   const shortMessage = (e as ContractFunctionExecutionError)?.shortMessage;
   const message =
     shortMessage || e.shortMessage || e.message || 'Error Occured!';
+  console.log(`Txn-error: `, shortMessage);
   const finalMessage = message.replace(/(\r\n|\n|\r)/gm, '');
   if (finalMessage.includes('An internal error was received'))
     return 'Gas + Transaction Fee is exceeds balance!';
