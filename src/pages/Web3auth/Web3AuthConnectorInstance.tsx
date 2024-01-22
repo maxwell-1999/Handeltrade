@@ -19,8 +19,8 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
   };
   const web3AuthInstance = new Web3Auth({
     clientId:
-      'BFFvxj2A_-e4pLRvk-5D-ApuvOcPgwblDHFvViApGZst_QwQXvZQGB_BC6hiniwGQHCwK0GTT5RTWCNa2sSMzZo',
-      // 'BER2IPJpbBvpJSNy1ci79ranyQNfS3a4kYKK9-Ebl0uGKHFWToZhEVu0e72RnXXGwNo6WbUJOJ5Fn86L_utcsFE',
+      'BL61SxVgp_BBvj6tXnRnQQvdvFk4DbnZMywG6OVGnKKq3JmPxkD_C7uJkMwdnBKA-T8FOeydQiszaLGpfcFOYUs',
+    // 'BER2IPJpbBvpJSNy1ci79ranyQNfS3a4kYKK9-Ebl0uGKHFWToZhEVu0e72RnXXGwNo6WbUJOJ5Fn86L_utcsFE',
     chainConfig,
     web3AuthNetwork: 'sapphire_devnet',
     // web3AuthNetwork: 'testnet',
@@ -29,7 +29,7 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
       loginMethodsOrder: ['google'],
       defaultLanguage: 'en',
       // appLogo: 'https://web3auth.o/images/w3a-L-Favicon-1.svg', // Your App Logo Here
-      appLogo: "/Logo.png",
+      appLogo: '/Logo.png',
       modalZIndex: '2147483647',
     },
   });
