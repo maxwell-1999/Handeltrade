@@ -62,6 +62,13 @@ const ShareManagementDrawer: React.FC<any> = ({}) => {
       },
     ],
     select: (data) => {
+      console.log(
+        `ShareManagementDrawer-appConfig.handelTradeAddress: `,
+        data[0].result,
+        appConfig.handelTradeAddress,
+        data[0].result / E18
+      );
+
       return {
         supply: data[0].result,
         userBalance: data[1].result,

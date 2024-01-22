@@ -18,6 +18,7 @@ import { SlippageSetting } from './SlippageSetting';
 import { getSanitizedInput } from '@/utils/getSanitizeInput';
 import { showShares } from '@/pages/UserProfilePage/UserCardSm';
 import { useSlippage } from '@/atoms/SlipageState';
+import { formatError } from '@/Helpers/web3utils';
 const subtractSlippageBigint = (amount: bigint, slippage: number) => {
   slippage = slippage / 100;
   const num = BigInt(slippage * 1e4);
@@ -61,13 +62,13 @@ const SellDrawer: React.FC<{
     };
     console.log(`handel-deb:argPack: `, argPack);
 
-    // const { hash } = await writeAsync(argPack);
-    // const { status: completionStatus } = await waitForTransactionReceipt({
-    //   hash,
-    // });
+    const { hash } = await writeAsync(argPack);
+    const { status: completionStatus } = await waitForTransactionReceipt({
+      hash,
+    });
 
-    // console.log(`handel-deb:completionStatus: `, completionStatus);
-    // toast('Funds transfered to Account');
+    console.log(`handel-deb:completionStatus: `, completionStatus);
+    toast.success('Funds transfered to Account');
   };
   useEffect(() => {
     console.log('cdm callded', data.maxSell);
@@ -94,13 +95,12 @@ const SellDrawer: React.FC<{
   const error = errors?.['SellQuantity'];
   const slipage = useSlippage();
   useEffect(() => {
-    console.log(
-      'deb-sell-befor',
-      data.nextBuyPrice,
-      viewDec(data.nextBuyPrice)
-    );
+    if (!data.nextSellPrice) return;
     setTrade((s) => {
-      const decreasedPrice = subtractSlippageBigint(data.nextBuyPrice, slipage);
+      const decreasedPrice = subtractSlippageBigint(
+        data.nextSellPrice,
+        slipage
+      );
       console.log('deb-sell-after', decreasedPrice, viewDec(decreasedPrice));
 
       console.log(`BuyDrawer-s: `, s);
@@ -156,7 +156,12 @@ const SellDrawer: React.FC<{
       <PrimaryBtn
         onClick={() => {
           setLoading(true);
-          handelTrade().finally(() => setLoading(false));
+          handelTrade()
+            .catch((e) => {
+              const msg = formatError(e);
+              toast(msg, { icon: '❌' });
+            })
+            .finally(() => setLoading(false));
         }}
         className="flex items-center justify-center gap-5 h-[40px] text-white"
         disable={data.maxSell ? false : `Insufficient funds for selling`}

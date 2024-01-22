@@ -37,7 +37,7 @@ const InitMarketDrawer: React.FC<{
     });
 
     console.log(`handel-deb:completionStatus: `, completionStatus);
-    toast('Shares transfered to Account');
+    toast.success('Shares transfered to Account');
   };
   useEffect(() => {
     setValue('1');
