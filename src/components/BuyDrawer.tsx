@@ -29,8 +29,7 @@ import { Skeleton } from './ui/skeleton';
 let defaultQty = 1;
 const addSlippageBigint = (amount: bigint, slippage: number) => {
   slippage = slippage / 100;
-  slippage = slippage.toFixed(4);
-  console.log(`BuyDrawer-slippage: `, slippage);
+  slippage = +slippage.toFixed(4);
   const num = BigInt(slippage * 1e4);
   return amount + (num * amount) / 10000n;
 };
