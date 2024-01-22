@@ -20,6 +20,23 @@ body {
   width: 100%;
   height: 100vh;
 }
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+
+.error-border {
+  outline: transparent;
+  border: 2px solid #ef4444 !important;
+}
 
 .height-pop-up{
  max-height: 1000px;

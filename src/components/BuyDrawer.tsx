@@ -25,6 +25,7 @@ import { getSharesFromPrice } from '@/lib/PriceToQuantity';
 import { getSanitizedInput } from '@/utils/getSanitizeInput';
 import { showShares } from '@/pages/UserProfilePage/UserCardSm';
 import { useSlippage } from '@/atoms/SlipageState';
+import { Skeleton } from './ui/skeleton';
 let defaultQty = 1;
 const addSlippageBigint = (amount: bigint, slippage: number) => {
   slippage = slippage / 100;
@@ -174,20 +175,20 @@ const BuyDrawer: React.FC<{
           title="Numbers only"
           onChange={handleChange}
           className={
-            'p-4 py-3 pr-12 font-bold text-f14 text-1  ' +
-            (error ? 'outline-red-500 border-red-500' : 'outline-brand')
+            'p-4 border-[2px] rounded-md py-3 h-16  pr-12 font-bold text-f14 text-1  ' +
+            (error ? ' error-border ' : 'outline-brand')
           }
         />
-        <div className="flex items-center justify-between">
-          {error ? (
-            <div className="text-red-500">{error}</div>
-          ) : trade.price && trade.price !== -1n ? (
-            <DisplayPrice price={trade.price} />
-          ) : (
-            'Loading...'
-          )}
-          <div className="text-2">Makret Supply: {showShares(data.supply)}</div>
-        </div>
+      </div>
+      <div className="flex flex-col justify-between ">
+        {error ? (
+          <div className="text-red-500 text-f10">{error}</div>
+        ) : trade.price && trade.price !== -1n ? (
+          <DisplayPrice price={trade.price} className="text-2" />
+        ) : (
+          <Skeleton className="block w-[40px] h-4 rounded-md" />
+        )}
+        {/* <div className="text-2">Makret Supply: {showShares(data.supply)}</div> */}
       </div>
       <PrimaryBtn
         onClick={() => {

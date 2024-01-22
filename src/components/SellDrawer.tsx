@@ -145,8 +145,8 @@ const SellDrawer: React.FC<{
           title="Numbers only"
           onChange={handleChange}
           className={
-            'p-4 py-3 pr-12 font-bold text-f14 text-1  ' +
-            (error ? 'outline-red-500 border-red-500' : 'outline-brand')
+            'p-4 py-3 border-[2px] rounded-md pr-12 font-bold text-f14 text-1  ' +
+            (error ? ' error-border' : 'outline-brand')
           }
         />
         <div className="text-red-500 ">{error}</div>
