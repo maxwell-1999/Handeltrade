@@ -93,7 +93,7 @@ const SellDrawer: React.FC<{
     else setErrors({});
     setTrade({ shares: +value, price: -1n });
   };
-  console.log(`SellDrawer-data.maxSell: `, data.maxSell);
+  console.log(`SellDrawer-data.maxSell: `, data.userBalance);
   const error = errors?.['SellQuantity'];
   const slipage = useSlippage();
   useEffect(() => {

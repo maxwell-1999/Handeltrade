@@ -1,7 +1,12 @@
 import { ReactNode, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { PrimaryBtn } from './Buttons';
 import { MarketCard } from './MarketCard';
-import { useContractWrite, usePublicClient } from 'wagmi';
+import {
+  useAccount,
+  useBalance,
+  useContractWrite,
+  usePublicClient,
+} from 'wagmi';
 import { appConfig } from '../config';
 import HandleTradeAbi from '../ABI/HandelTrade.json';
 import toast from 'react-hot-toast';
@@ -58,12 +63,17 @@ const BuyDrawer: React.FC<{
 }> = ({ data, selectedMarket, value, setValue }) => {
   const { waitForTransactionReceipt } = usePublicClient();
   const [loading, setLoading] = useState(false);
+  const account = useAccount();
   const slipage = useSlippage();
   console.log(`BuyDrawer-slipage: `, slipage);
   const { writeAsync } = useContractWrite({
     address: appConfig.handelTradeAddress,
     abi: HandleTradeAbi,
     functionName: 'buyShares',
+  });
+  const userBalance = useBalance({
+    address: account.address,
+    watch: true,
   });
   const [trade, setTrade] = useState({
     shares: +value,
@@ -95,12 +105,24 @@ const BuyDrawer: React.FC<{
   };
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   useEffect(() => {
+    if (!data.nextBuyPrice) return;
+
     console.log('deb-buydrawer-r', viewDec(data.nextBuyPrice));
+    const increasedPrice = addSlippageBigint(data.nextBuyPrice, slipage);
+    console.log(
+      `BuyDrawer-userBalance.data: `,
+      userBalance.data?.value,
+      userBalance.data
+    );
+    if (!userBalance.isLoading)
+      if (increasedPrice > userBalance.data?.value) {
+        setErrors((e) => ({ Quantity: 'Shares cost exceeds balance!' }));
+      }
     setTrade((s) => {
       console.log(`BuyDrawer-s: `, s);
-      return { ...s, price: addSlippageBigint(data.nextBuyPrice, slipage) };
+      return { ...s, price: increasedPrice };
     });
-  }, [data.nextBuyPrice]);
+  }, [data.nextBuyPrice, userBalance]);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.value) return setValue('');
     const value = getSanitizedInput(e.target.value);
@@ -156,8 +178,16 @@ const BuyDrawer: React.FC<{
             (error ? 'outline-red-500 border-red-500' : 'outline-brand')
           }
         />
-        <div className="text-red-500">{error}</div>
-        <div className="text-2">Makret Supply: {showShares(data.supply)}</div>
+        <div className="flex items-center justify-between">
+          {error ? (
+            <div className="text-red-500">{error}</div>
+          ) : trade.price && trade.price !== -1n ? (
+            <DisplayPrice price={trade.price} />
+          ) : (
+            'Loading...'
+          )}
+          <div className="text-2">Makret Supply: {showShares(data.supply)}</div>
+        </div>
       </div>
       <PrimaryBtn
         onClick={() => {
