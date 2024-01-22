@@ -14,7 +14,7 @@ const NoDataFound: React.FC<{ className?: string; children: ReactNode }> = ({
       )}
     >
       <MemoNodataImage />
-      <div className="text-2">{children}</div>
+      <div className="text-2 text-f12">{children}</div>
     </div>
   );
 };
