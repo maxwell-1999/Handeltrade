@@ -58,7 +58,9 @@ const UserCard: React.FC<any> = () => {
 
             {/* <PrimeText>{}</PrimeText> */}
             {!params?.user_addr ? (
-              <PrimeFadeText>{userState?.email}</PrimeFadeText>
+              <PrimeFadeText>
+                <div className="text-f12">{userState?.email}</div>
+              </PrimeFadeText>
             ) : (
               <span
                 // data-tooltip-id="tooltip"
