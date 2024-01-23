@@ -32,6 +32,7 @@ import UserProfilePage from './pages/UserProfilePage';
 import { TestComponent } from './pages/TestComponent';
 import 'react-tooltip/dist/react-tooltip.css';
 import { getSharesFromPrice } from './lib/PriceToQuantity';
+import Firebase from './components/firebase/Firebase';
 
 // Configure chains & providers with the Public provider.
 const { chains, publicClient, webSocketPublicClient } = configureChains(
@@ -72,6 +73,14 @@ function Web3AuthWithWagmi() {
                 element={
                   <Layout>
                     <TestComponent />
+                  </Layout>
+                }
+              />
+              <Route
+                path="/firebase"
+                element={
+                  <Layout>
+                    <Firebase />
                   </Layout>
                 }
               />
