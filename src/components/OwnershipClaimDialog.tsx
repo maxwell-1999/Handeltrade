@@ -13,6 +13,8 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import useUserState from '@/atoms/userState';
 import { useSearchParams } from 'react-router-dom';
+const redirect_url =
+  ' https://handeltrade-git-ownership-claim-flow-bufferfinance.vercel.app';
 const OwnershipClaimDialog: React.FC<any> = ({}) => {
   const ownershipManager = useOwnershipClaimManager();
   let stateValue = '';
@@ -22,7 +24,7 @@ const OwnershipClaimDialog: React.FC<any> = ({}) => {
   console.log(`OwnershipClaimDialog-stateValue: `, stateValue);
   const clientId =
     '784619188209-a1cmllig1omc0amcudtb69o5ro0njv86.apps.googleusercontent.com';
-  const url = `https://accounts.google.com/o/oauth2/auth?scope=https://www.googleapis.com/auth/youtube.readonly&response_type=code&access_type=offline&redirect_uri=http://localhost:8080&client_id=${clientId}&state=${stateValue}`;
+  const url = `https://accounts.google.com/o/oauth2/auth?scope=https://www.googleapis.com/auth/youtube.readonly&response_type=code&access_type=offline&redirect_uri=${redirect_url}&client_id=${clientId}&state=${stateValue}`;
   const [loading, setLoading] = useState(false);
   const [userState] = useUserState();
   const [searchParam, setSearchParam] = useSearchParams();
@@ -41,7 +43,7 @@ const OwnershipClaimDialog: React.FC<any> = ({}) => {
         {
           auth_code: decodeURI(ownershipManager.code),
           market_id: ownershipManager.marketId,
-          redirect_uri: 'http://localhost:8080',
+          redirect_uri: redirect_url,
         },
         { headers: { 'session-id': sessionId ?? '' } }
       );
