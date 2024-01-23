@@ -59,13 +59,17 @@ const OwnershipClaimDialog: React.FC<any> = ({}) => {
     );
     if (
       ownershipManager.type == 'CLAIM-CODE-RECIEVED' &&
-      userState?.session_id
+      userState?.session_id &&
+      !loading
     ) {
       setLoading(true);
       claimHandler(userState?.session_id).finally(() => {
         setLoading(false);
         ownershipManager.finishOwnershipClaim();
-        setSearchParam({ code: null });
+        setSearchParam((p) => {
+          p.delete('code');
+          return { ...p };
+        });
       });
     }
   }, [ownershipManager.type, userState?.session_id]);
