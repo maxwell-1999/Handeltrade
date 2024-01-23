@@ -42,25 +42,21 @@ const OwnershipClaimDialog: React.FC<any> = ({}) => {
         },
         { headers: { Authorization: sessionId ?? '' } }
       );
-      console.log('deb-claiming4:', res);
+      if (res.data?.error) {
+        toast.error(res.data.error);
+      } else {
+        toast.success(res.data.data);
+        ownershipManager.finishOwnershipClaim();
+      }
     };
     if (
       ownershipManager.type == 'CLAIM-CODE-RECIEVED' &&
       userState?.session_id
     ) {
-      console.log(
-        `OwnershipClaimDialog-userState?.session_id: `,
-        userState?.session_id
-      );
-      claimHandler(userState?.session_id)
-        .then((e) => {
-          setLoading(false);
-          toast.success('Ownership claimed successfully');
-        })
-        .catch((e) => {
-          console.log('deb-claiming4:', e);
-          toast.error('Ownership claiming failed');
-        });
+      setLoading(true);
+      claimHandler(userState?.session_id).finally(() => {
+        setLoading(false);
+      });
     }
   }, [ownershipManager.type]);
   return (

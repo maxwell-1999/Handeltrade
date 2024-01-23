@@ -84,7 +84,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           </div>
           {drawerManager.drawerState?.screen ? <MobileDrawer /> : null}
 
-          <div className="h-[50px] w-full bg-white flex justify-center tab-gap items-center  fixed bottom-0 left-0 text-2 ">
+          <div className="h-[50px] w-full topborder bg-white flex justify-center tab-gap items-center  fixed bottom-0 left-0 text-2 ">
             {Icons.map((icon) => {
               return (
                 <NavLink to={'/' + icon.page} key={icon.name}>
