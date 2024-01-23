@@ -60,6 +60,25 @@ const PrimaryButton: React.FC<ButtonProps> = ({
     </button>
   );
 };
+const UnderlineButton: React.FC<ButtonProps> = ({
+  children,
+  className,
+  disable,
+  ...props
+}) => {
+  console.log(`Buttons-disable: `, disable);
+
+  return (
+    <button
+      className={twJoin(` text-brand `, className)}
+      {...props}
+      onClick={disable ? () => toast(disable) : props.onClick}
+      // disabled={disable ? true : false}
+    >
+      {children}
+    </button>
+  );
+};
 const SecondaryButton: React.FC<ButtonProps> = ({
   children,
   className,
@@ -73,7 +92,7 @@ const SecondaryButton: React.FC<ButtonProps> = ({
       className={twJoin(
         `${
           !disable ? ' bg-lightBrand' : 'bg-[grey]  cursor-not-allowed'
-        } text-f10 px-2 py-1 font-bold    text-brand  rounded-[5px] `,
+        } text-f10 px-2 py-1 font-bold outline-none text-brand  rounded-[5px] `,
         className
       )}
       {...props}
@@ -102,4 +121,10 @@ const SecondaryBtn: React.FC<ButtonProps> = ({
   );
 };
 
-export { PrimaryBtn, SecondaryBtn, PrimaryButton, SecondaryButton };
+export {
+  PrimaryBtn,
+  UnderlineButton,
+  SecondaryBtn,
+  PrimaryButton,
+  SecondaryButton,
+};

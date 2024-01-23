@@ -1,7 +1,7 @@
 import { atom, useRecoilValue } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 const { persistAtom } = recoilPersist();
-
+export const persistAtomEffect = persistAtom;
 export const defaultSlippage = 0.75;
 export const slippageAtom = atom<number>({
   default: defaultSlippage,

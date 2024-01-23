@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import useSWR from 'swr';
 import useDrawerState from '../atoms/drawerState';
 import { useEffect, useMemo, useState } from 'react';
@@ -25,6 +25,8 @@ import { viewDec } from '../Helpers/bigintUtils';
 import MemoButtonLoader from '../components/ButtonLoader';
 import { MarketInfoCard } from './MarketInfoCard';
 import { RewardCard } from './RewardCard';
+import { OwnershipClaimDialog } from '@/components/OwnershipClaimDialog';
+import { useOwnershipClaimManager } from '@/atoms/OwnershipClaimState';
 const rew = {
   minFeesClaimThreshold: BigInt(2e12),
   dividends: BigInt(1e14),
@@ -81,13 +83,16 @@ const MarketInfo: React.FC<any> = ({}) => {
     },
     refreshInterval: 1000,
   });
+  const [searchParam] = useSearchParams();
+  const claimStatemanager = useOwnershipClaimManager();
+  const claimCode = searchParam?.get('code');
+  useEffect(() => {
+    console.log('deb-claiming2:', claimCode, params?.marketid);
+    if (claimCode && params?.marketid)
+      claimStatemanager.claimCodeRecieved(claimCode, params.marketid);
+  }, [claimCode]);
 
-  const drawerManager = useDrawerState();
   if (isLoading) return <ListLoader className="mt-7 px-7" />;
-
-  console.log(`MarketInfo-data: `, data);
-
-  console.log(`MarketInfo-userState?.session_id: `, userState?.session_id);
 
   return (
     <div className="relative flex flex-col items-center w-full h-full overflow-auto ">
@@ -103,8 +108,9 @@ const MarketInfo: React.FC<any> = ({}) => {
           activeTab={activeTab}
         />
       </div>
+      <OwnershipClaimDialog />
 
-      {data.id ? (
+      {data?.id ? (
         <div className="flex flex-col w-full ">
           <div className="w-full min-h-full pb-3 bg-brandGrey">
             <div className="flex flex-col gap-[10px]">
@@ -283,8 +289,9 @@ const ClaimMarketRewards: React.FC<{ market: Market }> = ({ market }) => {
   };
 
   if (!data || data.length == 0) return <ClaimableLoading />;
-  console.log({ data });
+  // console.log({ data });
 
+  console.log(`MarketInfo-OwnershipClaimDialog: `, OwnershipClaimDialog);
   return (
     <div>
       <div className="flex flex-col gap-[10px]  pr-6 pl-6">

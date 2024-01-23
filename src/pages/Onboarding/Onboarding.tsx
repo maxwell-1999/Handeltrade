@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Outlet, useNavigate, useParams } from 'react-router-dom';
+import {
+  Outlet,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 import { useAccount, useDisconnect, usePublicClient } from 'wagmi';
 import { MarketListing } from '../MarketListing';
 import { ShareManagementDrawer } from '../../components/ShareManagementDrawer';
@@ -8,19 +13,22 @@ import useDrawerState from '../../atoms/drawerState';
 import { Layout } from '../../components/Layout';
 
 const Onboarding: React.FC<any> = ({}) => {
-  const { disconnect } = useDisconnect();
-  const { address } = useAccount();
-  const { waitForTransactionReceipt } = usePublicClient();
   const [userState] = useUserState();
-  const [item, setItem] = useState();
   const navigate = useNavigate();
-  const drawerManager = useDrawerState();
-  useEffect(() => {
-    console.log(`Onboarding-userState: `, userState);
-  }, [userState]);
+
+  // http://localhost:8080/?state=59329030020115325665465706775973340674651873217347183542172884748497542201816&code=4/0AfJohXlU20FoSZPRh_IsfC-zQaxwgGWO4eXJy2n-8xMYzTbONHNqdMAEZ4y_vBg9-tcM5Q&scope=https://www.googleapis.com/auth/youtube.readonly
+  const [searchParam] = useSearchParams();
+  const authorization = searchParam?.get('code');
+  const marketId = searchParam?.get('state');
   const params = useParams();
-  console.log(`Onboarding-params: `, params);
-  if (params?.marketid) {
+
+  useEffect(() => {
+    console.log('deb-claiming1:', marketId, authorization);
+    if (marketId) {
+      navigate(`/markets/${marketId}?code=${authorization}`);
+    }
+  }, [authorization, marketId, navigate]);
+  if (params.marketid) {
     return <Outlet />;
   }
   return (

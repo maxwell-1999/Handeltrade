@@ -10,7 +10,16 @@ import {
   PrimaryButton,
   SecondaryBtn,
   SecondaryButton,
+  UnderlineButton,
 } from '../components/Buttons';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { twMerge } from 'tailwind-merge';
 import { MemoYoutubeLogoSm } from '../SVG/YoutubeLogo';
 import { DisplayPrice } from '../components/DisplayPrice';
@@ -29,6 +38,8 @@ import MemoSubscribersIcon from '../SVG/SubscribersIcon';
 import { compactFormatter } from '../Helpers/bigintUtils';
 import MemoVideoCount from '../SVG/VideoCount';
 import MemoWebLink from '../SVG/WebLink';
+import MemoRedirectIcon from '@/SVG/RedirectIcon';
+import { useOwnershipClaimManager } from '@/atoms/OwnershipClaimState';
 
 export const toJSEpoch = (e: string | number) => +e * 1000;
 
@@ -40,6 +51,7 @@ const MarketInfoCard: React.FC<{
 }> = ({ market, preview, idx, className }) => {
   console.log(`MarketCard-market: `, market);
   const unInitialisedMarket = !market?.buyPrice;
+  const ownershipManager = useOwnershipClaimManager();
   const navigate = useNavigate();
   const descDivRef = useRef<HTMLDivElement | null>(null);
   const [expanded, setExpanded] = useState(false);
@@ -180,6 +192,12 @@ const MarketInfoCard: React.FC<{
               >
                 Sell
               </SecondaryButton>
+              <UnderlineButton
+                onClick={() => ownershipManager.startOwnershipClaim(market)}
+                className="flex items-center gap-1 ml-1 underline "
+              >
+                Claim <MemoRedirectIcon />
+              </UnderlineButton>
             </div>
             <div className="flex">
               {market && 'watchlisted' in market ? (
