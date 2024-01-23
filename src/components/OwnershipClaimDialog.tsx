@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import useUserState from '@/atoms/userState';
+import { useSearchParams } from 'react-router-dom';
 const OwnershipClaimDialog: React.FC<any> = ({}) => {
   const ownershipManager = useOwnershipClaimManager();
   let stateValue = '';
@@ -21,9 +22,10 @@ const OwnershipClaimDialog: React.FC<any> = ({}) => {
   console.log(`OwnershipClaimDialog-stateValue: `, stateValue);
   const clientId =
     '784619188209-a1cmllig1omc0amcudtb69o5ro0njv86.apps.googleusercontent.com';
-  const url = `https://accounts.google.com/o/oauth2/auth?scope=https://www.googleapis.com/auth/youtube.readonly&response_type=code&access_type=offline&redirect_uri=https://handel.network&client_id=${clientId}&state=${stateValue}`;
+  const url = `https://accounts.google.com/o/oauth2/auth?scope=https://www.googleapis.com/auth/youtube.readonly&response_type=code&access_type=offline&redirect_uri=http://localhost:8080&client_id=${clientId}&state=${stateValue}`;
   const [loading, setLoading] = useState(false);
   const [userState] = useUserState();
+  const [searchParam, setSearchParam] = useSearchParams();
   useEffect(() => {
     const claimHandler = async (sessionId: string) => {
       setLoading(true);
@@ -37,18 +39,24 @@ const OwnershipClaimDialog: React.FC<any> = ({}) => {
       const res = await axios.post(
         `${import.meta.env.VITE_API_ENDPOINT}/market/claim`,
         {
-          token: ownershipManager.code,
+          auth_code: decodeURI(ownershipManager.code),
           market_id: ownershipManager.marketId,
+          redirect_uri: 'http://localhost:8080',
         },
-        { headers: { Authorization: sessionId ?? '' } }
+        { headers: { 'session-id': sessionId ?? '' } }
       );
+      console.log(`deb-claiming5.data: `, res.data);
       if (res.data?.error) {
         toast.error(res.data.error);
       } else {
-        toast.success(res.data.data);
-        ownershipManager.finishOwnershipClaim();
+        toast.success('Ownership claimed successfully!');
       }
     };
+    console.log(
+      'deb-claiming2.5:',
+      ownershipManager.type,
+      userState?.session_id
+    );
     if (
       ownershipManager.type == 'CLAIM-CODE-RECIEVED' &&
       userState?.session_id
@@ -56,9 +64,11 @@ const OwnershipClaimDialog: React.FC<any> = ({}) => {
       setLoading(true);
       claimHandler(userState?.session_id).finally(() => {
         setLoading(false);
+        ownershipManager.finishOwnershipClaim();
+        setSearchParam({ code: null });
       });
     }
-  }, [ownershipManager.type]);
+  }, [ownershipManager.type, userState?.session_id]);
   return (
     <Dialog
       open={

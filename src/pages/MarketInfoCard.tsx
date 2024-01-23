@@ -1,4 +1,4 @@
-import { useNetwork } from 'wagmi';
+import { useAccount, useNetwork } from 'wagmi';
 import MemoMoreIcon from '../SVG/MoreIcon';
 import { useNavigate } from 'react-router-dom';
 
@@ -58,6 +58,7 @@ const MarketInfoCard: React.FC<{
   const drawerManager = useDrawerState();
   const [protect] = useProtection();
   const [userState] = useUserState();
+  const account = useAccount();
   const handleAddToWatchlist = async () => {
     console.log('Add to watchlist');
     const res = await axios.post(
@@ -192,12 +193,14 @@ const MarketInfoCard: React.FC<{
               >
                 Sell
               </SecondaryButton>
-              <UnderlineButton
-                onClick={() => ownershipManager.startOwnershipClaim(market)}
-                className="flex items-center gap-1 ml-1 underline "
-              >
-                Claim <MemoRedirectIcon />
-              </UnderlineButton>
+              {account.address ? (
+                <UnderlineButton
+                  onClick={() => ownershipManager.startOwnershipClaim(market)}
+                  className="flex items-center gap-1 ml-1 underline "
+                >
+                  Claim <MemoRedirectIcon />
+                </UnderlineButton>
+              ) : null}
             </div>
             <div className="flex">
               {market && 'watchlisted' in market ? (
@@ -248,7 +251,7 @@ const MarketInfoCard: React.FC<{
                 </span>
               }
               less={<div className="cursor-pointer text-brand ">Show less</div>}
-              className="content-css overflow-anywhere"
+              className="content-css overflow-anywhere poppins-500"
               anchorClass="show-more-less-clickable"
               onClick={(ex) => {
                 setExpanded(ex);
@@ -257,7 +260,7 @@ const MarketInfoCard: React.FC<{
               width={0}
               truncatedEndingComponent={'...'}
             >
-              <div>{market.description}</div>
+              <div className="Poppins-custom-abc">{market.description}</div>
             </ShowMoreText>
           </div>
         </div>
