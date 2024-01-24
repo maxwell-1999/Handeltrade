@@ -16,6 +16,7 @@ import { arbitrumGoerli, baseGoerli } from 'wagmi/chains';
 import {
   BrowserRouter,
   Outlet,
+  Navigate,
   Route,
   Routes,
   useNavigate,
@@ -92,6 +93,7 @@ function Web3AuthWithWagmi() {
                   }
                 ></Route>
               </Route>
+              <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           </BrowserRouter>
         </SWRConfig>
