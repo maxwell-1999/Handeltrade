@@ -28,6 +28,7 @@ const OwnershipClaimDialog: React.FC<any> = ({}) => {
   const [loading, setLoading] = useState(false);
   const [userState] = useUserState();
   const [searchParam, setSearchParam] = useSearchParams();
+  const [claimed, setClaimed] = useState(false);
   useEffect(() => {
     const claimHandler = async (sessionId: string) => {
       setLoading(true);
@@ -50,8 +51,10 @@ const OwnershipClaimDialog: React.FC<any> = ({}) => {
       console.log(`deb-claiming5.data: `, res.data);
       if (res.data?.error) {
         toast.error(res.data.error);
+        ownershipManager.finishOwnershipClaim();
       } else {
         toast.success('Ownership claimed successfully!');
+        setClaimed(true);
       }
     };
     console.log(
@@ -67,7 +70,6 @@ const OwnershipClaimDialog: React.FC<any> = ({}) => {
       setLoading(true);
       claimHandler(userState?.session_id).finally(() => {
         setLoading(false);
-        ownershipManager.finishOwnershipClaim();
         setSearchParam((p) => {
           p.delete('code');
           return { ...p };
@@ -93,8 +95,11 @@ const OwnershipClaimDialog: React.FC<any> = ({}) => {
             className="flex !text-2 !bg-[#f6f7fc] shadow-bottom items-center justify-center gap-3 py-3 text-f12"
             onClick={() => (window.location.href = url)}
           >
-            <img src="/public/Google.png" className="w-6 h-6" /> Verfiy with
-            google
+            <img
+              src={claimed ? '/ClaimSuccess.png' : '/Google.png'}
+              className="w-6 h-6"
+            />{' '}
+            Verfiy with google
           </SecondaryButton>
         </DialogHeader>
       </DialogContent>
