@@ -93,7 +93,12 @@ const OwnershipClaimDialog: React.FC<any> = ({}) => {
           </DialogDescription>
           <SecondaryButton
             className="flex !text-2 !bg-[#f6f7fc] shadow-bottom items-center justify-center gap-3 py-3 text-f12"
-            onClick={() => (window.location.href = url)}
+            onClick={() => {
+              if (loading) return;
+              if (claimed) {
+                ownershipManager.finishOwnershipClaim();
+              } else window.location.href = url;
+            }}
           >
             <img
               src={claimed ? '/ClaimSuccess.png' : '/Google.png'}
