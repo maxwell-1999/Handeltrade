@@ -12,8 +12,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import useUserState from '@/atoms/userState';
 import { useSearchParams } from 'react-router-dom';
-const redirect_url =
-  ' https://handeltrade-git-ownership-claim-flow-bufferfinance.vercel.app';
+const redirect_url = 'https://handel.network';
 const OwnershipClaimDialog: React.FC<any> = ({}) => {
   const ownershipManager = useOwnershipClaimManager();
   let stateValue = '';
