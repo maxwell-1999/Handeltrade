@@ -79,6 +79,11 @@ const OwnershipClaimDialog: React.FC<any> = ({}) => {
   }, [ownershipManager.type, userState?.session_id]);
   return (
     <Dialog
+      onOpenChange={(c) => {
+        if (!c) {
+          ownershipManager.finishOwnershipClaim();
+        }
+      }}
       open={
         ownershipManager.type == 'CLAIM-STARTED' ||
         ownershipManager.type == 'CLAIM-CODE-RECIEVED'
@@ -102,7 +107,7 @@ const OwnershipClaimDialog: React.FC<any> = ({}) => {
           >
             <img
               src={claimed ? '/ClaimSuccess.png' : '/Google.png'}
-              className="w-6 h-6"
+              className="w-7 h-7"
             />{' '}
             Verfiy with google
           </SecondaryButton>

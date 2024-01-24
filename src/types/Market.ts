@@ -7,6 +7,7 @@ type Market = {
   creator_addr: string;
   img_url: string;
   name: string;
+  claimed: boolean;
   description: string;
   on_chain: boolean;
   created_at: string;

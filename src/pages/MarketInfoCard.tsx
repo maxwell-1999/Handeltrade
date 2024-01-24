@@ -194,12 +194,21 @@ const MarketInfoCard: React.FC<{
                 Sell
               </SecondaryButton>
               {account.address ? (
-                <UnderlineButton
-                  onClick={() => ownershipManager.startOwnershipClaim(market)}
-                  className="flex items-center gap-1 ml-1 underline "
-                >
-                  Claim <MemoRedirectIcon />
-                </UnderlineButton>
+                market.claimed ? (
+                  <img
+                    alt="Verified"
+                    title="Market ownership verified"
+                    src={'/ClaimSuccess.png'}
+                    className="w-8 h-8 mt-1"
+                  />
+                ) : (
+                  <UnderlineButton
+                    onClick={() => ownershipManager.startOwnershipClaim(market)}
+                    className="flex items-center gap-1 ml-1 underline "
+                  >
+                    Claim <MemoRedirectIcon />
+                  </UnderlineButton>
+                )
               ) : null}
             </div>
             <div className="flex">
