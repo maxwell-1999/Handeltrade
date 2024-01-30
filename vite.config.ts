@@ -19,6 +19,15 @@ export default defineConfig(({ command, mode }) => {
 
     build: {
       target: ['esnext'], // 👈 build.target
+      // rollupOptions: {
+      //   input: [
+      //     'index.html',
+      //     'src/service_worker/registerFM.js'
+      //   ],
+      //   output: {
+      //     entryFileNames: '[name].js',
+      //   }
+      // }
     },
     plugins: [
       react({

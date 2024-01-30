@@ -18,6 +18,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@types/firebase": "^3.2.1",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.11",
     "@web3auth/base": "^7.2.1",
@@ -70,6 +71,8 @@
     "tailwindcss": "^3.4.0",
     "typescript": "^5.2.2",
     "vite": "^5.0.8",
-    "vite-plugin-pwa": "^0.17.4"
+    "vite-plugin-pwa": "^0.17.4",
+    "workbox-build": "^7.0.0",
+    "workbox-cli": "^7.0.0"
   }
 }
