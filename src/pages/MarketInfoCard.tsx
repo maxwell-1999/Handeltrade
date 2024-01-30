@@ -4,6 +4,9 @@ import { useNavigate } from 'react-router-dom';
 
 import { faBookmark as solidBookmark } from '@fortawesome/free-solid-svg-icons';
 import { faBookmark as emptyBookmark } from '@fortawesome/free-regular-svg-icons';
+import { faBell as solidBell } from '@fortawesome/free-solid-svg-icons';
+import { faBell as emptyBell } from '@fortawesome/free-regular-svg-icons';
+
 
 import {
   PrimaryBtn,
@@ -40,6 +43,8 @@ import MemoVideoCount from '../SVG/VideoCount';
 import MemoWebLink from '../SVG/WebLink';
 import MemoRedirectIcon from '@/SVG/RedirectIcon';
 import { useOwnershipClaimManager } from '@/atoms/OwnershipClaimState';
+import { useFirebaseNotificationForMarket } from '@/atoms/firebaseState';
+import { messaging } from '@/lib/firebaseMessaging';
 
 export const toJSEpoch = (e: string | number) => +e * 1000;
 
@@ -59,6 +64,8 @@ const MarketInfoCard: React.FC<{
   const [protect] = useProtection();
   const [userState] = useUserState();
   const account = useAccount();
+  const [marketOnFirebase, setMarketOnFirebase] = useFirebaseNotificationForMarket();
+
   const handleAddToWatchlist = async () => {
     console.log('Add to watchlist');
     const res = await axios.post(
@@ -98,8 +105,7 @@ const MarketInfoCard: React.FC<{
     <div
       role={preview ? 'cell' : 'button'}
       className={twMerge(
-        `p-[10px] pb-1 rounded-[10px] justify-between flex gap-[15px] w-full ${
-          preview ?? 'bg-white'
+        `p-[10px] pb-1 rounded-[10px] justify-between flex gap-[15px] w-full ${preview ?? 'bg-white'
         } `,
         className
       )}
@@ -152,9 +158,8 @@ const MarketInfoCard: React.FC<{
       </div>
       <div className="flex flex-col items-start w-full ">
         <div
-          className={`flex justify-between w-full mb-[2px] mt-${
-            unInitialisedMarket ? '1' : '2'
-          } `}
+          className={`flex justify-between w-full mb-[2px] mt-${unInitialisedMarket ? '1' : '2'
+            } `}
         >
           <div className="flex items-center gap-1">
             <span className="font-semibold text-f14">{market.name}</span>
@@ -211,7 +216,38 @@ const MarketInfoCard: React.FC<{
                 )
               ) : null}
             </div>
+
             <div className="flex">
+              {/* watchlisted key is only present if logged in, here its checking for loggedin status */}
+              {market && 'watchlisted' in market ? (
+                (marketOnFirebase?.has(market?.market_id)) ? (
+                  <FontAwesomeIcon
+                    height={30}
+                    className="h-8 mr-4 cursor-pointer text-brand"
+                    icon={solidBell}
+                    onClick={() => {
+                      setMarketOnFirebase(p => {
+                        
+                        const newSet = new Set(p);
+                        newSet.delete(market?.market_id);
+                        return newSet;
+                      });
+                      toast('You turned off notifications for this market');
+                    }}
+                  />
+                ) : (
+                  <FontAwesomeIcon
+                    height={30}
+                    className="h-8 mr-4 cursor-pointer text-brand"
+                    icon={emptyBell}
+                    onClick={() => {
+                      setMarketOnFirebase(p => new Set([...p, market?.market_id]));
+                      toast('You turned on notifications for this market');
+                    }}
+                  />
+                )
+              ) : null}
+
               {market && 'watchlisted' in market ? (
                 market?.watchlisted ? (
                   <FontAwesomeIcon
@@ -280,7 +316,7 @@ const MarketInfoCard: React.FC<{
 
 export { MarketInfoCard };
 
-const ChannelDetails: React.FC<{ market: Market }> = ({ market }) => {
+const ChannelDetails: React.FC<{ market: Market; }> = ({ market }) => {
   return (
     <div className="flex flex-col gap-3 bg-white rounded-md shadow-sm p-7 text-2 text-f12">
       <div className="flex items-center gap-3 ">
