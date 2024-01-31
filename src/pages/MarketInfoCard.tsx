@@ -1,5 +1,4 @@
-import { useAccount, useNetwork } from 'wagmi';
-import MemoMoreIcon from '../SVG/MoreIcon';
+import { useAccount } from 'wagmi';
 import { useNavigate } from 'react-router-dom';
 
 import { faBookmark as solidBookmark } from '@fortawesome/free-solid-svg-icons';
@@ -11,18 +10,9 @@ import { faBell as emptyBell } from '@fortawesome/free-regular-svg-icons';
 import {
   PrimaryBtn,
   PrimaryButton,
-  SecondaryBtn,
   SecondaryButton,
   UnderlineButton,
 } from '../components/Buttons';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
 import { twMerge } from 'tailwind-merge';
 import { MemoYoutubeLogoSm } from '../SVG/YoutubeLogo';
 import { DisplayPrice } from '../components/DisplayPrice';
@@ -43,8 +33,7 @@ import MemoVideoCount from '../SVG/VideoCount';
 import MemoWebLink from '../SVG/WebLink';
 import MemoRedirectIcon from '@/SVG/RedirectIcon';
 import { useOwnershipClaimManager } from '@/atoms/OwnershipClaimState';
-import { useFirebaseNotificationForMarket } from '@/atoms/firebaseState';
-import { messaging } from '@/lib/firebaseMessaging';
+import { useFirebaseNotificationForMarket, useIsFirebaseOn } from '@/atoms/firebaseState';
 
 export const toJSEpoch = (e: string | number) => +e * 1000;
 
@@ -65,6 +54,7 @@ const MarketInfoCard: React.FC<{
   const [userState] = useUserState();
   const account = useAccount();
   const [marketOnFirebase, setMarketOnFirebase] = useFirebaseNotificationForMarket();
+  const [isFirebaseOn,] = useIsFirebaseOn();
 
   const handleAddToWatchlist = async () => {
     console.log('Add to watchlist');
@@ -97,6 +87,55 @@ const MarketInfoCard: React.FC<{
       console.log('Removed from watchlist');
     }
   };
+  const startNotification = async () => {
+    try {
+      await axios.post(`${import.meta.env.VITE_API_ENDPOINT}/notification/subscribe_topic`,
+        {
+          topics: [market?.market_id]
+        },
+        {
+          headers: {
+            "session-id": userState?.session_id ?? "",
+          },
+        }).then(r => {
+          if (r.data?.error) {
+            toast(r.data?.error);
+          } else {
+            setMarketOnFirebase(p => new Set([...p, market?.market_id]));
+            toast('You turned on notifications for this market');
+          }
+        });
+    } catch (error) {
+      toast('Something went wrong!');
+    }
+  };
+  const stopNotification = async () => {
+    try {
+      await axios.post(`${import.meta.env.VITE_API_ENDPOINT}/notification/unsubscribe_topic`,
+        {
+          topics: [market?.market_id]
+        },
+        {
+          headers: {
+            "session-id": userState?.session_id ?? "",
+          },
+        }).then(r => {
+          if (r.data?.error) {
+            toast(r.data?.error);
+          } else {
+            setMarketOnFirebase(p => {
+              const newSet = new Set(p);
+              newSet.delete(market?.market_id);
+              return newSet;
+            });
+            toast('You turned off notifications for this market');
+          }
+        });
+    } catch (error) {
+      toast('Something went wrong!');
+    }
+  };
+
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   useEffect(() => {
     console.log(`expanded-c${expanded}`);
@@ -219,31 +258,20 @@ const MarketInfoCard: React.FC<{
 
             <div className="flex">
               {/* watchlisted key is only present if logged in, here its checking for loggedin status */}
-              {market && 'watchlisted' in market ? (
+              {market && isFirebaseOn && 'watchlisted' in market ? (
                 (marketOnFirebase?.has(market?.market_id)) ? (
                   <FontAwesomeIcon
                     height={30}
                     className="h-8 mr-4 cursor-pointer text-brand"
                     icon={solidBell}
-                    onClick={() => {
-                      setMarketOnFirebase(p => {
-                        
-                        const newSet = new Set(p);
-                        newSet.delete(market?.market_id);
-                        return newSet;
-                      });
-                      toast('You turned off notifications for this market');
-                    }}
+                    onClick={stopNotification}
                   />
                 ) : (
                   <FontAwesomeIcon
                     height={30}
                     className="h-8 mr-4 cursor-pointer text-brand"
                     icon={emptyBell}
-                    onClick={() => {
-                      setMarketOnFirebase(p => new Set([...p, market?.market_id]));
-                      toast('You turned on notifications for this market');
-                    }}
+                    onClick={startNotification}
                   />
                 )
               ) : null}
@@ -298,7 +326,7 @@ const MarketInfoCard: React.FC<{
               less={<div className="cursor-pointer text-brand ">Show less</div>}
               className="content-css overflow-anywhere poppins-500"
               anchorClass="show-more-less-clickable"
-              onClick={(ex) => {
+              onClick={(ex: any) => {
                 setExpanded(ex);
               }}
               expanded={expanded}

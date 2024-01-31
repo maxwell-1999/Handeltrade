@@ -22,7 +22,7 @@ const UserCard: React.FC<any> = () => {
     : useUserState();
 
   const { data, isError, isLoading } = useBalance({
-    address: address,
+    address: address as `0x${string}`,
     watch: true,
   });
 
@@ -75,7 +75,7 @@ const UserCard: React.FC<any> = () => {
                 <DisplayPrice
                   className="text-2"
                   compact={<>Balance&nbsp;:&nbsp;</>}
-                  price={data?.value}
+                  price={data?.value as bigint}
                 />
               </div>
             ) : (

@@ -1,6 +1,8 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getMessaging, getToken } from "firebase/messaging";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -31,7 +33,7 @@ console.log({ messaging });
 export const vapidkey = "BDUQ5xujC26EnowMHg2vaM-Sl1vwNoYLTbSJyMtOSPPTZbCPRf3izbWQg3JGBu_lz35FUqQsXxW5ArDhW2PMoA4";
 
 
-export const getFirebaseDeviceToken = (): Promise<boolean> => {
+export const getFirebaseDeviceToken = (session_id: string): Promise<boolean> => {
   let currentToken = "";
   return new Promise(async (resolve, reject) => {
     try {
@@ -56,8 +58,28 @@ export const getFirebaseDeviceToken = (): Promise<boolean> => {
       }
     }
 
-    console.log({ currentToken });
-    if (currentToken && currentToken != "") resolve(true);
-    else reject(false);
+    try {
+      if (!currentToken || currentToken == "") return reject(false);
+
+      console.log({ currentToken });
+      const res = await axios.post(`${import.meta.env.VITE_API_ENDPOINT}/notification/update_device_token`, {
+        device_token: currentToken
+      }, {
+        headers: {
+          "session-id": session_id
+        }
+      });
+      
+      if (res.data.data?.isOn) {
+        toast('Notifications turned on');
+      } else {
+        toast('Notifications turned off');
+      }
+      if (currentToken && currentToken != "") resolve(res.data.data?.isOn);
+      else reject(false);
+    } catch (error) {
+      toast("Something went wrong!");
+      return reject(false);
+    }
   });
 };

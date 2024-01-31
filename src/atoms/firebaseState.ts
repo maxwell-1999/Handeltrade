@@ -1,5 +1,8 @@
 import { atom, selector, useRecoilState, useRecoilValue } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
+import useUserState, { UserState, UserStateAtom } from './userState';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 const { persistAtom } = recoilPersist();
 
 export const isFirebaseOnAtom = atom<boolean>({
@@ -26,17 +29,9 @@ const loadFromLocalStorage = (key: string) => {
 };
 
 // good for writing to localStorage
-export const firebaseNotificationForMarketAtom = atom<Set<string>>({
+export const firebaseNotificationForMarketAtom = atom<Set<string> | null>({
   key: 'firebaseNotificationForMarketAtom',
-  default: new Set(loadFromLocalStorage('firebaseNotificationForMarketAtom')),
-  effects_UNSTABLE: [
-    ({ onSet }) => {
-      // Subscribe to changes and save to localStorage
-      onSet((newValue) => {
-        saveToLocalStorage('firebaseNotificationForMarketAtom', Array.from(newValue));
-      });
-    },
-  ],
+  default: null,
 });
 
 export const useFirebaseNotificationForMarket = () => {

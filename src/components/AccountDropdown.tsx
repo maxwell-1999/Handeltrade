@@ -12,11 +12,10 @@ import CopyIcon from '../SVG/CopyIcon';
 import DisconnectIcon from '../SVG/DisconnectIcon';
 import ExportIcon from '../SVG/ExportIcon';
 import ClickAwayListener from 'react-click-away-listener';
-import { getToken } from "firebase/messaging";
 import { useIsFirebaseOn } from '@/atoms/firebaseState';
 import { faBell as solidBell } from '@fortawesome/free-solid-svg-icons';
 import { faBell as emptyBell } from '@fortawesome/free-regular-svg-icons';
-import { getFirebaseDeviceToken, messaging, vapidkey } from '@/lib/firebaseMessaging';
+import { getFirebaseDeviceToken } from '@/lib/firebaseMessaging';
 
 const AccountDropdown: React.FC<any> = ({ }) => {
   const account = useAccount();
@@ -108,15 +107,9 @@ const AccountDropdown: React.FC<any> = ({ }) => {
             <div
               className="flex p-1 px-8"
               onClick={() => {
-                if (!isFirebaseOn) {
-                  getFirebaseDeviceToken().then(r => {
-                    setIsFirebaseOn(r);
-                    toast('Notifications turned on');
-                  });
-                } else {
-                  setIsFirebaseOn(false);
-                  toast('Notifications turned off');
-                }
+                getFirebaseDeviceToken(userState?.session_id ?? "").then((res) => {
+                  setIsFirebaseOn(res);
+                });
               }}
             >
               <FontAwesomeIcon
