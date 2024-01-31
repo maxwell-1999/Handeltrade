@@ -43,7 +43,7 @@ if (typeof firebase !== 'undefined') {
       const notificationOptions = {
         body: payload.data.body,
         icon: 'Logo.svg',
-        tag: "push_from_server",
+        tag: payload.data.title,
         data: payload.data,
       };
       self.registration.showNotification(notificationTitle, notificationOptions);
