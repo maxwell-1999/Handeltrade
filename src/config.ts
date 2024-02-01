@@ -1,4 +1,4 @@
 export const appConfig = {
   handelTradeAddress:
-    '0xe61e9467C80EfF34Df6bad11763535bc2ECd197e' as `0x${string}`,
+    '0x6bF80ee0353c9D9B17c1eF1F2540AB297E8e70Ab' as `0x${string}`,
 };
