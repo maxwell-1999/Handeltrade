@@ -3,7 +3,7 @@ import { twJoin } from 'tailwind-merge';
 const Tablist: React.FC<{
   tablist: string[];
   activeTab: string;
-  className: string;
+  className?: string;
   onTabSelect: (tab: string) => void;
 }> = ({ tablist, onTabSelect, activeTab, className }) => {
   return (

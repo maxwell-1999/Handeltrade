@@ -12,8 +12,12 @@ import CopyIcon from '../SVG/CopyIcon';
 import DisconnectIcon from '../SVG/DisconnectIcon';
 import ExportIcon from '../SVG/ExportIcon';
 import ClickAwayListener from 'react-click-away-listener';
+import { useIsFirebaseOn } from '@/atoms/firebaseState';
+import { faBell as solidBell } from '@fortawesome/free-solid-svg-icons';
+import { faBell as emptyBell } from '@fortawesome/free-regular-svg-icons';
+import { getFirebaseDeviceToken } from '@/lib/firebaseMessaging';
 
-const AccountDropdown: React.FC<any> = ({}) => {
+const AccountDropdown: React.FC<any> = ({ }) => {
   const account = useAccount();
   const [userState, setUserState] = useUserState();
   const [protect] = useProtection();
@@ -24,6 +28,8 @@ const AccountDropdown: React.FC<any> = ({}) => {
   const drawerManager = useDrawerState();
   const { disconnect } = useDisconnect();
   const [show, setShow] = useState(false);
+  const [isFirebaseOn, setIsFirebaseOn] = useIsFirebaseOn();
+
   if (!account.address)
     return (
       <button
@@ -33,6 +39,7 @@ const AccountDropdown: React.FC<any> = ({}) => {
         <WalletIcon /> Login
       </button>
     );
+
   return (
     <ClickAwayListener onClickAway={() => setShow(false)}>
       <div
@@ -44,13 +51,13 @@ const AccountDropdown: React.FC<any> = ({}) => {
       >
         <div className="flex items-center gap-2">
           <WalletIcon />
-          {isLoading ? '...' : view(data?.value)}
+          {isLoading ? '...' : view(data?.value as bigint)}
           <FontAwesomeIcon
             height={15}
             width={15}
             className="h-6 p-1 rounded-full bg-2 text-[white] cursor-pointer"
             icon={faEthereum}
-            onClick={() => {}}
+            onClick={() => { }}
           />
           <span className="p-2 py-[4px]  bg-[#EAEBF0] rounded-lg flex items-center">
             {formatAddress(account.address)}{' '}
@@ -74,7 +81,7 @@ const AccountDropdown: React.FC<any> = ({}) => {
             <div
               className="flex p-1 px-8"
               onClick={(e) => {
-                navigator.clipboard.writeText(account.address);
+                navigator.clipboard.writeText(account.address as string);
                 toast('Account copied to clipboard Successfully!');
               }}
             >
@@ -96,6 +103,35 @@ const AccountDropdown: React.FC<any> = ({}) => {
               }}
             >
               <ExportIcon style={{ marginRight: '5px' }} /> Export Wallet
+            </div>
+            <div
+              className="flex p-1 px-8"
+              onClick={() => {
+                getFirebaseDeviceToken(userState?.session_id ?? "").then((res) => {
+                  if (isFirebaseOn) {
+                    setIsFirebaseOn(res);
+                    navigator.serviceWorker.getRegistrations()
+                      .then((registration) => {
+                        console.log({ registration });
+                        registration.forEach((reg) => {
+                          reg.active?.scriptURL.includes("firebase-messaging-sw.js") && reg.unregister().then((res) => {
+                            setIsFirebaseOn(false);
+                          });
+                        });
+                      }).catch((err) => {
+                        console.log("Error in registering service worker", err);
+                      });
+                  } else {
+                    setIsFirebaseOn(res);
+                  }
+                });
+              }}
+            >
+              <FontAwesomeIcon
+                className="h-6 rounded-full cursor-pointer mr-[5px]"
+                icon={isFirebaseOn ? solidBell : emptyBell}
+                onClick={() => { }}
+              /> Notifications are {isFirebaseOn ? "On" : "Off"}
             </div>
           </div>
         ) : null}

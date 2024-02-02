@@ -11,6 +11,7 @@ type UserState =
       public_address: string;
       updated_at: string;
       session_id?: string;
+      topics?: Array<string>;
     }
   | undefined
   | null;

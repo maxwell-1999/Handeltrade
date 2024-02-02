@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { MarketSearchBar } from '../components/MarketSearchBar';
-import { Tablist } from '../components/Tablist';
+import { SearchTab, Tablist } from '../components/Tablist';
 import { MarketList } from '../components/MarketList';
 import useSearchMarket from '../atoms/marketSearch';
-import { tabs, mockData } from './MarketListing';
+import { tabs } from './UserProfilePage/userProfileTabs';
 
 const MarketListing: React.FC<any> = ({}) => {
   const [activeTab, setActiveTab] = useState('Mine');
@@ -21,7 +21,7 @@ const MarketListing: React.FC<any> = ({}) => {
           <SearchTab keyword={searchManager.keyword} />
         ) : null}
       </div>
-      <MarketList markets={mockData} />
+      <MarketList markets={[]} />
     </div>
   );
 };

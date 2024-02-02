@@ -10,18 +10,22 @@ import { registerUser, getUserData } from '../../Helpers/register';
 import useUserState from '../../atoms/userState';
 import useDrawerState from '../../atoms/drawerState';
 import { formatAddress } from '../../Helpers/web3utils';
+import { useRecoilState } from 'recoil';
+import { firebaseNotificationForMarketAtom } from '@/atoms/firebaseState';
 
 // Configure chains & providers with the Public provider.
 
-const LoginPage: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
+const LoginPage: React.FC<{ viewOnly?: boolean; }> = ({ viewOnly }) => {
   const { address, connector, isConnected } = useAccount();
+  const [, setFirebaseNotification] = useRecoilState(firebaseNotificationForMarketAtom);
   const { connect, connectors } = useConnect();
   const [loginLoading, setLoginLoading] = useState<null | string>('');
   const [userState, setUserState] = useUserState();
   const drawerManagement = useDrawerState();
   console.log(`Web3AuthWithWagmi-userState: `, userState);
+
   useEffect(() => {
-    if (loginLoading == 'registering' && isConnected && connector && address) {
+    if (userState == null && loginLoading == 'registering' && isConnected && connector && address) {
       const getUserInfo = async () => {
         try {
           console.log('create-deb flow-deb-settinguser');
@@ -52,8 +56,8 @@ const LoginPage: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
           setLoginLoading('registering');
         } else {
           console.log(`flow-deb-user-found: `, userInfo);
-
           setUserState(userInfo.data.data);
+          setFirebaseNotification(new Set(userInfo.data.data?.topics));
           setLoginLoading(null);
         }
       };
@@ -61,7 +65,6 @@ const LoginPage: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
     }
   }, [address]);
 
-  useEffect(() => {}, []);
 
   if (!connectors?.length) {
     return <ErrorPage>No Connectors found</ErrorPage>;
@@ -119,22 +122,26 @@ export { LoginPage };
 export const useUserStateSync = () => {
   const { address, connector, isConnected } = useAccount();
   const [loginLoading, setLoginLoading] = useState<null | string>('');
+  const [, setFirebaseNotification] = useRecoilState(firebaseNotificationForMarketAtom);
   const [userState, setUserState] = useUserState();
+
   useEffect(() => {
-    if (loginLoading == 'registering' && isConnected && connector && address) {
+    if (userState == null && loginLoading == 'registering' && isConnected && connector && address) {
+      // alert("State sync");
       const getUserInfo = async () => {
         try {
           console.log('user-state-deb flow-deb-settinguser');
           const userInfo = await registerUser(connector, address);
           console.log(`user-state-deb  res: `, userInfo);
           setUserState(userInfo?.data);
+          setFirebaseNotification(new Set(userInfo.data?.topics));
         } catch (e) {
           console.log(`Web3AuthWithWagmi-e: `, e);
         }
       };
       getUserInfo();
     }
-  }, [loginLoading, connector, address]);
+  }, [loginLoading, connector, address, isConnected]);
 
   useEffect(() => {
     console.log(`user-state-deb  low-deb-getting-user-data: `);
