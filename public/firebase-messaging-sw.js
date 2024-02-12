@@ -10,6 +10,22 @@ function callApi(url, requestData) {
   });
 }
 
+
+self.addEventListener('push', function (event) {
+  const data = event.data.json();
+  console.log("Push received...");
+  console.log({ event });
+  console.log({ data });
+
+  var request = indexedDB.open("handel-network-db", 1);
+  request.onsuccess = function (event) {
+    console.log("IndexedDB opened successfully");
+    var db = event.target.result;
+    var store = db.transaction("configs", "readonly").objectStore("configs");
+    console.log("Data: ", store.get(data.id));
+  };
+});
+
 console.log("Before firebase load...");
 
 importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js');
@@ -17,7 +33,7 @@ importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js')
 
 console.log("After firebase load...");
 
-if (typeof firebase !== 'undefined') {
+if (typeof firebase !== 'undefined' && indexedDB) {
 
   console.log("Firebase loaded...");
 
@@ -37,17 +53,27 @@ if (typeof firebase !== 'undefined') {
 
   messaging.onBackgroundMessage((payload) => {
     console.log('Received background message ', payload);
-    // Customize notification here
-    if (payload.data) {
-      const notificationTitle = payload.data.title;
-      const notificationOptions = {
-        body: payload.data.body,
-        icon: 'Logo.svg',
-        tag: payload.data.title,
-        data: payload.data,
+    var request = indexedDB.open("handel-network-db", 1);
+    request.onsuccess = function (event) {
+      var db = event.target.result;
+      var store = db.transaction("configs", "readonly").objectStore("configs");
+
+      store.get("is_popup_on").onsuccess = function (event) {
+        console.log("Is popup on: ", event.target.result);
+
+        if (event.target.result && event.target.result.value && payload.data) {
+          console.log("Notification is on:", event.target.result.value);
+          const notificationTitle = payload.data.title;
+          const notificationOptions = {
+            body: payload.data.body,
+            icon: 'Logo.svg',
+            tag: payload.data.title,
+            data: payload.data,
+          };
+          self.registration.showNotification(notificationTitle, notificationOptions);
+        }
       };
-      self.registration.showNotification(notificationTitle, notificationOptions);
-    }
+    };
   });
 
   self.addEventListener("notificationclick", (event) => {
@@ -74,7 +100,6 @@ if (typeof firebase !== 'undefined') {
       }
     }
   });
-
 } else {
   console.error("Firebase not loaded");
 }
