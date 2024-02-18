@@ -34,6 +34,9 @@ import MemoWebLink from '../SVG/WebLink';
 import MemoRedirectIcon from '@/SVG/RedirectIcon';
 import { useOwnershipClaimManager } from '@/atoms/OwnershipClaimState';
 import { useFirebaseNotificationForMarket, useIsFirebaseOn } from '@/atoms/firebaseState';
+import MemoInstagramIcon from '@/SVG/InstagramIcon';
+import { Platform } from '@/atoms/platformState';
+import MemoGithubIcon from '@/SVG/GithubIcon';
 
 export const toJSEpoch = (e: string | number) => +e * 1000;
 
@@ -152,7 +155,7 @@ const MarketInfoCard: React.FC<{
     >
       <div className="flex flex-col mt-5 gap-[3px] items-center  justify-start ">
         <img
-          src={market?.img_url}
+          src={market.social_platform == Platform.Instagram ? import.meta.env.VITE_API_ENDPOINT + "/search/instagram/" + market?.id : market?.img_url}
           onError={(e) => {
             e.currentTarget.onerror = null;
             e.currentTarget.src = '/img_placeholder.svg';
@@ -203,10 +206,17 @@ const MarketInfoCard: React.FC<{
           <div className="flex items-center gap-1">
             <span className="font-semibold text-f14">{market.name}</span>
             <a
-              href={`https://youtube.com/@${market.social_handle}`}
+              href={
+                market.social_platform == Platform.Youtube ? `https://youtube.com/@${market.social_handle}` :
+                  market.social_platform == Platform.Instagram ? `https://instagram.com/${market.social_handle}` :
+                    market.social_platform == Platform.Github ? `https://github.com/${market.social_handle}` : ''
+              }
               target="_blank"
             >
-              <MemoYoutubeLogoSm className="mb-[2px]" />
+              {market.social_platform == Platform.Youtube && <MemoYoutubeLogoSm className="mb-[2px]" />}
+              {market.social_platform == Platform.Instagram && <MemoInstagramIcon className="mb-0 ml-[-0.5rem] scale-[0.6]" />}
+              {market.social_platform == Platform.Github && <MemoGithubIcon className=" -translate-x-3 scale-[0.6] " />}
+
             </a>
           </div>
         </div>

@@ -11,12 +11,18 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Layout } from '../components/Layout';
 import toast from 'react-hot-toast';
 import { NoDataFound } from '@/components/NoDataFound';
-export const Platform = {
-  Youtube: 'youtube',
-};
+import MemoInstagramIcon from '@/SVG/InstagramIcon';
+import MemoGithubIcon from '@/SVG/GithubIcon';
+import MemoMoreIcon from '@/SVG/MoreIcon';
+import MemoMoreDropdownIcon from '@/SVG/MoreDropdownIcon';
+import ClickAwayListener from 'react-click-away-listener';
+import { Platform, usePlatform } from '@/atoms/platformState';
 
-const MarketCreation: React.FC<any> = ({}) => {
+const MarketCreation: React.FC<any> = ({ }) => {
+  const [show, setShow] = useState(false);
   const [value, setValue] = useState('');
+  const [platform, setPlatform] = usePlatform();
+
   const [protect] = useProtection();
   const [markets, setMarkets] = useState<Market[] | 'err'>([]);
   const [loading, setLoading] = useState(false);
@@ -28,7 +34,7 @@ const MarketCreation: React.FC<any> = ({}) => {
         const result = await axios.post(
           `${import.meta.env.VITE_API_ENDPOINT}/market/create`,
           {
-            social_platform: Platform.Youtube,
+            social_platform: platform,
             social_handle: value,
           }
         );
@@ -83,8 +89,58 @@ const MarketCreation: React.FC<any> = ({}) => {
             performers.
           </div>
           <div className="flex items-center w-full bg-3b  h-[50px] rounded-[10px] px-6 pr-4">
-            <div className="w-[29px] h-[24px]">
-              <MemoYoutubeLogo />
+            <div className="w-[50px] h-[35px] relative bg-white social-icons-collection rounded-[0.7rem] m-1 pr-2">
+              <div
+                onClick={() => setShow((s) => !s)}
+                className="flex cursor-pointer gap-0 px-2 flex-grow mr-[-1rem] items-center justify-center">
+                {platform == Platform.Youtube && <MemoYoutubeLogo />}
+                {platform == Platform.Instagram && <MemoInstagramIcon className='scale-[0.82]' />}
+                {platform == Platform.Github && <MemoGithubIcon className="scale-[0.95] pt-[0.35rem]" />}
+                {platform == Platform.Twitter && <MemoTwitterLogo className='mx-1' />}
+
+                <MemoMoreDropdownIcon style={{ marginTop: "15px" }} />
+              </div>
+              {show &&
+                <ClickAwayListener
+                  onClickAway={() => setShow(false)}>
+                  <div className='bg-white absolute rounded-[0.7rem] pl-2 mt-5 py-3 pb-4 z-[10] w-[5rem] social-icons-collection'>
+                    {platform !== Platform.Youtube && <div
+                      onClick={() => {
+                        setShow(false);
+                        setPlatform(Platform.Youtube);
+                      }}
+                      className="ml-[0.45rem] cursor-pointer hover:scale-105" >
+                      <MemoYoutubeLogo />
+                    </div>}
+
+                    {platform !== Platform.Instagram && <div
+                      onClick={() => {
+                        setShow(false);
+                        setPlatform(Platform.Instagram);
+                      }}
+                      className="ml-[0.4rem] mt-2 cursor-pointer hover:scale-105" >
+                      <MemoInstagramIcon className='scale-[0.85]' />
+                    </div>}
+
+                    {platform !== Platform.Github && <div
+                      onClick={() => {
+                        setShow(false);
+                        setPlatform(Platform.Github);
+                      }}
+                      className="mt-4 ml-[0.4rem] cursor-pointer hover:scale-105" >
+                      <MemoGithubIcon className="scale-[0.95]" />
+                    </div>}
+
+                    {platform !== Platform.Twitter && <div
+                      onClick={() => {
+                        setShow(false);
+                        setPlatform(Platform.Twitter);
+                      }} className="mt-[0.4rem] ml-3 cursor-pointer hover:scale-105" >
+                      <MemoTwitterLogo />
+                    </div>}
+                  </div>
+                </ClickAwayListener>
+              }
             </div>
             <div className="ml-3 mr-2 text-lg font-bold">@</div>
             <form
@@ -113,7 +169,7 @@ const MarketCreation: React.FC<any> = ({}) => {
               </div>
             ) : null}
           </div>
-          <div className="flex flex-col w-full">
+          <div className="flex flex-col w-full z-[1]">
             {loading ? (
               <ListLoader />
             ) : markets == 'err' ? (

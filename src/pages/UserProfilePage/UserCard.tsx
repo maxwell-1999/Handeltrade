@@ -53,7 +53,7 @@ const UserCard: React.FC<any> = () => {
           />
           <span className="flex flex-col justify-between py-3">
             <PrimeText>
-              {userState?.first_name + ' ' + userState?.last_name}
+              {(userState?.first_name ?? "---") + ' ' + (userState?.last_name ?? "---")}
             </PrimeText>
 
             {/* <PrimeText>{}</PrimeText> */}

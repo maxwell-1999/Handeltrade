@@ -24,7 +24,7 @@ const MarketActivityList: React.FC<{
   userAddrMap: UserAddrMap;
   data: BuySellActivityForMarket[];
 }> = ({ userAddrMap, data }) => {
-  if (!data.filter((d) => d.type == 'buy' || d.type == 'sell').length)
+  if (!data?.filter((d) => d.type == 'buy' || d.type == 'sell').length)
     return (
       <NoDataFound className="w-[90%] mt-3 mx-auto">No data found</NoDataFound>
     );
