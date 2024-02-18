@@ -16,6 +16,7 @@ import { useIsFirebaseOn } from '@/atoms/firebaseState';
 import { faBell as solidBell } from '@fortawesome/free-solid-svg-icons';
 import { faBell as emptyBell } from '@fortawesome/free-regular-svg-icons';
 import { getFirebaseDeviceToken } from '@/lib/firebaseMessaging';
+import { fetchConfigDataFirebase, storeConfigDataFirebase, } from '@/utils/indexDB';
 
 const AccountDropdown: React.FC<any> = ({ }) => {
   const account = useAccount();
@@ -106,23 +107,44 @@ const AccountDropdown: React.FC<any> = ({ }) => {
             </div>
             <div
               className="flex p-1 px-8"
+              onClick={async () => {
+                navigator.serviceWorker.register("/service.js").then((registration) => {
+                  console.log({ registration });
+
+                }).catch((err) => { console.log("Error in registering service worker", err); });
+
+                var idb = window.indexedDB;
+                if (!idb) {
+                  console.log("Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available.");
+                }
+                console.log({ idb });
+              }}
+            >
+              <ExportIcon style={{ marginRight: '5px' }} /> Click
+            </div>
+            <div
+              className="flex p-1 px-8"
               onClick={() => {
-                getFirebaseDeviceToken(userState?.session_id ?? "").then((res) => {
+                getFirebaseDeviceToken(userState?.session_id ?? "").then(async (res) => {
                   if (isFirebaseOn) {
                     setIsFirebaseOn(res);
                     navigator.serviceWorker.getRegistrations()
-                      .then((registration) => {
+                      .then(async (registration) => {
                         console.log({ registration });
-                        registration.forEach((reg) => {
-                          reg.active?.scriptURL.includes("firebase-messaging-sw.js") && reg.unregister().then((res) => {
-                            setIsFirebaseOn(false);
-                          });
-                        });
+                        // used for deleting the service worker - please don't delete it
+                        // registration.forEach((reg) => {
+                        //   reg.active?.scriptURL.includes("firebase-messaging-sw.js") && reg.unregister().then((res) => {
+                        //     setIsFirebaseOn(false);
+                        //   });
+                        // });
+
+                        await storeConfigDataFirebase({ id: "is_popup_on", value: res });
                       }).catch((err) => {
                         console.log("Error in registering service worker", err);
                       });
                   } else {
                     setIsFirebaseOn(res);
+                    await storeConfigDataFirebase({ id: "is_popup_on", value: res });
                   }
                 });
               }}
