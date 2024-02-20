@@ -107,23 +107,6 @@ const AccountDropdown: React.FC<any> = ({ }) => {
             </div>
             <div
               className="flex p-1 px-8"
-              onClick={async () => {
-                navigator.serviceWorker.register("/service.js").then((registration) => {
-                  console.log({ registration });
-
-                }).catch((err) => { console.log("Error in registering service worker", err); });
-
-                var idb = window.indexedDB;
-                if (!idb) {
-                  console.log("Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available.");
-                }
-                console.log({ idb });
-              }}
-            >
-              <ExportIcon style={{ marginRight: '5px' }} /> Click
-            </div>
-            <div
-              className="flex p-1 px-8"
               onClick={() => {
                 getFirebaseDeviceToken(userState?.session_id ?? "").then(async (res) => {
                   if (isFirebaseOn) {

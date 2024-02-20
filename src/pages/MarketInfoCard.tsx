@@ -379,18 +379,34 @@ const ChannelDetails: React.FC<{ market: Market; }> = ({ market }) => {
           }
         </a>
       </div>
-      <div className="flex items-center gap-3 ">
-        <MemoSubscribersIcon />
-        {compactFormatter.format(123312312312)} subscribers
-      </div>
-      <div className="flex items-center gap-3 ">
-        <MemoVideoCount />
-        {(12321).toLocaleString()} videos
-      </div>
-      <div className="flex items-center gap-3 ">
-        <MemoViewCount />
-        {(23132131).toLocaleString()} views
-      </div>
+      {market.social_platform == Platform.Youtube &&
+        <>
+          <div className="flex items-center gap-3 ">
+            <MemoSubscribersIcon />
+            {compactFormatter.format(market?.statistics?.subscriberCount ?? "-- ")} subscribers
+          </div>
+          <div className="flex items-center gap-3 ">
+            <MemoVideoCount />
+            {(market?.statistics?.videoCount ?? "-- ").toLocaleString()} videos
+          </div>
+          <div className="flex items-center gap-3 ">
+            <MemoViewCount />
+            {(market?.statistics?.viewCount ?? "-- ").toLocaleString()} views
+          </div>
+        </>
+      }
+      {market.social_platform == Platform.Github &&
+        <>
+          <div className="flex items-center gap-3 ">
+            <MemoSubscribersIcon />
+            {compactFormatter.format(market?.statistics?.followers ?? "-- ")} Followers
+          </div>
+          <div className="flex items-center gap-3 ">
+            <MemoViewCount />
+            {(market?.statistics?.public_repos ?? "-- ").toLocaleString()} Public Repos
+          </div>
+        </>
+      }
     </div>
   );
 };
