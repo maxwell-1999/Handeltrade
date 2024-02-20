@@ -20,3 +20,14 @@ export const usePlatform = () => {
   const value = useRecoilState(platformAtom);
   return value;
 };
+
+export const twitterVerifiedAtom = atom<boolean>({
+  default: false,
+  key: 'twitterVerifiedAtom',
+  effects: [persistAtom],
+});
+
+export const useTwitterVerified = () => {
+  const value = useRecoilState(twitterVerifiedAtom);
+  return value;
+};

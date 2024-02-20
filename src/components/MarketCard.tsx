@@ -16,6 +16,7 @@ import { ReactNode } from 'react';
 import MemoInstagramIcon from '@/SVG/InstagramIcon';
 import { Platform } from '@/atoms/platformState';
 import MemoGithubIcon from '@/SVG/GithubIcon';
+import MemoTwitterLogo from '@/SVG/TwitterLogo';
 
 export const toJSEpoch = (e: string | number) => +e * 1000;
 
@@ -77,22 +78,37 @@ const MarketCard: React.FC<{
           >
             <span className="font-semibold text-f14">
               {market.name}
-              <a
-                className="inline-flex ml-[4px]"
-                href={
-                  market.social_platform == Platform.Youtube ? `https://youtube.com/@${market.social_handle}` :
-                    market.social_platform == Platform.Instagram ? `https://instagram.com/${market.social_handle}` :
-                      market.social_platform == Platform.Github ? `https://github.com/${market.social_handle}` : ''
-                }
-                target="_blank"
-              >
-                {market.social_platform == Platform.Youtube && <MemoYoutubeLogoSm className="mb-[2px]" />}
-                {market.social_platform == Platform.Instagram &&
-                  <MemoInstagramIcon className=" -translate-x-2 translate-y-4 ml-[-0.5rem] scale-[0.5]" />
-                }
-                {market.social_platform == Platform.Github && <MemoGithubIcon className=" -translate-x-3  translate-y-4  scale-[0.58] " />}
+              {
+                market.social_platform == Platform.Youtube ? <a
+                  className="inline-flex ml-[4px]"
+                  href={`https://youtube.com/@${market.social_handle}`}
+                  target="_blank"
+                >
+                  <MemoYoutubeLogoSm className="mb-[2px]" />
+                </a> :
+                  market.social_platform == Platform.Instagram ? <a
+                    className="inline-flex ml-[4px] mt-[-1.5rem] h-[0.1rem] "
+                    href={`https://instagram.com/${market.social_handle}`}
+                    target="_blank"
+                  >
+                    <MemoInstagramIcon className=" -translate-x-2 translate-y-4 ml-[-0.5rem] scale-[0.5]" />
+                  </a> :
+                    market.social_platform == Platform.Github ? <a
+                      className="inline-flex ml-[4px] mt-[-2rem] h-[0.1rem] "
+                      href={`https://github.com/${market.social_handle}`}
+                      target="_blank"
+                    >
+                      <MemoGithubIcon className=" -translate-x-3 translate-y-4 scale-[0.58] " />
+                    </a> : market.social_platform == Platform.Twitter ?
+                      <a
+                        className="inline-flex ml-[4px] mt-[-2rem] h-[0.1rem] "
+                        href={`https://twitter.com/${market.social_handle}`}
+                        target="_blank"
+                      >
+                        <MemoTwitterLogo className=" -translate-x-2 translate-y-2 scale-[0.65] " />
+                      </a> : null
+              }
 
-              </a>
             </span>
             {nonPrice ? null : (
               <span className="flex items-center text-center cursor-pointer text-f10 text-2 whitespace-nowrap">

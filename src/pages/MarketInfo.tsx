@@ -65,7 +65,7 @@ const offlineData = {
     },
   },
 };
-const MarketInfo: React.FC<any> = ({}) => {
+const MarketInfo: React.FC<any> = ({ }) => {
   const account = useAccount();
   const [userState] = useUserState();
   console.log(`MarketInfo-userState: `, userState);
@@ -83,13 +83,17 @@ const MarketInfo: React.FC<any> = ({}) => {
     },
     refreshInterval: 1000,
   });
+
   const [searchParam] = useSearchParams();
   const claimStatemanager = useOwnershipClaimManager();
   const claimCode = searchParam?.get('code');
+  const platform = searchParam?.get('p0');
+  const challange = searchParam?.get('p1');
+
   useEffect(() => {
     console.log('deb-claiming2:', claimCode, params?.marketid);
     if (claimCode && params?.marketid)
-      claimStatemanager.claimCodeRecieved(claimCode, params.marketid);
+      claimStatemanager.claimCodeRecieved(claimCode, params.marketid, platform, challange, { social_platform: platform } as any);
   }, [claimCode]);
 
   if (isLoading) return <ListLoader className="mt-7 px-7" />;
@@ -134,12 +138,11 @@ const MarketInfo: React.FC<any> = ({}) => {
 
 export { MarketInfo };
 
-const HoldersTab: React.FC<{ market: Market }> = ({ market }) => {
+const HoldersTab: React.FC<{ market: Market; }> = ({ market }) => {
   const { data, isLoading } = useSWR<User[]>('holders' + market.id, {
     fetcher: async () => {
       const results = await axios.get(
-        `${
-          import.meta.env.VITE_API_ENDPOINT
+        `${import.meta.env.VITE_API_ENDPOINT
         }/market/market_holders_by_market_id/${market.market_id}/400/0`
       );
       return results.data.data as User[];
@@ -156,12 +159,11 @@ const HoldersTab: React.FC<{ market: Market }> = ({ market }) => {
   );
 };
 
-const WatchListedByTab: React.FC<{ market: Market }> = ({ market }) => {
+const WatchListedByTab: React.FC<{ market: Market; }> = ({ market }) => {
   const { data, isLoading } = useSWR<User[]>('watchlistedBy' + market.id, {
     fetcher: async () => {
       const results = await axios.get(
-        `${
-          import.meta.env.VITE_API_ENDPOINT
+        `${import.meta.env.VITE_API_ENDPOINT
         }/market/market_watchlisted_by_market_id/${market.market_id}/400/0`
       );
       return results.data.data as User[];
@@ -178,12 +180,11 @@ const WatchListedByTab: React.FC<{ market: Market }> = ({ market }) => {
   );
 };
 
-const MarketActivityTab: React.FC<{ market: Market }> = ({ market }) => {
+const MarketActivityTab: React.FC<{ market: Market; }> = ({ market }) => {
   const { data, isLoading } = useSWR<any>('MarketActivity' + market.id, {
     fetcher: async () => {
       const results = await axios.get(
-        `${
-          import.meta.env.VITE_API_ENDPOINT
+        `${import.meta.env.VITE_API_ENDPOINT
         }/market/market_activities_by_market_id/${market.market_id}/400/0`
       );
       return results.data;
@@ -201,7 +202,7 @@ const MarketActivityTab: React.FC<{ market: Market }> = ({ market }) => {
   );
 };
 
-const ClaimMarketRewards: React.FC<{ market: Market }> = ({ market }) => {
+const ClaimMarketRewards: React.FC<{ market: Market; }> = ({ market }) => {
   const account = useAccount();
   const network = useNetwork();
   const symbol = network.chain?.nativeCurrency.symbol ?? '';
@@ -306,9 +307,8 @@ const ClaimMarketRewards: React.FC<{ market: Market }> = ({ market }) => {
                 : '0.00 ' + symbol}
             </PrimeFadeText>
             <PrimaryBtn
-              className={`p-1 text-[white] text-[12px] mr-2 w-[50px] h-fit min-w-fit font-semibold rounded-[4px] ${
-                claimable(data[0]?.result) ? '' : 'bg-2 cursor-not-allowed'
-              }`}
+              className={`p-1 text-[white] text-[12px] mr-2 w-[50px] h-fit min-w-fit font-semibold rounded-[4px] ${claimable(data[0]?.result) ? '' : 'bg-2 cursor-not-allowed'
+                }`}
               onClick={() => claimWeeklyRewards()}
             >
               <MemoButtonLoader
@@ -330,9 +330,8 @@ const ClaimMarketRewards: React.FC<{ market: Market }> = ({ market }) => {
                 : '0.00 ' + symbol}
             </PrimeFadeText>
             <PrimaryBtn
-              className={`p-1 text-[white] text-[12px] mr-2 w-[50px] h-fit min-w-fit font-semibold rounded-[4px] ${
-                claimable(data[1]?.result) ? '' : 'bg-2 cursor-not-allowed'
-              }`}
+              className={`p-1 text-[white] text-[12px] mr-2 w-[50px] h-fit min-w-fit font-semibold rounded-[4px] ${claimable(data[1]?.result) ? '' : 'bg-2 cursor-not-allowed'
+                }`}
               onClick={() => claimReflection()}
             >
               <MemoButtonLoader

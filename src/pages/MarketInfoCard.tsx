@@ -37,6 +37,7 @@ import { useFirebaseNotificationForMarket, useIsFirebaseOn } from '@/atoms/fireb
 import MemoInstagramIcon from '@/SVG/InstagramIcon';
 import { Platform } from '@/atoms/platformState';
 import MemoGithubIcon from '@/SVG/GithubIcon';
+import MemoTwitterLogo from '@/SVG/TwitterLogo';
 
 export const toJSEpoch = (e: string | number) => +e * 1000;
 
@@ -209,13 +210,15 @@ const MarketInfoCard: React.FC<{
               href={
                 market.social_platform == Platform.Youtube ? `https://youtube.com/@${market.social_handle}` :
                   market.social_platform == Platform.Instagram ? `https://instagram.com/${market.social_handle}` :
-                    market.social_platform == Platform.Github ? `https://github.com/${market.social_handle}` : ''
+                    market.social_platform == Platform.Github ? `https://github.com/${market.social_handle}` :
+                      market.social_platform == Platform.Twitter ? `https://twitter.com/${market.social_handle}` : ''
               }
               target="_blank"
             >
-              {market.social_platform == Platform.Youtube && <MemoYoutubeLogoSm className="mb-[2px]" />}
+              {market.social_platform == Platform.Youtube && <MemoYoutubeLogoSm className="" />}
               {market.social_platform == Platform.Instagram && <MemoInstagramIcon className="mb-0 ml-[-0.5rem] scale-[0.6]" />}
-              {market.social_platform == Platform.Github && <MemoGithubIcon className=" -translate-x-3 scale-[0.6] " />}
+              {market.social_platform == Platform.Github && <MemoGithubIcon className=" -translate-x-3 translate-y-[0.1rem] scale-[0.6] " />}
+              {market.social_platform == Platform.Twitter && <MemoTwitterLogo className=" -translate-x-1  scale-[0.65] " />}
 
             </a>
           </div>
@@ -361,9 +364,19 @@ const ChannelDetails: React.FC<{ market: Market; }> = ({ market }) => {
         <MemoWebLink />
         <a
           target="_blank"
-          href={`https://youtube.com/@${market.social_handle}`}
+          href={
+            market.social_platform == Platform.Youtube ? `https://youtube.com/@${market.social_handle}` :
+              market.social_platform == Platform.Instagram ? `https://instagram.com/${market.social_handle}` :
+                market.social_platform == Platform.Github ? `https://github.com/${market.social_handle}` :
+                  market.social_platform == Platform.Twitter ? `https://twitter.com/${market.social_handle}` : ''
+          }
         >
-          www.youtube.com/@{market.social_handle}
+          {
+            market.social_platform == Platform.Youtube ? `www.youtube.com/@${market.social_handle}` :
+              market.social_platform == Platform.Instagram ? `www.instagram.com/${market.social_handle}` :
+                market.social_platform == Platform.Github ? `www.github.com/${market.social_handle}` :
+                  market.social_platform == Platform.Twitter ? `www.twitter.com/${market.social_handle}` : ''
+          }
         </a>
       </div>
       <div className="flex items-center gap-3 ">

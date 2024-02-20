@@ -16,12 +16,31 @@ import MemoGithubIcon from '@/SVG/GithubIcon';
 import MemoMoreIcon from '@/SVG/MoreIcon';
 import MemoMoreDropdownIcon from '@/SVG/MoreDropdownIcon';
 import ClickAwayListener from 'react-click-away-listener';
-import { Platform, usePlatform } from '@/atoms/platformState';
+import { Platform, usePlatform, useTwitterVerified } from '@/atoms/platformState';
+import { twMerge } from 'tailwind-merge';
+import { PrimaryBtn, PrimaryButton } from '@/components/Buttons';
+import { useOwnershipClaimManager } from '@/atoms/OwnershipClaimState';
+import { OwnershipClaimDialog } from '@/components/OwnershipClaimDialog';
 
 const MarketCreation: React.FC<any> = ({ }) => {
   const [show, setShow] = useState(false);
   const [value, setValue] = useState('');
   const [platform, setPlatform] = usePlatform();
+  const ownershipManager = useOwnershipClaimManager();
+  const [getTwitterVerified, setTwitterVerified] = useTwitterVerified();
+
+  const [searchParam] = useSearchParams();
+  const claimStatemanager = useOwnershipClaimManager();
+  const claimCode = searchParam?.get('code');
+  const gotPlatform = searchParam?.get('p0');
+  const challange = searchParam?.get('p1');
+
+  useEffect(() => {
+    if (claimCode) {
+      claimStatemanager.claimCodeRecieved(claimCode, "0", gotPlatform, challange, { social_platform: gotPlatform } as any);
+      setTwitterVerified(true);
+    }
+  }, [claimCode]);
 
   const [protect] = useProtection();
   const [markets, setMarkets] = useState<Market[] | 'err'>([]);
@@ -93,7 +112,7 @@ const MarketCreation: React.FC<any> = ({ }) => {
               <div
                 onClick={() => setShow((s) => !s)}
                 className="flex cursor-pointer gap-0 px-2 flex-grow mr-[-1rem] items-center justify-center">
-                {platform == Platform.Youtube && <MemoYoutubeLogo />}
+                {platform == Platform.Youtube && <MemoYoutubeLogo className='' />}
                 {platform == Platform.Instagram && <MemoInstagramIcon className='scale-[0.82]' />}
                 {platform == Platform.Github && <MemoGithubIcon className="scale-[0.95] pt-[0.35rem]" />}
                 {platform == Platform.Twitter && <MemoTwitterLogo className='mx-1' />}
@@ -109,7 +128,7 @@ const MarketCreation: React.FC<any> = ({ }) => {
                         setShow(false);
                         setPlatform(Platform.Youtube);
                       }}
-                      className="ml-[0.45rem] cursor-pointer hover:scale-105" >
+                      className=" ml-[0.6rem] mb-3 cursor-pointer hover:scale-105" >
                       <MemoYoutubeLogo />
                     </div>}
 
@@ -118,7 +137,7 @@ const MarketCreation: React.FC<any> = ({ }) => {
                         setShow(false);
                         setPlatform(Platform.Instagram);
                       }}
-                      className="ml-[0.4rem] mt-2 cursor-pointer hover:scale-105" >
+                      className=" ml-[0.4rem] mb-4 cursor-pointer hover:scale-105" >
                       <MemoInstagramIcon className='scale-[0.85]' />
                     </div>}
 
@@ -127,15 +146,15 @@ const MarketCreation: React.FC<any> = ({ }) => {
                         setShow(false);
                         setPlatform(Platform.Github);
                       }}
-                      className="mt-4 ml-[0.4rem] cursor-pointer hover:scale-105" >
-                      <MemoGithubIcon className="scale-[0.95]" />
+                      className=" ml-[0.4rem] -mt-5  pt-4 cursor-pointer hover:scale-105" >
+                      <MemoGithubIcon className=" scale-[0.95]" />
                     </div>}
 
                     {platform !== Platform.Twitter && <div
                       onClick={() => {
                         setShow(false);
                         setPlatform(Platform.Twitter);
-                      }} className="mt-[0.4rem] ml-3 cursor-pointer hover:scale-105" >
+                      }} className=" mt-[0.4rem] ml-3 cursor-pointer hover:scale-105" >
                       <MemoTwitterLogo />
                     </div>}
                   </div>
@@ -169,6 +188,7 @@ const MarketCreation: React.FC<any> = ({ }) => {
               </div>
             ) : null}
           </div>
+          <OwnershipClaimDialog />
           <div className="flex flex-col w-full z-[1]">
             {loading ? (
               <ListLoader />
@@ -176,9 +196,38 @@ const MarketCreation: React.FC<any> = ({ }) => {
               <NoDataFound className="bg-[#f4f4f475]">
                 No markets found with name "{value}"
               </NoDataFound>
-            ) : markets.length ? (
+            ) : markets.length ? (<>
               <MarketList markets={markets} />
-            ) : null}
+            </>
+            ) : platform == Platform.Twitter && !getTwitterVerified ? <div
+              role={'button'}
+              className={twMerge(
+                `p-[10px] m rounded-[10px] flex w-full bg-sky-100 text-f12 justify-between items-center `,
+              )}
+            >
+              Login with Twitter to create your Market 🤑
+              <PrimaryButton
+                onClick={() => ownershipManager.startOwnershipClaim({
+                  "id": 0,
+                  "rank": "",
+                  "market_id": "0",
+                  "social_platform": "twitter",
+                  "social_handle": "",
+                  "creator_addr": "Not Created Yet!",
+                  "img_url": "/twitter.png",
+                  "name": "",
+                  "description": "",
+                  "on_chain": true,
+                  "claimed": false,
+                  "buyPrice": "0",
+                  "sellPrice": "0",
+                  "shares": "0"
+                })}
+                className="px-3 pr-4 text-f12 flex justify-center items-center"
+              >
+                Login
+              </PrimaryButton>
+            </div> : null}
           </div>
         </div>
       </div>
