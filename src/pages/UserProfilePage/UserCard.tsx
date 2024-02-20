@@ -8,7 +8,7 @@ import axios from 'axios';
 import { formatAddress } from '../../Helpers/web3utils';
 import { useState } from 'react';
 import { DisplayPrice } from '@/components/DisplayPrice';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton, TimeoutSkeleton } from '@/components/ui/skeleton';
 
 const UserCard: React.FC<any> = () => {
   const params = useParams();
@@ -53,13 +53,14 @@ const UserCard: React.FC<any> = () => {
           />
           <span className="flex flex-col justify-between py-3">
             <PrimeText>
-              {(userState?.first_name ?? "---") + ' ' + (userState?.last_name ?? "---")}
+              {(userState?.first_name ?? <TimeoutSkeleton timeOut={2000} className="w-[100px] h-6" />)}
             </PrimeText>
 
-            {/* <PrimeText>{}</PrimeText> */}
             {!params?.user_addr ? (
               <PrimeFadeText>
-                <div className="text-f12">{userState?.email}</div>
+                {!userState?.email ?
+                  <TimeoutSkeleton timeOut={2000} className="mt-2 w-[150px] h-6" />
+                  : <div className="text-f12">{userState?.email}</div>}
               </PrimeFadeText>
             ) : (
               <span
@@ -70,6 +71,7 @@ const UserCard: React.FC<any> = () => {
                 {formatAddress(userState?.public_address)}
               </span>
             )}
+
             {!isLoading ? (
               <div className="flex items-end text-2">
                 <DisplayPrice
