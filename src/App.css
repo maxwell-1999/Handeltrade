@@ -192,3 +192,9 @@ input[type=number] {
   padding-right: 0px !important;
   @apply bg-brandGrey
 }
+
+.social-icons-collection {
+  -webkit-box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.25);
+  -moz-box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.25);
+  box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.25);
+}

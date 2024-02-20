@@ -13,6 +13,10 @@ import MemoYoutubeLogo, { MemoYoutubeLogoSm } from '../SVG/YoutubeLogo';
 import { DisplayPrice } from './DisplayPrice';
 import ShowMoreText from 'react-show-more-text';
 import { ReactNode } from 'react';
+import MemoInstagramIcon from '@/SVG/InstagramIcon';
+import { Platform } from '@/atoms/platformState';
+import MemoGithubIcon from '@/SVG/GithubIcon';
+import MemoTwitterLogo from '@/SVG/TwitterLogo';
 
 export const toJSEpoch = (e: string | number) => +e * 1000;
 
@@ -31,8 +35,7 @@ const MarketCard: React.FC<{
     <div
       role={preview ? 'cell' : 'button'}
       className={twMerge(
-        `p-[10px] rounded-[10px]  flex flex-col w-full ${
-          preview ?? 'bg-white'
+        `p-[10px] rounded-[10px]  flex flex-col w-full ${preview ?? 'bg-white'
         } `,
         className
       )}
@@ -53,7 +56,7 @@ const MarketCard: React.FC<{
           }
         >
           <img
-            src={market?.img_url}
+            src={market.social_platform == Platform.Instagram ? `${import.meta.env.VITE_API_ENDPOINT}${market?.img_url}` : market?.img_url}
             onError={(e) => {
               e.currentTarget.onerror = null;
               e.currentTarget.src = '/img_placeholder.svg';
@@ -70,19 +73,42 @@ const MarketCard: React.FC<{
         </div>
         <div className="flex flex-col items-center w-full ">
           <div
-            className={`flex items-start justify-between w-full mb-[2px] mt-${
-              nonPrice ? '1' : '2'
-            } `}
+            className={`flex items-start justify-between w-full mb-[2px] mt-${nonPrice ? '1' : '2'
+              } `}
           >
             <span className="font-semibold text-f14">
               {market.name}
-              <a
-                className="inline-flex ml-[4px]"
-                href={`https://youtube.com/@${market.social_handle}`}
-                target="_blank"
-              >
-                <MemoYoutubeLogoSm className="mb-[2px]" />
-              </a>
+              {
+                market.social_platform == Platform.Youtube ? <a
+                  className="inline-flex ml-[4px]"
+                  href={`https://youtube.com/@${market.social_handle}`}
+                  target="_blank"
+                >
+                  <MemoYoutubeLogoSm className="mb-[2px]" />
+                </a> :
+                  market.social_platform == Platform.Instagram ? <a
+                    className="inline-flex ml-[4px] mt-[-1.5rem] h-[0.1rem] "
+                    href={`https://instagram.com/${market.social_handle}`}
+                    target="_blank"
+                  >
+                    <MemoInstagramIcon className=" -translate-x-2 translate-y-4 ml-[-0.5rem] scale-[0.5]" />
+                  </a> :
+                    market.social_platform == Platform.Github ? <a
+                      className="inline-flex ml-[4px] mt-[-2rem] h-[0.1rem] "
+                      href={`https://github.com/${market.social_handle}`}
+                      target="_blank"
+                    >
+                      <MemoGithubIcon className=" -translate-x-3 translate-y-4 scale-[0.58] " />
+                    </a> : market.social_platform == Platform.Twitter ?
+                      <a
+                        className="inline-flex ml-[4px] mt-[-2rem] h-[0.1rem] "
+                        href={`https://twitter.com/${market.social_handle}`}
+                        target="_blank"
+                      >
+                        <MemoTwitterLogo className=" -translate-x-2 translate-y-2 scale-[0.65] " />
+                      </a> : null
+              }
+
             </span>
             {nonPrice ? null : (
               <span className="flex items-center text-center cursor-pointer text-f10 text-2 whitespace-nowrap">

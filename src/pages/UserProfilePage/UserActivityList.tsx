@@ -11,7 +11,7 @@ import { showShares } from './UserCardSm';
 import { typeValueMapping } from '../MarketActivityList';
 import { NoDataFound } from '@/components/NoDataFound';
 
-const UserActivityList: React.FC<{ marketMap: MarketIdMap; data: any[] }> = ({
+const UserActivityList: React.FC<{ marketMap: MarketIdMap; data: any[]; }> = ({
   marketMap,
   data,
 }) => {
@@ -65,8 +65,8 @@ const MarketActivityCard: React.FC<{
   const nonPrice = activityData?.pricePaid
     ? !activityData.pricePaid
     : activityData?.priceReceived
-    ? !activityData.priceReceived
-    : true;
+      ? !activityData.priceReceived
+      : true;
   const network = useNetwork();
   const navigate = useNavigate();
 
@@ -77,11 +77,11 @@ const MarketActivityCard: React.FC<{
         'p-[10px] bg-white rounded-[10px] justify-between flex gap-[15px]  w-full',
         className
       )}
-      onClick={() => navigate('/markets/' + market.market_id)}
+      onClick={() => navigate('/markets/' + market?.market_id)}
     >
       <div className="flex flex-col gap-[3px] items-center justify-center ">
         <img
-          src={market.img_url}
+          src={market?.img_url}
           className="w-[30px] h-[30px] rounded-[5px]  img-loading"
         />
         {nonPrice ? null : (
@@ -92,11 +92,10 @@ const MarketActivityCard: React.FC<{
       </div>
       <div className="flex flex-col items-center w-full ">
         <div
-          className={`flex justify-between w-full mb-[2px] mt-${
-            nonPrice ? '1' : '2'
-          } `}
+          className={`flex justify-between w-full mb-[2px] mt-${nonPrice ? '1' : '2'
+            } `}
         >
-          <span className="font-semibold text-f14">{market.name}</span>
+          <span className="font-semibold text-f14">{market?.name}</span>
           {nonPrice ? null : (
             <span
               data-tooltip-id="tooltip"
@@ -104,7 +103,7 @@ const MarketActivityCard: React.FC<{
               className="font-[500] text-f10 text-2 cursor-pointer"
             >
               {/* {view()} Shares */}
-              {showShares(activityData.qty)}
+              {showShares(activityData?.qty)}
             </span>
           )}{' '}
         </div>
@@ -121,12 +120,12 @@ const MarketActivityCard: React.FC<{
             <div className="flex font-[500] items-center justify-between ">
               <div className="flex items-center gap-2 text-f10 !whitespace-nowrap">
                 <MemoTImerIcon />
-                <TimeAgo date={toJSEpoch(activityData.blockTimestamp)} />
+                <TimeAgo date={toJSEpoch(activityData?.blockTimestamp)} />
                 <SecondaryBtn
                   className="p-1 text-[10px] font-semibold rounded-[4px] px-2 "
                   onClick={() => console.log}
                 >
-                  {typeValueMapping[activityData?.type] || activityData.type}
+                  {typeValueMapping[activityData?.type] || activityData?.type}
                 </SecondaryBtn>
               </div>
             </div>
@@ -153,15 +152,15 @@ const ClaimRewardActivityCard: React.FC<{
         'p-[10px] bg-white rounded-[10px] justify-between flex gap-[15px]  w-full',
         className
       )}
-      onClick={() => navigate('/markets/' + market.market_id)}
+      onClick={() => navigate('/markets/' + market?.market_id)}
     >
       <div className="flex flex-col gap-[3px] items-center justify-center ">
-        <img src={market.img_url} className="w-[28px] h-[28px] rounded-[5px]" />
+        <img src={market?.img_url} className="w-[28px] h-[28px] rounded-[5px]" />
         <span className="font-semibold text-f14">#{market?.rank || 'New'}</span>
       </div>
       <div className="flex flex-col items-center w-full ">
         <div className={`flex justify-between w-full mb-[2px] mt-1`}>
-          <span className="font-semibold text-f14">{market.name}</span>
+          <span className="font-semibold text-f14">{market?.name}</span>
         </div>
         {/* <div className={'mb-1 text-overflow-2-lines w-full font-semibold text-2 text-f10 '}>
           @{market?.social_handle}
@@ -183,12 +182,12 @@ const ClaimRewardActivityCard: React.FC<{
           <div className="flex font-[500] items-center justify-between">
             <div className="flex items-center gap-2 text-f10">
               <MemoTImerIcon />
-              <TimeAgo date={toJSEpoch(activityData.blockTimestamp)} />
+              <TimeAgo date={toJSEpoch(activityData?.blockTimestamp)} />
               <SecondaryBtn
                 className="p-1 text-[10px] font-semibold rounded-[4px] px-2 "
                 onClick={() => console.log}
               >
-                {activityData.type2.toUpperCase()}
+                {activityData?.type2.toUpperCase()}
               </SecondaryBtn>
             </div>
           </div>
@@ -217,12 +216,12 @@ const ClaimReflectionActivityCard: React.FC<{
       onClick={() => navigate('/markets/' + market.market_id)}
     >
       <div className="flex flex-col gap-[3px] items-center justify-around ">
-        <img src={market.img_url} className="w-[28px] h-[28px] rounded-[5px]" />
+        <img src={market?.img_url} className="w-[28px] h-[28px] rounded-[5px]" />
         <span className="font-semibold text-f14">#{market?.rank || 'New'}</span>
       </div>
       <div className="flex flex-col items-center w-full ">
         <div className={`flex justify-between w-full mb-[2px] mt-1`}>
-          <span className="font-semibold text-f14">{market.name}</span>
+          <span className="font-semibold text-f14">{market?.name}</span>
         </div>
         {/* <div className={'mb-1 text-overflow-2-lines w-full font-semibold text-2 text-f10 '}>
           @{market?.social_handle}
@@ -244,13 +243,13 @@ const ClaimReflectionActivityCard: React.FC<{
           <div className="flex font-[500] items-center justify-between">
             <div className="flex items-center gap-2 text-f10">
               <MemoTImerIcon />
-              <TimeAgo date={toJSEpoch(activityData.blockTimestamp)} />
+              <TimeAgo date={toJSEpoch(activityData?.blockTimestamp)} />
 
               <SecondaryBtn
                 className="p-1 text-[10px] font-semibold rounded-[4px] px-2 "
                 onClick={() => console.log}
               >
-                {activityData.type2.toUpperCase()}
+                {activityData?.type2.toUpperCase()}
               </SecondaryBtn>
             </div>
           </div>
