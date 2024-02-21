@@ -31,7 +31,7 @@ const registerUser = async (connector: any, address: `0x${string}`) => {
     gender: 0,
   };
 
-  const res = await axios.post(
+  const res = await axios.put(
     `${import.meta.env.VITE_API_ENDPOINT}/user/create`,
     registerPayload,
     {
