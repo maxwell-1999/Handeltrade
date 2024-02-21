@@ -31,10 +31,15 @@ const registerUser = async (connector: any, address: `0x${string}`) => {
     gender: 0,
   };
 
-  const res = await axios.put(
+  const res = await axios.post(
     `${import.meta.env.VITE_API_ENDPOINT}/user/create`,
     registerPayload,
-    { headers: { Authorization: `Bearer ${userInfo.idToken}` } }
+    {
+      headers: {
+        Authorization: `Bearer ${userInfo.idToken}`
+      },
+      withCredentials: true,
+    }
   );
   if (res.data.error) {
     throw new Error('User info not found');

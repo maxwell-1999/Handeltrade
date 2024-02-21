@@ -14,7 +14,7 @@ import useUserState from '@/atoms/userState';
 import { useSearchParams } from 'react-router-dom';
 import { Platform } from '@/atoms/platformState';
 // const redirect_url = 'https://handel.network';
-const redirect_url = 'http://localhost:8080';
+const redirect_url = 'http://handel.network';
 
 const OwnershipClaimDialog: React.FC<any> = ({ }) => {
   const ownershipManager = useOwnershipClaimManager();
@@ -67,6 +67,9 @@ const OwnershipClaimDialog: React.FC<any> = ({ }) => {
         toast.error(res.data.error);
         ownershipManager.finishOwnershipClaim();
       } else {
+        if (ownershipManager?.market?.social_platform == Platform.Twitter) {
+
+        }
         toast.success('Ownership claimed successfully!');
         setClaimed(true);
       }
