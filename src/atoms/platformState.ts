@@ -31,3 +31,13 @@ export const useTwitterVerified = () => {
   const value = useRecoilState(twitterVerifiedAtom);
   return value;
 };
+
+export const twitterMarketNameAtom = atom<string>({
+  default: '',
+  key: 'twitterMarketNameAtom',
+});
+
+export const useTwitterMarketName = () => {
+  const value = useRecoilState(twitterMarketNameAtom);
+  return value;
+};

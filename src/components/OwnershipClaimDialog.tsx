@@ -12,7 +12,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import useUserState from '@/atoms/userState';
 import { useSearchParams } from 'react-router-dom';
-import { Platform } from '@/atoms/platformState';
+import { Platform, useTwitterMarketName } from '@/atoms/platformState';
 // const redirect_url = 'https://handel.network';
 const redirect_url = 'https://handel.network';
 
@@ -35,12 +35,14 @@ const OwnershipClaimDialog: React.FC<any> = ({ }) => {
   const githubOAuthURL = `https://github.com/login/oauth/authorize?client_id=${githubClientId}&redirect_uri=${redirect_url}&scope=repo&state=${stateValue}`;
 
   const twitterClientId = 'eWlQUy1ONGdrT3RQUUpmbkhHTEg6MTpjaQ';
-  const twitterOAuthURL = `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=${twitterClientId}&redirect_uri=${redirect_url}&state=${stateValue}&scope=users.read&code_challenge=challenge&code_challenge_method=plain`;
+  const twitterOAuthURL = `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=${twitterClientId}&redirect_uri=${redirect_url}&state=${`0!!twitter!!challenge`}&scope=users.read&code_challenge=challenge&code_challenge_method=plain`;
 
   const [loading, setLoading] = useState(false);
   const [userState] = useUserState();
   const [searchParam, setSearchParam] = useSearchParams();
   const [claimed, setClaimed] = useState(false);
+  const [, setTwitterMarketName] = useTwitterMarketName();
+
   useEffect(() => {
     const claimHandler = async (sessionId: string) => {
       setLoading(true);
@@ -63,22 +65,27 @@ const OwnershipClaimDialog: React.FC<any> = ({ }) => {
         { headers: { 'session-id': sessionId ?? '' } }
       );
       console.log(`deb - claiming5.data: `, res.data);
+
       if (res.data?.error) {
         toast.error(res.data.error);
         ownershipManager.finishOwnershipClaim();
       } else {
         if (ownershipManager?.market?.social_platform == Platform.Twitter) {
-
+          if (res.data?.data?.username) {
+            setTwitterMarketName(res.data?.data?.username);
+          }
         }
         toast.success('Ownership claimed successfully!');
         setClaimed(true);
       }
     };
+
     console.log(
       'deb-claiming2.5:',
       ownershipManager.type,
       userState?.session_id
     );
+    
     if (
       ownershipManager.type == 'CLAIM-CODE-RECIEVED' &&
       userState?.session_id &&
