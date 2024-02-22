@@ -26,16 +26,16 @@ const OwnershipClaimDialog: React.FC<any> = ({ }) => {
 
   const googleClientId =
     '784619188209-a1cmllig1omc0amcudtb69o5ro0njv86.apps.googleusercontent.com';
-  const googleOAuthURL = `https://accounts.google.com/o/oauth2/auth?scope=https://www.googleapis.com/auth/youtube.readonly&response_type=code&access_type=offline&redirect_uri=${redirect_url}&client_id=${googleClientId}&state=${stateValue}`;
+  const googleOAuthURL = `https://accounts.google.com/o/oauth2/auth?scope=https://www.googleapis.com/auth/youtube.readonly&response_type=code&access_type=offline&redirect_uri=${redirect_url}&client_id=${googleClientId}&state=${stateValue}!!youtube!!challenge`;
 
   const instagramClientId = '3368802966744481';
-  const instagramOAuthURL = `https://api.instagram.com/oauth/authorize?client_id=${instagramClientId}&redirect_uri=${redirect_url}&response_type=code&scope=user_profile&state=${stateValue}`;
+  const instagramOAuthURL = `https://api.instagram.com/oauth/authorize?client_id=${instagramClientId}&redirect_uri=${redirect_url}&response_type=code&scope=user_profile&state=${stateValue}!!instagram!!challenge`;
 
   const githubClientId = 'Iv1.5ca66625f9d1b831';
-  const githubOAuthURL = `https://github.com/login/oauth/authorize?client_id=${githubClientId}&redirect_uri=${redirect_url}&scope=repo&state=${stateValue}`;
+  const githubOAuthURL = `https://github.com/login/oauth/authorize?client_id=${githubClientId}&redirect_uri=${redirect_url}&scope=user&state=${stateValue}!!github!!challenge`;
 
   const twitterClientId = 'eWlQUy1ONGdrT3RQUUpmbkhHTEg6MTpjaQ';
-  const twitterOAuthURL = `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=${twitterClientId}&redirect_uri=${redirect_url}&state=${`0!!twitter!!challenge`}&scope=users.read&code_challenge=challenge&code_challenge_method=plain`;
+  const twitterOAuthURL = `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=${twitterClientId}&redirect_uri=${redirect_url}&state=${`0!!twitter!!challenge`}&scope=tweet.read%20users.read%20follows.read&code_challenge=challenge&code_challenge_method=plain`;
 
   const [loading, setLoading] = useState(false);
   const [userState] = useUserState();
