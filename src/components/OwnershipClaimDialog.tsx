@@ -14,7 +14,7 @@ import useUserState from '@/atoms/userState';
 import { useSearchParams } from 'react-router-dom';
 import { Platform } from '@/atoms/platformState';
 // const redirect_url = 'https://handel.network';
-const redirect_url = 'http://handel.network';
+const redirect_url = 'https://handel.network';
 
 const OwnershipClaimDialog: React.FC<any> = ({ }) => {
   const ownershipManager = useOwnershipClaimManager();
