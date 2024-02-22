@@ -16,7 +16,7 @@ import MemoGithubIcon from '@/SVG/GithubIcon';
 import MemoMoreIcon from '@/SVG/MoreIcon';
 import MemoMoreDropdownIcon from '@/SVG/MoreDropdownIcon';
 import ClickAwayListener from 'react-click-away-listener';
-import { Platform, usePlatform, useTwitterVerified } from '@/atoms/platformState';
+import { Platform, usePlatform, useTwitterMarketName, useTwitterVerified } from '@/atoms/platformState';
 import { twMerge } from 'tailwind-merge';
 import { PrimaryBtn, PrimaryButton } from '@/components/Buttons';
 import { useOwnershipClaimManager } from '@/atoms/OwnershipClaimState';
@@ -25,6 +25,7 @@ import { OwnershipClaimDialog } from '@/components/OwnershipClaimDialog';
 const MarketCreation: React.FC<any> = ({ }) => {
   const [show, setShow] = useState(false);
   const [value, setValue] = useState('');
+  const [twitterMarketName, setTwitterMarketName] = useTwitterMarketName();
   const [platform, setPlatform] = usePlatform();
   const ownershipManager = useOwnershipClaimManager();
   const [getTwitterVerified, setTwitterVerified] = useTwitterVerified();
@@ -42,10 +43,25 @@ const MarketCreation: React.FC<any> = ({ }) => {
     }
   }, [claimCode]);
 
+  // loads the twitter market name coming from the ownership claim dialog after twitter login
+  useEffect(() => {
+    if (twitterMarketName != "") {
+      setValue(twitterMarketName);
+      setTwitterMarketName("");
+      setTimeout(() => {
+        fetchMarketStatus();
+        setShow(false);
+      }, 500);
+    }
+  }, [twitterMarketName]);
+
   const [protect] = useProtection();
   const [markets, setMarkets] = useState<Market[] | 'err'>([]);
   const [loading, setLoading] = useState(false);
   console.log(`MarketCreation-loading: `, loading);
+
+
+
   const fetchMarketStatus = async () => {
     protect(async () => {
       setLoading(true);
