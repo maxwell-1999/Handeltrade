@@ -68,3 +68,24 @@ export const getFirebaseDeviceToken = (session_id: string): Promise<boolean> => 
     }
   });
 };
+
+export const subNotificationTopic = async (topic: string, session: string) => {
+  try {
+    return await axios.post(`${import.meta.env.VITE_API_ENDPOINT}/notification/subscribe_topic`,
+      { topics: [topic] },
+      { headers: { "session-id": session ?? "" } })
+      .then(r => { if (r.data?.message) return true; else return false; });
+  } catch (error) {
+    return false;
+  }
+};
+
+export const unsubNotificationTopic = async (topic: string, session: string) => {
+  try {
+    return await axios.post(`${import.meta.env.VITE_API_ENDPOINT}/notification/unsubscribe_topic`,
+      { topics: [topic] },
+      { headers: { "session-id": session ?? "" } }).then(r => { if (r.data?.message) return true; else return false; });
+  } catch (error) {
+    return false;
+  }
+};

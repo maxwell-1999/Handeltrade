@@ -1,15 +1,19 @@
 import { MemoCrossIcon } from '@/SVG/CrossIcon';
+import useUserState from '@/atoms/userState';
+import { subNotificationTopic, unsubNotificationTopic } from '@/lib/firebaseMessaging';
 import { getIDBVal, setIDBVal } from '@/utils/indexDB';
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
 interface ChildProps {
   name: string;
   state: boolean;
   setState: (newState: boolean) => void;
+  sessionId?: string;
 }
 
-const ToggleSwitch: React.FC<ChildProps> = ({ name, state, setState }) => {
+const ToggleSwitch: React.FC<ChildProps> = ({ name, state, setState, sessionId }) => {
   const toggleClass = state ? 'translate-x-5 bg-brandAltBlue' : 'translate-x-0 bg-2';
 
   // navigator.serviceWorker.getRegistrations()
@@ -23,10 +27,20 @@ const ToggleSwitch: React.FC<ChildProps> = ({ name, state, setState }) => {
   return (
     <span
       className={`w-14 h-8 flex items-center rounded-full p-1 cursor-pointer bg-[#e3e4e8] `}
-      onClick={() => {
+      onClick={async () => {
         const newVal = !state;
-        setState(newVal);
-        setIDBVal(name.trim(), newVal);
+        let done = false;
+        if (newVal) {
+          done = await subNotificationTopic(name, sessionId ?? "");
+        } else {
+          done = await unsubNotificationTopic(name, sessionId ?? "");
+        }
+        if (!done) {
+          toast.error("Failed to update settings");
+        } else {
+          setState(newVal);
+          setIDBVal(name.trim(), newVal);
+        }
       }}
     >
       <div className={`w-5 h-5  rounded-full transform duration-300 ease-in-out ${toggleClass}`}></div>
@@ -35,6 +49,7 @@ const ToggleSwitch: React.FC<ChildProps> = ({ name, state, setState }) => {
 };
 
 export default function Settings() {
+  const [user] = useUserState();
   const [isBuyOn, setIsBuyOn] = useState(false);
   const [isNewOn, setIsNewOn] = useState(false);
   const [isSellOn, setIsSellOn] = useState(false);
@@ -83,25 +98,25 @@ export default function Settings() {
       <div className='ml-2 flex flex-col leading-10'>
         <span className="poppins-500 text-f14">Shares</span>
         <span className="poppins-500 text-f12 flex justify-between" onClick={() => {
-        }}>Buy Shares <ToggleSwitch name='buy' state={isBuyOn} setState={setIsBuyOn} /></span>
-        <span className="poppins-500 text-f12 flex justify-between" >Sell Shares <ToggleSwitch name="sell" state={isSellOn} setState={setIsSellOn} /></span>
-        <span className="poppins-500 text-f12 flex justify-between" >New Markets <ToggleSwitch name="new" state={isNewOn} setState={setIsNewOn} /></span>
+        }}>Buy Shares <ToggleSwitch sessionId={user?.session_id} name='buy' state={isBuyOn} setState={setIsBuyOn} /></span>
+        <span className="poppins-500 text-f12 flex justify-between" >Sell Shares <ToggleSwitch sessionId={user?.session_id} name="sell" state={isSellOn} setState={setIsSellOn} /></span>
+        <span className="poppins-500 text-f12 flex justify-between" >New Markets <ToggleSwitch sessionId={user?.session_id} name="new" state={isNewOn} setState={setIsNewOn} /></span>
       </div>
 
       <div className='ml-2 flex flex-col leading-10'>
         <span className="poppins-500 text-f14">Claimable</span>
-        <span className="poppins-500 text-f12 flex justify-between">Owner fees claimed <ToggleSwitch name='claimed_owner_fees' state={isOwnerFeesClaimed} setState={setIsOwnerFeesClaimed} /></span>
-        <span className="poppins-500 text-f12 flex justify-between">Reflection fees claimed <ToggleSwitch name='claimed_reflection_fees' state={isReflectionFeesClaimed} setState={setIsReflectionFeesClaimed} /></span>
-        <span className="poppins-500 text-f12 flex justify-between">Weekly rewards claimed <ToggleSwitch name='claimed_rewards' state={isRewardsClaimed} setState={setIsRewardsClaimed} /></span>
-        <span className="poppins-500 text-f12 flex justify-between">Market claimed <ToggleSwitch name='market_verified' state={isMarketVerified} setState={setIsMarketVerified} /></span>
+        <span className="poppins-500 text-f12 flex justify-between">Owner fees claimed <ToggleSwitch sessionId={user?.session_id} name='claimed_owner_fees' state={isOwnerFeesClaimed} setState={setIsOwnerFeesClaimed} /></span>
+        <span className="poppins-500 text-f12 flex justify-between">Reflection fees claimed <ToggleSwitch sessionId={user?.session_id} name='claimed_reflection_fees' state={isReflectionFeesClaimed} setState={setIsReflectionFeesClaimed} /></span>
+        <span className="poppins-500 text-f12 flex justify-between">Weekly rewards claimed <ToggleSwitch sessionId={user?.session_id} name='claimed_rewards' state={isRewardsClaimed} setState={setIsRewardsClaimed} /></span>
+        <span className="poppins-500 text-f12 flex justify-between">Market claimed <ToggleSwitch sessionId={user?.session_id} name='market_verified' state={isMarketVerified} setState={setIsMarketVerified} /></span>
       </div>
 
       <div className=' ml-2 flex flex-col leading-10'>
         <span className="poppins-500 text-f14 justify-between">Rewards</span>
 
-        <span className="poppins-500 text-f12 flex justify-between">Weekly rewards<ToggleSwitch name='offered_rewards' state={isOfferedRewards} setState={setIsOfferedRewards} /></span>
+        <span className="poppins-500 text-f12 flex justify-between">Weekly rewards<ToggleSwitch sessionId={user?.session_id} name='offered_rewards' state={isOfferedRewards} setState={setIsOfferedRewards} /></span>
 
-        <span className="poppins-500 text-f12 flex justify-between">Market ownership transferred<ToggleSwitch name='market_transferred' state={isMarketTransferred} setState={setIsMarketTransferred} /></span>
+        <span className="poppins-500 text-f12 flex justify-between">Market ownership transferred<ToggleSwitch sessionId={user?.session_id} name='market_transferred' state={isMarketTransferred} setState={setIsMarketTransferred} /></span>
 
       </div>
 
