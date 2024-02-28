@@ -101,7 +101,7 @@ input[type=number] {
 }
 
 .tab-gap {
-  gap: min(150px, 20vw);
+  gap: min(100px, 20vw);
 }
 
 .img-loading {

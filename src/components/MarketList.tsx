@@ -4,7 +4,7 @@ import { NoDataFound } from './NoDataFound';
 
 const MarketList: React.FC<{ markets: Market[] }> = ({ markets }) => {
   console.log(`MarketList-markets: `, markets);
-  if (!markets.length) return <NoDataFound>No markets found!</NoDataFound>;
+  if (!markets?.length) return <NoDataFound>No markets found!</NoDataFound>;
 
   return (
     <div className="flex flex-col gap-[10px] ">

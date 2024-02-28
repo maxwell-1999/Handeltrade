@@ -49,7 +49,7 @@ const MarketSearchBar: React.FC<any> = ({}) => {
       />
       {searchManager.keyword ? (
         <div
-          className=" text-f14 z-[100]"
+          className=" text-f14 z-[100] cursor-pointer"
           onClick={() => {
             searchManager.cancelSearch();
           }}

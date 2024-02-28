@@ -24,7 +24,7 @@ const useActiveChain = () => {
   }, [connectors, account.address]);
 };
 
-const MarketListing: React.FC<any> = ({}) => {
+const MarketListing: React.FC<any> = ({ }) => {
   const [activeTab, setActiveTab] = useState('Top');
   const searchManager = useSearchMarket();
   const network = useActiveChain();
@@ -80,7 +80,7 @@ const New = () => {
       const results = await axios.get(
         `${import.meta.env.VITE_API_ENDPOINT}/market/list/new/400/0`
       );
-      return results.data.data as Market[];
+      return results.data?.data ?? [] as Market[];
     },
     refreshInterval: marketsRefreshInterval,
   });
@@ -95,7 +95,7 @@ const Top = () => {
       const results = await axios.get(
         `${import.meta.env.VITE_API_ENDPOINT}/market/list/top/400/0`
       );
-      return results.data.data as Market[];
+      return results.data?.data ?? [] as Market[];
     },
     refreshInterval: marketsRefreshInterval,
   });
@@ -105,14 +105,14 @@ const Top = () => {
   if (!data?.length) return <ListLoader />;
   return <MarketList markets={data} />;
 };
-const Mine: React.FC<{ address?: string }> = ({ address }) => {
+const Mine: React.FC<{ address?: string; }> = ({ address }) => {
   const ads = address || '0x8c6b7Cc652343e6a4B6CaF7F474A27D6cF8F19Ef';
   const { data, isLoading } = useSWR<Market[]>('mine-', {
     fetcher: async () => {
       const results = await axios.get(
         `${import.meta.env.VITE_API_ENDPOINT}/market/list/my/${ads}/400/0`
       );
-      return results.data.data as Market[];
+      return results.data?.data ?? [] as Market[];
     },
     refreshInterval: marketsRefreshInterval,
   });
@@ -123,8 +123,8 @@ const Mine: React.FC<{ address?: string }> = ({ address }) => {
 const SearchList = () => {
   const searchManager = useSearchMarket();
   if (searchManager.loading) return <ListLoader />;
-  console.log(`MarketListing-searchManager.markets: `, searchManager.markets);
-  if (searchManager.markets.length == 0) {
+  console.log(`MarketListing-searchManager.markets: `, searchManager?.markets);
+  if (searchManager?.markets?.length == 0) {
     return <MarketCreateCard keyword={searchManager.keyword} />;
   }
   return <MarketList markets={searchManager.markets} />;

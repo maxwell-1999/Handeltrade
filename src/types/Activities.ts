@@ -1,9 +1,11 @@
 type BuySellActivity = {
   type: string;
+  type2?: string;
   blockTimestamp: string;
   creatorFee: string;
   dividendsAdded: string;
-  marketId: string;
+  marketId?: string;
+  marketIds?: string;
   newSupply: string;
   ownerFee: string;
   priceReceived?: string;

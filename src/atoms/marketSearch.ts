@@ -30,19 +30,23 @@ const debouncedSearchMarkets = debounce(async function (
     return null;
   }
 },
-100);
+  100);
+let timeOutForSearch: NodeJS.Timeout;
 const useSearchMarket = () => {
   const setSearchMarket = useSetRecoilState(SearchMarketAtom);
   const searchState = useRecoilValue(SearchMarketAtom);
   const onSearch = async (keyword: string) => {
+    clearTimeout(timeOutForSearch);
     setSearchMarket({ keyword, loading: true, markets: [] });
     if (!keyword) return setSearchMarket(defaultState);
-    debouncedSearchMarkets(keyword, (markets, keywor) => {
-      console.log('search-deb', markets);
-      setSearchMarket((d) => {
-        return { ...d, loading: false, markets };
+    timeOutForSearch = setTimeout(() => {
+      debouncedSearchMarkets(keyword, (markets, keywor) => {
+        console.log('search-deb', markets);
+        setSearchMarket((d) => {
+          return { ...d, loading: false, markets };
+        });
       });
-    });
+    }, 700);
   };
   const cancelSearch = () => {
     console.log(`defaultState: `, defaultState);
