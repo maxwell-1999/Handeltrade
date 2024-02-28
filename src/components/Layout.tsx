@@ -10,6 +10,7 @@ import { AccountDropdown } from './AccountDropdown';
 import { Tooltip } from 'react-tooltip';
 import { useUserStateSync } from '../pages/Web3auth/Web3AuthWithWagmi';
 import useEthPrice from '../atoms/ETHPrice';
+import { MemoSettingsBig } from '@/SVG/Settings';
 
 const Icons = [
   {
@@ -27,6 +28,11 @@ const Icons = [
     name: 'profile',
     Icon: MemoProfileIcon,
   },
+  {
+    page: 'settings',
+    name: 'settings',
+    Icon: MemoSettingsBig,
+  },
 ];
 const isNestedRouteActive = (page: string) => {
   if (
@@ -40,7 +46,7 @@ const isNestedRouteActive = (page: string) => {
     return true;
   return false;
 };
-const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const Layout: React.FC<{ children: React.ReactNode; }> = ({ children }) => {
   useUserStateSync();
   useEthPrice();
   const navigate = useNavigate();

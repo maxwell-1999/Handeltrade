@@ -16,6 +16,7 @@ export default {
         lightblue: '#edf2fe',
         white: '#fff',
         brandGrey: "#f6f7fc",
+        brandAltBlue:"#3772FF",
         // brandGrey: "pink",
         '1': 'black',
         '2': '#8f95a4',

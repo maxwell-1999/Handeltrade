@@ -144,7 +144,7 @@ const MarketCreation: React.FC<any> = ({ }) => {
                         setShow(false);
                         setPlatform(Platform.Youtube);
                       }}
-                      className=" ml-[0.6rem] mb-3 cursor-pointer hover:scale-105" >
+                      className=" ml-[0.5rem] mb-3 cursor-pointer hover-zoom" >
                       <MemoYoutubeLogo />
                     </div>}
 
@@ -153,7 +153,7 @@ const MarketCreation: React.FC<any> = ({ }) => {
                         setShow(false);
                         setPlatform(Platform.Instagram);
                       }}
-                      className=" ml-[0.4rem] mb-4 cursor-pointer hover:scale-105" >
+                      className=" ml-[0.4rem] mb-4 cursor-pointer hover-zoom" >
                       <MemoInstagramIcon className='scale-[0.85]' />
                     </div>}
 
@@ -162,7 +162,7 @@ const MarketCreation: React.FC<any> = ({ }) => {
                         setShow(false);
                         setPlatform(Platform.Github);
                       }}
-                      className=" ml-[0.4rem] -mt-5  pt-4 cursor-pointer hover:scale-105" >
+                      className=" ml-[0.4rem] -mt-5  pt-4 cursor-pointer hover-zoom" >
                       <MemoGithubIcon className=" scale-[0.95]" />
                     </div>}
 
@@ -170,7 +170,7 @@ const MarketCreation: React.FC<any> = ({ }) => {
                       onClick={() => {
                         setShow(false);
                         setPlatform(Platform.Twitter);
-                      }} className=" mt-[0.4rem] ml-3 cursor-pointer hover:scale-105" >
+                      }} className=" mt-[0.4rem] ml-3 cursor-pointer hover-zoom" >
                       <MemoTwitterLogo />
                     </div>}
                   </div>
@@ -239,7 +239,7 @@ const MarketCreation: React.FC<any> = ({ }) => {
                   "sellPrice": "0",
                   "shares": "0"
                 })}
-                className="px-3 pr-4 text-f12 flex justify-center items-center"
+                className="px-3 pr-4 text-f12 flex justify-center items-center "
               >
                 Login
               </PrimaryButton>
