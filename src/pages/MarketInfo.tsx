@@ -193,7 +193,7 @@ const MarketActivityTab: React.FC<{ market: Market; }> = ({ market }) => {
   });
   if (isLoading) return <ListLoader className="px-7" />;
   console.log(`MarketActivity-data: `, data);
-  const userAddrMap = data.refData;
+  const userAddrMap = data?.refData ?? {};
 
   return (
     <div>

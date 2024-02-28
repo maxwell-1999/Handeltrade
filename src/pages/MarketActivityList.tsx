@@ -35,7 +35,8 @@ const MarketActivityList: React.FC<{
       {data
         .filter((d) => d.type == 'buy' || d.type == 'sell')
         .map((activity: BuySellActivityForMarket, i) => {
-          if (activity.type == 'buy') {
+          if (activity.type == 'buy' && activity.buyer) {
+            if (userAddrMap[activity.buyer] == undefined) return null;
             return (
               <UserActivityCard
                 key={i}
@@ -44,7 +45,8 @@ const MarketActivityList: React.FC<{
               />
             );
           }
-          if (activity.type == 'sell') {
+          if (activity.type == 'sell' && activity.seller) {
+            if (userAddrMap[activity.seller] == undefined) return null;
             return (
               <UserActivityCard
                 key={i}
@@ -94,7 +96,7 @@ const UserActivityCard: React.FC<{
           <span className="flex flex-col w-full">
             <span className="flex justify-between w-full pt-1 ">
               <span className="font-semibold leading-tight text-f14">
-                {user?.first_name ? (
+                {user?.first_name && user?.first_name.trim() != "" ? (
                   user.first_name
                 ) : (
                   <span
@@ -146,7 +148,7 @@ const UserActivityCard: React.FC<{
   );
 };
 
-const RewardsOfferedCard: React.FC<{ data: any }> = ({ data }) => {
+const RewardsOfferedCard: React.FC<{ data: any; }> = ({ data }) => {
   const network = useNetwork();
   return (
     <div className="flex flex-col bg-white rounded-[10px] p-4 justify-between w-full h-full items-center cursor-pointer ">
@@ -158,7 +160,7 @@ const RewardsOfferedCard: React.FC<{ data: any }> = ({ data }) => {
             width={27}
             className="w-[45px] h-[45px] mr-[7px] p-1 text-2 cursor-pointer"
             icon={faSackDollar}
-            onClick={() => {}}
+            onClick={() => { }}
           />
           {/* demographics */}
           <span className="flex flex-col w-full mt-2">
@@ -190,6 +192,6 @@ const RewardsOfferedCard: React.FC<{ data: any }> = ({ data }) => {
   );
 };
 
-const RewardsClaimedCard: React.FC<{ data: any }> = ({ data }) => {
+const RewardsClaimedCard: React.FC<{ data: any; }> = ({ data }) => {
   return <div className="">{JSON.stringify(data)}</div>;
 };

@@ -16,7 +16,7 @@ import { useIsFirebaseOn } from '@/atoms/firebaseState';
 import { faBell as solidBell } from '@fortawesome/free-solid-svg-icons';
 import { faBell as emptyBell } from '@fortawesome/free-regular-svg-icons';
 import { getFirebaseDeviceToken } from '@/lib/firebaseMessaging';
-import { fetchConfigDataFirebase, storeConfigDataFirebase, } from '@/utils/indexDB';
+import { setIDBVal } from '@/utils/indexDB';
 
 const AccountDropdown: React.FC<any> = ({ }) => {
   const account = useAccount();
@@ -113,21 +113,22 @@ const AccountDropdown: React.FC<any> = ({ }) => {
                     setIsFirebaseOn(res);
                     navigator.serviceWorker.getRegistrations()
                       .then(async (registration) => {
-                        console.log({ registration });
+                        // console.log({ registration });
                         // used for deleting the service worker - please don't delete it
                         // registration.forEach((reg) => {
                         //   reg.active?.scriptURL.includes("firebase-messaging-sw.js") && reg.unregister().then((res) => {
                         //     setIsFirebaseOn(false);
                         //   });
                         // });
-
-                        await storeConfigDataFirebase({ id: "is_popup_on", value: res });
+                        // await storeConfigDataFirebase({ id: "is_popup_on", value: res });
+                        await setIDBVal("is_popup_on", !!res);
                       }).catch((err) => {
                         console.log("Error in registering service worker", err);
                       });
                   } else {
-                    setIsFirebaseOn(res);
-                    await storeConfigDataFirebase({ id: "is_popup_on", value: res });
+                    setIsFirebaseOn(!!res);
+                    // await storeConfigDataFirebase({ id: "is_popup_on", value: res });
+                    await setIDBVal("is_popup_on", !!res);
                   }
                 });
               }}

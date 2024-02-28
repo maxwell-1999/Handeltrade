@@ -20,7 +20,8 @@ const UserActivityList: React.FC<{ marketMap: MarketIdMap; data: any[]; }> = ({
   return (
     <div className="flex flex-col gap-[10px]">
       {data.map((activity: BuySellActivity, i) => {
-        if (activity.type == 'buy' || activity.type == 'sell') {
+        if ((activity.type == 'buy' || activity.type == 'sell') && activity?.marketId) {
+          if (!marketMap[activity.marketId]) return null;
           return (
             <MarketActivityCard
               key={i}
@@ -29,8 +30,9 @@ const UserActivityList: React.FC<{ marketMap: MarketIdMap; data: any[]; }> = ({
             />
           );
         }
-        if (activity.type == 'claimedRewards') {
+        if (activity.type == 'claimedRewards' && activity?.marketId) {
           activity.type2 = 'Claimed Rewards';
+          if (!marketMap[activity.marketId]) return null;
           return (
             <ClaimRewardActivityCard
               key={i}
@@ -39,8 +41,9 @@ const UserActivityList: React.FC<{ marketMap: MarketIdMap; data: any[]; }> = ({
             />
           );
         }
-        if (activity.type == 'claimedReflectionFees') {
+        if (activity.type == 'claimedReflectionFees' && activity?.marketIds) {
           activity.type2 = 'Claimed Reflection';
+          if (!marketMap[activity.marketIds]) return null;
           return (
             <ClaimReflectionActivityCard
               key={i}
