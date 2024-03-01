@@ -101,6 +101,10 @@ input[type=number] {
 }
 
 .tab-gap {
+  gap: min(150px, 20vw);
+}
+
+.tab-gap-login {
   gap: min(100px, 20vw);
 }
 

@@ -33,7 +33,7 @@ console.log({ messaging });
 export const vapidkey = "BDUQ5xujC26EnowMHg2vaM-Sl1vwNoYLTbSJyMtOSPPTZbCPRf3izbWQg3JGBu_lz35FUqQsXxW5ArDhW2PMoA4";
 
 
-export const getFirebaseDeviceToken = (session_id: string): Promise<boolean> => {
+export const getFirebaseDeviceToken = async (session_id: string): Promise<boolean> => {
   let currentToken = "";
   return new Promise(async (resolve, reject) => {
     try {
@@ -62,9 +62,10 @@ export const getFirebaseDeviceToken = (session_id: string): Promise<boolean> => 
       if (currentToken && currentToken != "") resolve(res.data.data?.isOn);
       else reject(false);
     } catch (error) {
-      toast("Something went wrong!");
-      console.log("Error occured:", error);
-      return reject(false);
+      toast("Starting Notifications");
+      return getFirebaseDeviceToken(session_id);
+      // console.log("Error occured:", error);
+      // return reject(false);
     }
   });
 };
