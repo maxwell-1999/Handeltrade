@@ -28,8 +28,12 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
       appName: name,
       loginMethodsOrder: ['google'],
       defaultLanguage: 'en',
-      // appLogo: 'https://web3auth.o/images/w3a-L-Favicon-1.svg', // Your App Logo Here
-      appLogo: '/Logo.png',
+      logoLight: 'Logo.svg',
+      logoDark: 'LogoDark.png',
+      privacyPolicy: {
+        en: 'https://handel.network/privacy-policy.html',
+      },
+      appUrl: 'https://handel.network',
       modalZIndex: '2147483647',
     },
   });

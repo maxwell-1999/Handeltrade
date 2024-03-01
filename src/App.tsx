@@ -19,6 +19,7 @@ import { TestComponent } from './pages/TestComponent';
 import 'react-tooltip/dist/react-tooltip.css';
 import { getSharesFromPrice } from './lib/PriceToQuantity';
 import Settings from './pages/Settings';
+import PrivacyPolicy from './PrivacyPolicy';
 
 // Configure chains & providers with the Public provider.
 const { chains, publicClient, webSocketPublicClient } = configureChains(
@@ -70,6 +71,12 @@ function Web3AuthWithWagmi() {
                   </Layout>
                 }
               />
+              {/* <Route
+                path="/privacy-policy"
+                element={
+                  <PrivacyPolicy />
+                }
+              /> */}
               <Route
                 path="/profile"
                 element={

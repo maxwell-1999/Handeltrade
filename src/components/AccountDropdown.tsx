@@ -29,7 +29,6 @@ const AccountDropdown: React.FC<any> = ({ }) => {
   const drawerManager = useDrawerState();
   const { disconnect } = useDisconnect();
   const [show, setShow] = useState(false);
-  const [isFirebaseOn, setIsFirebaseOn] = useIsFirebaseOn();
 
   if (!account.address)
     return (
@@ -104,40 +103,6 @@ const AccountDropdown: React.FC<any> = ({ }) => {
               }}
             >
               <ExportIcon style={{ marginRight: '5px' }} /> Export Wallet
-            </div>
-            <div
-              className="flex p-1 px-8"
-              onClick={() => {
-                getFirebaseDeviceToken(userState?.session_id ?? "").then(async (res) => {
-                  if (isFirebaseOn) {
-                    setIsFirebaseOn(res);
-                    navigator.serviceWorker.getRegistrations()
-                      .then(async (registration) => {
-                        // console.log({ registration });
-                        // used for deleting the service worker - please don't delete it
-                        // registration.forEach((reg) => {
-                        //   reg.active?.scriptURL.includes("firebase-messaging-sw.js") && reg.unregister().then((res) => {
-                        //     setIsFirebaseOn(false);
-                        //   });
-                        // });
-                        // await storeConfigDataFirebase({ id: "is_popup_on", value: res });
-                        await setIDBVal("is_popup_on", !!res);
-                      }).catch((err) => {
-                        console.log("Error in registering service worker", err);
-                      });
-                  } else {
-                    setIsFirebaseOn(!!res);
-                    // await storeConfigDataFirebase({ id: "is_popup_on", value: res });
-                    await setIDBVal("is_popup_on", !!res);
-                  }
-                });
-              }}
-            >
-              <FontAwesomeIcon
-                className="h-6 rounded-full cursor-pointer mr-[5px]"
-                icon={isFirebaseOn ? solidBell : emptyBell}
-                onClick={() => { }}
-              /> Notifications are {isFirebaseOn ? "On" : "Off"}
             </div>
           </div>
         ) : null}

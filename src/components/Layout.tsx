@@ -11,6 +11,7 @@ import { Tooltip } from 'react-tooltip';
 import { useUserStateSync } from '../pages/Web3auth/Web3AuthWithWagmi';
 import useEthPrice from '../atoms/ETHPrice';
 import { MemoSettingsBig } from '@/SVG/Settings';
+import useUserState from '@/atoms/userState';
 
 const Icons = [
   {
@@ -27,12 +28,7 @@ const Icons = [
     page: 'profile',
     name: 'profile',
     Icon: MemoProfileIcon,
-  },
-  {
-    page: 'settings',
-    name: 'settings',
-    Icon: MemoSettingsBig,
-  },
+  }
 ];
 const isNestedRouteActive = (page: string) => {
   if (
@@ -53,6 +49,21 @@ const Layout: React.FC<{ children: React.ReactNode; }> = ({ children }) => {
   const [isVisible, setIsVisible] = useState(true);
   console.log(`Layout-isVisible: `, isVisible);
   const drawerManager = useDrawerState();
+  const [userState,] = useUserState();
+  useEffect(() => {
+    if (userState) {
+      if (Icons.filter((icon) => icon.page === 'settings').length === 0) {
+        // if user is logged in, show the settings icon
+        Icons.push({
+          page: 'settings',
+          name: 'settings',
+          Icon: MemoSettingsBig,
+        });
+      }
+    } else {
+      if (Icons.length > 3) Icons.pop();
+    }
+  }, [userState]);
   // const ref = useCallback((node) => {
   //   let prev = 0;
   //   const handleScroll = () => {
@@ -90,7 +101,7 @@ const Layout: React.FC<{ children: React.ReactNode; }> = ({ children }) => {
           </div>
           {drawerManager.drawerState?.screen ? <MobileDrawer /> : null}
 
-          <div className="h-[50px] w-full topborder bg-white flex justify-center tab-gap items-center  fixed bottom-0 left-0 text-2 ">
+          <div className={`h-[50px] w-full topborder bg-white flex justify-center ${userState ? "tab-gap-login" : "tab-gap"} items-center fixed bottom-0 left-0 text-2 `}>
             {Icons.map((icon) => {
               return (
                 <NavLink to={'/' + icon.page} key={icon.name}>
