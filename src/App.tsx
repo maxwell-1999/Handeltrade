@@ -71,12 +71,12 @@ function Web3AuthWithWagmi() {
                   </Layout>
                 }
               />
-              <Route
+              {/* <Route
                 path="/privacy-policy"
                 element={
                   <PrivacyPolicy />
                 }
-              />
+              /> */}
               <Route
                 path="/profile"
                 element={

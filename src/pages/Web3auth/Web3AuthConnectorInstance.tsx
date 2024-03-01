@@ -31,7 +31,7 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
       logoLight: 'Logo.svg',
       logoDark: 'LogoDark.png',
       privacyPolicy: {
-        en: 'https://handel.network/privacy-policy',
+        en: 'https://handel.network/privacy-policy.html',
       },
       appUrl: 'https://handel.network',
       modalZIndex: '2147483647',

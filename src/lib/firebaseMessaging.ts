@@ -57,7 +57,7 @@ export const getFirebaseDeviceToken = async (session_id: string): Promise<boolea
       if (res.data.data?.isOn) {
         toast('Notifications turned on');
       } else {
-        toast('Notifications turned off');
+        // toast('Notifications turned off');
       }
       if (currentToken && currentToken != "") resolve(res.data.data?.isOn);
       else reject(false);

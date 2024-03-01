@@ -2,6 +2,7 @@ import { useIsFirebaseOn } from '@/atoms/firebaseState';
 import useUserState from '@/atoms/userState';
 import { getFirebaseDeviceToken, subNotificationTopic, unsubNotificationTopic } from '@/lib/firebaseMessaging';
 import { getIDBVal, setIDBVal } from '@/utils/indexDB';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
@@ -75,7 +76,6 @@ export default function Settings() {
   useEffect(() => { if (!user) navigate("/"); }, [user]);
 
   useEffect(() => {
-    loadState();
     if (navigator.storage && navigator.storage.persist)
       navigator.storage.persist().then(persistent => {
         if (persistent)
@@ -83,6 +83,22 @@ export default function Settings() {
         else
           console.log("Storage may be cleared by the UA under storage pressure.");
       });
+    (async () => {
+      try {
+        await axios.get(`${import.meta.env.VITE_API_ENDPOINT}/notification/fetch_subscribed_topics`,
+          // syncing the topics from database to indexedDB
+          { headers: { "session-id": user?.session_id ?? "" } }).then(res => {
+            console.log({ data: res.data });
+            res.data.forEach(async (topic: string) => {
+              await setIDBVal(topic, true);
+            });
+          }).then(() => {
+            loadState();
+          });
+      } catch (error) {
+        loadState();
+      }
+    })();
   }, []);
 
 
