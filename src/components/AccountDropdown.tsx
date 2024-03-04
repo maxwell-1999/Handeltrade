@@ -12,11 +12,7 @@ import CopyIcon from '../SVG/CopyIcon';
 import DisconnectIcon from '../SVG/DisconnectIcon';
 import ExportIcon from '../SVG/ExportIcon';
 import ClickAwayListener from 'react-click-away-listener';
-import { useIsFirebaseOn } from '@/atoms/firebaseState';
-import { faBell as solidBell } from '@fortawesome/free-solid-svg-icons';
-import { faBell as emptyBell } from '@fortawesome/free-regular-svg-icons';
-import { getFirebaseDeviceToken } from '@/lib/firebaseMessaging';
-import { setIDBVal } from '@/utils/indexDB';
+import MemoPrivacyPolicy from '@/SVG/PrivacyPolicy';
 
 const AccountDropdown: React.FC<any> = ({ }) => {
   const account = useAccount();
@@ -104,6 +100,14 @@ const AccountDropdown: React.FC<any> = ({ }) => {
             >
               <ExportIcon style={{ marginRight: '5px' }} /> Export Wallet
             </div>
+            <a href='/privacy-policy.html' target='_blank' rel='noreferrer'
+              className="flex p-1 px-8"
+            >
+              <div className=' scale-[1.6] translate-x-2 translate-y-[6px]'>
+                <MemoPrivacyPolicy style={{ marginRight: "-2px" }} />
+              </div>
+              Privacy Policy
+            </a>
           </div>
         ) : null}
       </div>
