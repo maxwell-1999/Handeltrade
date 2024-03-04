@@ -111,6 +111,9 @@ const LoginPage: React.FC<{ viewOnly?: boolean; }> = ({ viewOnly }) => {
           Login
         </PrimaryBtn>
       )}
+      <div className="mt-4">
+        <a href="/privacy-policy.html" className=" underline">Privacy Policy</a>
+      </div>
     </div>
   );
 };
