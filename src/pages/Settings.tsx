@@ -89,7 +89,8 @@ export default function Settings() {
           // syncing the topics from database to indexedDB
           { headers: { "session-id": user?.session_id ?? "" } }).then(res => {
             console.log({ data: res.data });
-            res.data.forEach(async (topic: string) => {
+            res.data?.data.forEach(async (topic: string) => {
+              // console.log({ topic });
               await setIDBVal(topic, true);
             });
           }).then(() => {
